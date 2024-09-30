@@ -1,0 +1,20 @@
+.switch {
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.25rem;
+  display: flex;
+  gap: 0.35rem;
+
+  > p,
+  a {
+    font-family: "Inter", sans-serif;
+    text-decoration: none;
+    font-weight: 300;
+    font-size: 1rem;
+    color: #fff;
+  }
+
+  a {
+    color: #3838ff;
+  }
+}

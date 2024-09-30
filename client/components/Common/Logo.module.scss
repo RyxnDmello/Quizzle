@@ -1,0 +1,24 @@
+.logo {
+  justify-content: center;
+  grid-auto-flow: column;
+  align-items: center;
+  display: grid;
+  gap: 0.65rem;
+
+  > img {
+    aspect-ratio: 1 / 1;
+    height: auto;
+    width: 40px;
+  }
+
+  > h4 {
+    font-family: "Inter", sans-serif;
+    font-weight: 300;
+    font-size: 2rem;
+    color: #fff;
+
+    > span {
+      color: #ff0050;
+    }
+  }
+}

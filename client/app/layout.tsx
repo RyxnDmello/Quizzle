@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
 import { Metadata } from "next";
 
+import "./globals.scss";
+
 export const metadata: Metadata = {
   title: "Quizzle",
   description: "Quizzes and Puzzles",
