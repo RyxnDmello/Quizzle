@@ -67,6 +67,10 @@
     right: 0.65rem;
     width: 22.5px;
     height: auto;
+
+    &.correction {
+      top: 0.8rem;
+    }
   }
 
   > span {

@@ -1,4 +1,4 @@
-import { HTMLInputTypeAttribute } from "react";
+import { ChangeEvent, FocusEvent, HTMLInputTypeAttribute } from "react";
 import Image from "next/image";
 
 import usePassword from "@hooks/usePassword";
@@ -12,6 +12,8 @@ interface InputProps {
   error?: string;
   placeholder: string;
   required?: boolean;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onBlur: (e: FocusEvent<HTMLInputElement, Element>) => void;
 }
 
 export default function Input({
@@ -21,6 +23,8 @@ export default function Input({
   error,
   placeholder,
   required = true,
+  onChange,
+  onBlur,
 }: InputProps) {
   const { typeable, icon, handleToggle } = usePassword();
 
@@ -30,15 +34,19 @@ export default function Input({
 
       <input
         id={name}
+        name={name}
         className={styles[type]}
         type={type === "password" ? typeable : type}
         placeholder={placeholder}
+        onChange={onChange}
+        onBlur={onBlur}
       />
 
       {error && <p>{error}</p>}
 
       {type === "password" && (
         <Image
+          className={error && styles.correction}
           onClick={handleToggle}
           alt="toggle"
           height={512}

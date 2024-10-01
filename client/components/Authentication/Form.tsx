@@ -1,44 +1,16 @@
-"use client";
+import { ReactNode } from "react";
 
-import Input from "./Input";
-
-import Button from "./Button";
 import styles from "./Form.module.scss";
 
-export default function Form() {
+interface FormProps {
+  children: ReactNode;
+  onSubmit: (e?: React.FormEvent<HTMLFormElement>) => void;
+}
+
+export default function Form({ children, onSubmit }: FormProps) {
   return (
-    <form className={styles.form} onSubmit={() => {}}>
-      <Input type="text" name="Name" label="Name" placeholder="Nathan Drake" />
-
-      <Input
-        type="email"
-        name="Email"
-        label="Email"
-        placeholder="nathan@domain.com"
-      />
-
-      <Input
-        type="number"
-        name="Mobile"
-        label="Mobile"
-        placeholder="9876543210"
-      />
-
-      <Input
-        type="password"
-        name="Password"
-        label="Password"
-        placeholder="••••••••"
-      />
-
-      <Input
-        type="password"
-        name="confirmPassword"
-        label="Confirm Password"
-        placeholder="••••••••"
-      />
-
-      <Button label="Create An Account" />
+    <form className={styles.form} onSubmit={onSubmit}>
+      {children}
     </form>
   );
 }
