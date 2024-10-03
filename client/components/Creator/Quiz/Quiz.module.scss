@@ -1,7 +1,7 @@
 @use "../../../styles/quiz";
 
 .quiz {
-  border: 1.65px solid #ffffff50;
+  border: 1.65px solid #ffffff35;
   transition: border-color 300ms;
   grid-template-columns: auto;
   justify-content: stretch;
@@ -56,12 +56,12 @@
   display: flex;
 
   > p {
-    border: 1.65px dashed #ffffff50;
+    border: 1.65px dashed #ffffff65;
     font-family: "Inter", sans-serif;
     border-bottom-right-radius: 40px;
     border-top-left-radius: 40px;
     padding: 0.5rem 2rem;
-    color: #ffffff50;
+    color: #ffffff65;
     font-size: 1rem;
   }
 

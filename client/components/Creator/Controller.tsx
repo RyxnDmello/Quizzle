@@ -1,9 +1,18 @@
 import styles from "./Controller.module.scss";
 
-export default function Controller() {
+interface ControllerProps {
+  onChange: (prompt: string) => void;
+}
+
+export default function Controller({ onChange }: ControllerProps) {
   return (
     <form className={styles.controller}>
-      <input type="text" placeholder="Search By Name..." />
+      <input
+        type="text"
+        placeholder="Search By Name..."
+        onChange={(e) => onChange(e.target.value)}
+      />
+
       <div></div>
     </form>
   );
