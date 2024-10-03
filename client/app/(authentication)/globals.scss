@@ -1,7 +1,14 @@
 body {
   grid-template-columns: auto;
+  justify-content: stretch;
+  align-items: stretch;
+  height: 100dvh;
+  display: grid;
+}
+
+main {
+  grid-template-columns: auto;
   justify-content: center;
   align-items: center;
-  height: 100dvh;
   display: grid;
 }

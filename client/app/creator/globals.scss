@@ -1,0 +1,31 @@
+body {
+  grid-template-columns: auto;
+  justify-content: stretch;
+  align-items: start;
+  height: 100dvh;
+  display: grid;
+}
+
+main {
+  grid-template-columns: auto;
+  justify-content: center;
+  align-items: center;
+  display: grid;
+}
+
+section {
+  grid-template-columns: auto;
+  justify-content: stretch;
+  align-items: start;
+  display: grid;
+  width: 1350px;
+  height: 500px;
+
+  > div {
+    grid-template-columns: auto;
+    justify-content: stretch;
+    align-items: start;
+    display: grid;
+    gap: 1rem;
+  }
+}

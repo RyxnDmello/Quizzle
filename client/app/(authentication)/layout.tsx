@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Metadata } from "next";
 
-import "./globals.scss"
+import "./globals.scss";
 
 import Logo from "@components/Common/Logo";
 
