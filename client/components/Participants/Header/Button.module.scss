@@ -1,0 +1,40 @@
+.button {
+  border: 1.65px solid #ffffff80;
+  transition: border-color 150ms;
+  background-color: transparent;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  align-items: center;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  gap: 0.35rem;
+
+  > img {
+    transition: opacity 150ms;
+    aspect-ratio: 1;
+    opacity: 0.6;
+    height: auto;
+    width: 18px;
+  }
+
+  > p {
+    font-family: "Inter", sans-serif;
+    transition: color 150ms;
+    color: #ffffff80;
+    font-weight: 400;
+    font-size: 1rem;
+  }
+
+  &:hover {
+    border-color: #fff;
+
+    > img {
+      opacity: 1;
+    }
+
+    > p {
+      color: #fff;
+    }
+  }
+}

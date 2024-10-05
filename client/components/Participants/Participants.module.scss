@@ -1,0 +1,12 @@
+.participants {
+  grid-template-columns: auto;
+  justify-content: stretch;
+  align-items: center;
+  overflow-y: scroll;
+  max-height: 320px;
+  display: grid;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

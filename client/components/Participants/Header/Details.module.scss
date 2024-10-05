@@ -1,0 +1,35 @@
+.details {
+  justify-content: space-between;
+  grid-auto-flow: column;
+  align-items: center;
+  display: grid;
+
+  > div:first-of-type {
+    display: flex;
+    gap: 0.5rem;
+
+    > button {
+      font-family: "Inter", sans-serif;
+      border: 2px dashed #ffffff65;
+      background-color: transparent;
+      padding: 0.25rem 1rem;
+      border-radius: 40px;
+      font-size: 0.86rem;
+      color: #ffffff65;
+      font-weight: 300;
+      cursor: pointer;
+    }
+
+    > img {
+      cursor: pointer;
+      aspect-ratio: 1;
+      height: auto;
+      width: 20px;
+    }
+  }
+
+  > div:last-of-type {
+    display: flex;
+    gap: 0.5rem;
+  }
+}
