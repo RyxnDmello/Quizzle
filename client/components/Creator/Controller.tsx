@@ -1,3 +1,5 @@
+import Search from "@components/Common/Search";
+
 import styles from "./Controller.module.scss";
 
 interface ControllerProps {
@@ -7,12 +9,7 @@ interface ControllerProps {
 export default function Controller({ onChange }: ControllerProps) {
   return (
     <form className={styles.controller}>
-      <input
-        type="text"
-        placeholder="Search By Name..."
-        onChange={(e) => onChange(e.target.value)}
-      />
-
+      <Search placeholder="Search By Name..." onChange={onChange} />
       <div></div>
     </form>
   );
