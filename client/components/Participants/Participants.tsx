@@ -1,22 +1,18 @@
-import Participant from "./Participants/Participant";
+import { ReactNode } from "react";
+
+import Participant from "./Participant";
 
 import styles from "./Participants.module.scss";
 
-export default function Participants() {
+interface ParticipantsProps {
+  children: ReactNode;
+}
+
+export default function Participants({ children }: ParticipantsProps) {
   return (
     <div className={styles.participants}>
       <Participant isHeader />
-
-      {Array.from({ length: 10 }, (_, i) => (
-        <Participant
-          key={i}
-          name="Ryan Nolasco D Mello"
-          date="05/10/2024"
-          correct={5}
-          incorrect={10}
-          points={50}
-        />
-      ))}
+      {children}
     </div>
   );
 }

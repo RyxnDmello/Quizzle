@@ -1,0 +1,68 @@
+@use "../../../styles/quiz" as *;
+
+.difficulty {
+  grid-template-columns: auto;
+  justify-content: stretch;
+  align-items: center;
+  display: grid;
+  gap: 0.25rem;
+
+  > div {
+    border: 1.65px solid #ffffff35;
+    justify-content: space-between;
+    background-color: #ffffff10;
+    align-items: stretch;
+    border-radius: 5px;
+    padding: 0.65rem;
+    outline: none;
+    display: flex;
+    flex-grow: 1;
+
+    > p {
+      font-family: "Inter", sans-serif;
+      letter-spacing: 0.25px;
+      color: #ffffff65;
+      font-weight: 300;
+      font-size: 1rem;
+    }
+
+    > div {
+      justify-content: space-between;
+      align-items: stretch;
+      display: flex;
+      gap: 0.5rem;
+
+      > span {
+        transition: width 200ms;
+        border-radius: 40px;
+        cursor: pointer;
+        width: 50px;
+
+        &.hard {
+          background: $hard;
+        }
+
+        &.medium {
+          background: $medium;
+        }
+
+        &.easy {
+          background: $easy;
+        }
+
+        &.selected {
+          width: 200px;
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  > p {
+    font-family: "Inter", sans-serif;
+    letter-spacing: 0.25px;
+    font-size: 0.85rem;
+    color: #ff0000;
+    font-weight: 300;
+  }
+}

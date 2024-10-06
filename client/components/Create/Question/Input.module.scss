@@ -1,0 +1,39 @@
+.input {
+  grid-template-columns: auto;
+  justify-content: stretch;
+  align-items: center;
+  display: grid;
+  gap: 0.25rem;
+
+  > input {
+    font-family: "Inter", sans-serif;
+    border: 1.65px solid #ffffff35;
+    background-color: #ffffff10;
+    letter-spacing: 0.25px;
+    border-radius: 5px;
+    padding: 0.65rem;
+    font-weight: 300;
+    font-size: 1rem;
+    color: #fff;
+    outline: none;
+    flex-grow: 1;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &::placeholder {
+      font-weight: 400;
+    }
+  }
+
+  > p {
+    font-family: "Inter", sans-serif;
+    letter-spacing: 0.25px;
+    font-size: 0.85rem;
+    color: #ff0000;
+    font-weight: 300;
+  }
+}

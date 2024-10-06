@@ -1,0 +1,33 @@
+.option {
+  justify-content: stretch;
+  align-items: start;
+  display: flex;
+  gap: 0.5rem;
+
+  > div:first-of-type {
+    border: 2px solid #ffffff50;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+    cursor: pointer;
+    aspect-ratio: 1;
+    width: 42.5px;
+    display: grid;
+
+    > div {
+      transition: background-color 200ms;
+      background-color: transparent;
+      border-radius: 40px;
+      height: 20px;
+      width: 20px;
+
+      &.selected {
+        background-color: #00ff00;
+      }
+    }
+  }
+
+  > div:last-of-type {
+    flex-grow: 1;
+  }
+}

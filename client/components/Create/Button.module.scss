@@ -1,0 +1,49 @@
+.button {
+  padding: 0.5rem 2rem;
+  border-radius: 2.5px;
+  cursor: pointer;
+  border: none;
+
+  transition: background-color 200ms;
+  font-family: "Inter", sans-serif;
+  background-color: #7d7d7d;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #fff;
+
+  &.button {
+    &:hover {
+      background-color: #8d8d8d;
+    }
+
+    &:focus {
+      background-color: #686868;
+    }
+  }
+
+  &.submit {
+    background-color: #0000af;
+
+    &:hover {
+      background-color: #0000df;
+    }
+
+    &:focus {
+      background-color: #00008f;
+    }
+  }
+  
+  &.reset {
+    background-color: #cf0000;
+    margin-right: 0.5rem;
+    margin-left: auto;
+
+    &:hover {
+      background-color: #ff0000;
+    }
+
+    &:focus {
+      background-color: #8f0000;
+    }
+  }
+}

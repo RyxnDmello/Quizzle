@@ -99,10 +99,8 @@ export default function Creator() {
 
   return (
     <section>
-      <div>
-        <Controller onChange={handleSetPrompt} />
-        <Quizzes quizzes={filter.length === 0 ? quizzes : filter} />
-      </div>
+      <Controller onChange={handleSetPrompt} />
+      <Quizzes quizzes={filter.length === 0 ? quizzes : filter} />
     </section>
   );
 }

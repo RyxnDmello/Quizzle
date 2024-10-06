@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import Copy from "@public/quiz/copy.svg";
 
-import Button from "./Button";
+import Button from "../Common/Button";
 
 import styles from "./Details.module.scss";
 

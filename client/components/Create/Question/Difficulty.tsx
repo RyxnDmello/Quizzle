@@ -1,0 +1,52 @@
+import { useState } from "react";
+
+import { DIFFICULTY } from "@interfaces/Quiz";
+
+import styles from "./Difficulty.module.scss";
+
+interface DifficultyProps {
+  error?: string;
+  onSelect: (name: string, value: string) => void;
+}
+
+export default function Difficulty({ error, onSelect }: DifficultyProps) {
+  const [option, setOption] = useState<DIFFICULTY | undefined>(undefined);
+
+  return (
+    <div className={styles.difficulty}>
+      <div>
+        <p>Difficulty</p>
+
+        <div>
+          <span
+            className={`${styles.hard} ${option === "HARD" && styles.selected}`}
+            onClick={() => {
+              onSelect("difficulty", "HARD");
+              setOption("HARD");
+            }}
+          ></span>
+
+          <span
+            className={`${styles.medium} ${
+              option === "MEDIUM" && styles.selected
+            }`}
+            onClick={() => {
+              onSelect("difficulty", "MEDIUM");
+              setOption("MEDIUM");
+            }}
+          ></span>
+
+          <span
+            className={`${styles.easy} ${option === "EASY" && styles.selected}`}
+            onClick={() => {
+              onSelect("difficulty", "EASY");
+              setOption("EASY");
+            }}
+          ></span>
+        </div>
+      </div>
+
+      {error && <p>{error}</p>}
+    </div>
+  );
+}
