@@ -1,8 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
-import useFetchQuizzes from "@hooks/creator/useFetchQuizzes";
+import useFetchQuizzes from "@hooks/attendee/useFetchQuizzes";
 import useFilterQuizzes from "@hooks/common/useFilterQuizzes";
 
 import Controller from "@components/Creator/Controller";
@@ -13,21 +11,13 @@ export default function Creator() {
   const { quizzes } = useFetchQuizzes();
   const { filter, handleSetPrompt } = useFilterQuizzes(quizzes);
 
-  const { push } = useRouter();
-
-  const handleNavigate = (id: string) => push(`/creator/quiz/${id}`);
-
   return (
     <section>
       <Controller onChange={handleSetPrompt} />
-
+      
       <Quizzes>
         {(filter.length === 0 ? quizzes : filter).map((quiz) => (
-          <Quiz
-            key={quiz.id}
-            {...quiz}
-            onClick={() => handleNavigate(quiz.id!)}
-          />
+          <Quiz key={quiz.id} {...quiz} />
         ))}
       </Quizzes>
     </section>

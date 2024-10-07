@@ -1,7 +1,7 @@
 import { ChangeEvent, FocusEvent, HTMLInputTypeAttribute } from "react";
 import Image from "next/image";
 
-import usePassword from "@hooks/usePassword";
+import usePassword from "@hooks/common/usePassword";
 
 import styles from "./Input.module.scss";
 

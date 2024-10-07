@@ -6,14 +6,22 @@ import { Quiz as _ } from "@interfaces/Quiz";
 
 import styles from "./Quiz.module.scss";
 
+interface QuizProps extends _ {
+  onClick?: () => void;
+}
+
 export default function Quiz({
   name,
   points,
   questions,
-  difficulty = "EASY",
-}: _) {
+  difficulty,
+  onClick = undefined,
+}: QuizProps) {
   return (
-    <div className={styles.quiz}>
+    <div
+      className={`${styles.quiz} ${onClick && styles.clickable}`}
+      onClick={onClick}
+    >
       <div className={styles.header}>
         <div className={styles[difficulty.toLowerCase()]}></div>
         <h4>{name}</h4>

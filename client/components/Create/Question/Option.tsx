@@ -5,17 +5,21 @@ import Input from "./Input";
 import styles from "./Option.module.scss";
 
 interface OptionProps {
-  name: string;
+  value?: string;
+  name?: string;
   error?: string;
-  isSelected: boolean;
-  onSelect: () => void;
-  onBlur: (e: FocusEvent<HTMLInputElement>) => void;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  isSelected?: boolean;
+  disabled?: boolean;
+  onSelect?: () => void;
+  onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function Option({
   name,
+  value,
   error,
+  disabled =false,
   isSelected,
   onSelect,
   onBlur,
@@ -29,8 +33,10 @@ export default function Option({
 
       <Input
         type="text"
-        placeholder="Enter Option"
         name={name}
+        value={value}
+        disabled={disabled}
+        placeholder="Enter Option"
         error={error}
         onBlur={onBlur}
         onChange={onChange}

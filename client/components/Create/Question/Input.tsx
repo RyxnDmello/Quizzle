@@ -4,17 +4,21 @@ import styles from "./Input.module.scss";
 
 interface InputProps {
   type?: HTMLInputTypeAttribute;
-  name: string;
+  value?: string | number;
+  name?: string;
   error?: string;
-  placeholder: string;
-  onBlur: (e: FocusEvent<HTMLInputElement>) => void;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
+  placeholder?: string;
+  onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function Input({
   type = "text",
+  value,
   name,
   error,
+  disabled = false,
   placeholder,
   onBlur,
   onChange,
@@ -22,8 +26,10 @@ export default function Input({
   return (
     <div className={styles.input}>
       <input
+        value={value}
         type={type}
         name={name}
+        disabled={disabled}
         className={styles.input}
         placeholder={placeholder}
         onChange={onChange}

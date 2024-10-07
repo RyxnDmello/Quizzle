@@ -11,5 +11,5 @@ export default function useFilterQuizzes(quizzes: Quiz[]) {
     quiz.name.toLowerCase().includes(prompt.toLowerCase())
   );
 
-  return { quizzes, filter, handleSetPrompt };
+  return { filter, handleSetPrompt };
 }

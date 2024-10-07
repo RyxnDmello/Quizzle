@@ -15,14 +15,16 @@
     display: grid;
 
     > div {
-      transition: background-color 200ms;
+      transition: scale 150ms, background-color 150ms;
       background-color: transparent;
       border-radius: 40px;
       height: 20px;
       width: 20px;
+      scale: 0;
 
       &.selected {
         background-color: #00ff00;
+        scale: 1;
       }
     }
   }

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 import QuestionSchema from "@schemas/QuestionSchema";
 
-import useCreateQuiz from "@hooks/create/useCreateQuiz";
+import useCreateQuiz from "@hooks/creator/useCreateQuiz";
 
 import Questions from "@components/Create/Questions";
 import Question from "@components/Create/Question";

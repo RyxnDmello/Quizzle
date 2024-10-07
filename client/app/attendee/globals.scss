@@ -1,0 +1,28 @@
+main {
+  grid-template-columns: auto;
+  justify-content: center;
+  align-items: center;
+  display: grid;
+}
+
+section {
+  grid-template-columns: auto;
+  justify-content: stretch;
+  align-items: start;
+  display: grid;
+  width: 1350px;
+  gap: 1rem;
+}
+
+hr {
+  border: 1.5px solid #ffffff35;
+  border-radius: 40px;
+  margin: 0.5rem 0;
+}
+
+.buttons {
+  justify-content: space-between;
+  align-items: center;
+  margin: 1.5rem 0;
+  display: flex;
+}
