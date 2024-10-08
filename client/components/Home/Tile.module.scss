@@ -1,0 +1,64 @@
+.tile {
+  transition: border-color 300ms;
+  border: 2px solid #ffffff35;
+  grid-template-columns: auto;
+  justify-content: stretch;
+  text-decoration: none;
+  padding: 0.85rem 1rem;
+  border-radius: 5px;
+  position: relative;
+  align-items: end;
+  overflow: hidden;
+  cursor: pointer;
+  display: grid;
+  height: 350px;
+  width: 450px;
+
+  &:hover {
+    border-color: #ffffff85;
+  }
+
+  > img {
+    position: absolute;
+    object-fit: cover;
+    height: 100%;
+    z-index: -1;
+    width: 100%;
+  }
+
+  div {
+    grid-template-columns: auto;
+    justify-content: start;
+    align-items: center;
+    display: grid;
+    gap: 0.15rem;
+
+    > h4,
+    p {
+      font-family: "Inter", sans-serif;
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: #fff;
+    }
+
+    > h4 {
+      font-size: 1.65rem;
+      font-weight: 300;
+      color: #ff0055;
+    }
+
+    > p {
+      font-size: 1.2rem;
+      font-weight: 200;
+    }
+  }
+
+  > span {
+    box-shadow: 0 -10px 5px #00000045;
+    background-color: #00000045;
+    position: absolute;
+    height: 80px;
+    width: 100%;
+    bottom: 0;
+  }
+}

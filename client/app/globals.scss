@@ -10,3 +10,37 @@
 body {
   background-color: #000000;
 }
+
+#home {
+  grid-template-columns: auto;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+  display: grid;
+
+  > section {
+    grid-template-columns: auto;
+    justify-content: center;
+    align-items: center;
+    display: grid;
+    gap: 1.5rem;
+
+    > h1 {
+      font-family: "Inter", sans-serif;
+      font-weight: 200;
+      margin-top: 1rem;
+      font-size: 3rem;
+      color: #fff;
+
+      > span {
+        color: #0000ff;
+        font-weight: 300;
+      }
+    }
+
+    > div:last-of-type {
+      display: flex;
+      gap: 2rem;
+    }
+  }
+}
