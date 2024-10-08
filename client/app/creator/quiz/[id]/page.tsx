@@ -2,9 +2,9 @@
 
 import Title from "@components/Common/Title";
 import Search from "@components/Common/Search";
-import Details from "@components/Participants/Details";
-import Participants from "@components/Participants/Participants";
-import Participant from "@components/Participants/Participant";
+import Details from "@components/User/Details";
+import Participants from "@components/User/Participants";
+import Participant from "@components/User/Participant";
 
 export default function Quiz() {
   return (
