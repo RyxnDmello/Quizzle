@@ -3,7 +3,7 @@
 import { FormikErrors, FormikTouched } from "formik";
 import { useRouter } from "next/navigation";
 
-import QuestionSchema from "@schemas/QuestionSchema";
+import QuizSchema from "@schemas/QuizSchema";
 
 import useCreateQuiz from "@hooks/creator/useCreateQuiz";
 
@@ -46,8 +46,8 @@ export default function Create() {
             <Question
               key={i}
               index={i}
-              errors={errors as FormikErrors<QuestionSchema>}
-              touched={touched as FormikTouched<QuestionSchema>}
+              errors={errors as FormikErrors<QuizSchema>}
+              touched={touched as FormikTouched<QuizSchema>}
               onBlur={handleBlur}
               onChange={handleChange}
               onSelect={setFieldValue}

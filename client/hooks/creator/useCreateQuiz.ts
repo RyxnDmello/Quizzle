@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 
-import QuestionSchema, { validationSchema } from "@schemas/QuestionSchema";
+import QuizSchema, { validationSchema } from "@schemas/QuizSchema";
 
 export default function useCreateQuiz() {
-  const [quiz, setQuiz] = useState<QuestionSchema>({
+  const [quiz, setQuiz] = useState<QuizSchema>({
     title: "",
     difficulty: "NULL",
     questions: [
@@ -42,7 +42,7 @@ export default function useCreateQuiz() {
     });
   };
 
-  const initialValues: QuestionSchema = {
+  const initialValues: QuizSchema = {
     title: "",
     difficulty: "NULL",
     questions: [

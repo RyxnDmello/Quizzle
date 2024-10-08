@@ -2,58 +2,43 @@
 
 import { useRouter } from "next/navigation";
 
-import Title from "@components/Common/Title";
+import useCompleteQuiz from "@hooks/attendee/useCompleteQuiz";
 
+import Title from "@components/Common/Title";
 import Questions from "@components/Create/Questions";
 import Question from "@components/Create/Question";
 import Button from "@components/Create/Button";
 
 export default function Create() {
+  const {
+    quiz,
+    values,
+    setFieldValue,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+  } = useCompleteQuiz();
+
   const { replace } = useRouter();
 
   return (
     <section>
-      <form autoComplete="off" onSubmit={() => {}}>
-        <Title title="Next.js" difficulty="MEDIUM" />
+      <form autoComplete="off" onSubmit={handleSubmit}>
+        <Title title={quiz.title} difficulty={quiz.difficulty} />
 
         <Questions>
-          <Question
-            question="What is Next.js?"
-            score={10}
-            index={0}
-            onSelect={() => {}}
-            disabled
-          />
-          <Question
-            question="What is CSR?"
-            index={0}
-            onSelect={() => {}}
-            disabled
-          />
-          <Question
-            question="What is SSR?"
-            index={0}
-            onSelect={() => {}}
-            disabled
-          />
-          <Question
-            question="What is SSG?"
-            index={0}
-            onSelect={() => {}}
-            disabled
-          />
-          <Question
-            question="What is ISR?"
-            index={0}
-            onSelect={() => {}}
-            disabled
-          />
-          <Question
-            question="What is ISR?"
-            index={0}
-            onSelect={() => {}}
-            disabled
-          />
+          {quiz.questions.map((question, i) => (
+            <Question
+              key={i}
+              index={i}
+              disabled
+              {...question}
+              values={values}
+              onSelect={setFieldValue}
+              onBlur={handleBlur}
+              onChange={handleChange}
+            />
+          ))}
         </Questions>
 
         <hr />

@@ -1,19 +1,20 @@
 import { useState, ChangeEvent, FocusEvent } from "react";
 import { FormikErrors, FormikTouched } from "formik";
 
-import QuestionSchema, { Question as _ } from "@schemas/QuestionSchema";
+import QuizSchema, {
+  Options,
+  Question as _,
+} from "@schemas/QuizSchema";
 
 import Input from "./Question/Input";
 import Option from "./Question/Option";
 
 interface QuestionProps {
   index: number;
-  score?: number;
-  question?: string;
-  options?: string[];
+  values?: QuizSchema;
   disabled?: boolean;
-  errors?: FormikErrors<QuestionSchema>;
-  touched?: FormikTouched<QuestionSchema>;
+  errors?: FormikErrors<QuizSchema>;
+  touched?: FormikTouched<QuizSchema>;
   onSelect?: (name: string, value: string) => void;
   onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -23,9 +24,7 @@ import styles from "./Question.module.scss";
 
 export default function Question({
   index,
-  score,
-  question,
-  options,
+  values,
   errors,
   touched,
   disabled = false,
@@ -58,7 +57,7 @@ export default function Question({
           }
           type="text"
           disabled={disabled}
-          value={question}
+          value={values?.questions[index]?.question}
           placeholder={"Enter Question"}
           name={`questions[${index}].question`}
           onBlur={onBlur}
@@ -78,7 +77,7 @@ export default function Question({
               : undefined
           }
           type="number"
-          value={score}
+          value={values?.questions[index]?.points}
           disabled={disabled}
           placeholder="Enter Score"
           name={`questions[${index}].points`}
@@ -103,7 +102,10 @@ export default function Question({
               : undefined
           }
           disabled={disabled}
-          value={options && options[0]}
+          value={
+            values?.questions[index]?.options &&
+            (values?.questions[index]?.options as Options).A
+          }
           name={`questions[${index}].options.A`}
           onSelect={() => handleSelect("A")}
           isSelected={option === "A"}
@@ -126,7 +128,10 @@ export default function Question({
               : undefined
           }
           disabled={disabled}
-          value={options && options[1]}
+          value={
+            values?.questions[index]?.options &&
+            (values?.questions[index]?.options as Options).B
+          }
           name={`questions[${index}].options.B`}
           onSelect={() => handleSelect("B")}
           isSelected={option === "B"}
@@ -149,7 +154,10 @@ export default function Question({
               : undefined
           }
           disabled={disabled}
-          value={options && options[0]}
+          value={
+            values?.questions[index]?.options &&
+            (values?.questions[index]?.options as Options).C
+          }
           name={`questions[${index}].options.C`}
           onSelect={() => handleSelect("C")}
           isSelected={option === "C"}

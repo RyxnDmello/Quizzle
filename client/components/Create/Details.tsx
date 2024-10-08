@@ -1,7 +1,7 @@
 import { FocusEvent, ChangeEvent } from "react";
 import { FormikErrors, FormikTouched } from "formik";
 
-import QuestionSchema from "@schemas/QuestionSchema";
+import QuizSchema from "@schemas/QuizSchema";
 
 import Input from "./Question/Input";
 import Difficulty from "./Question/Difficulty";
@@ -9,8 +9,8 @@ import Difficulty from "./Question/Difficulty";
 import styles from "./Details.module.scss";
 
 interface DetailsProps {
-  errors?: FormikErrors<QuestionSchema>;
-  touched?: FormikTouched<QuestionSchema>;
+  errors?: FormikErrors<QuizSchema>;
+  touched?: FormikTouched<QuizSchema>;
   onSelect: (name: string, value: string) => void
   onBlur: (e: FocusEvent<HTMLInputElement>) => void;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;

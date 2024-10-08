@@ -2,7 +2,7 @@ import * as yup from "yup";
 
 import { DIFFICULTY } from "@interfaces/Quiz";
 
-export default interface QuestionSchema {
+export default interface QuizSchema {
   id?: string;
   title: string;
   difficulty: "NULL" | DIFFICULTY;
@@ -10,9 +10,9 @@ export default interface QuestionSchema {
 }
 
 export interface Question {
+  points: number;
   question: string;
   options: Options;
-  points: number;
   correct: "A" | "B" | "C" | null;
 }
 
