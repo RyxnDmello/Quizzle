@@ -20,6 +20,21 @@ hr {
   margin: 0.5rem 0;
 }
 
+#join {
+  grid-template-columns: auto 150px;
+  justify-content: stretch;
+  align-items: stretch;
+  gap: 0.5rem 0.85rem;
+  display: grid;
+
+  > p {
+    font-family: "Inter", sans-serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: #ff0000;
+  }
+}
+
 .buttons {
   justify-content: space-between;
   align-items: center;
