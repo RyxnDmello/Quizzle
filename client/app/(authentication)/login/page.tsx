@@ -2,6 +2,7 @@
 
 import useLoginCreator from "@hooks/authentication/useLoginCreator";
 
+import Title from "@components/Authentication/Title";
 import Form from "@components/Authentication/Form";
 import Input from "@components/Authentication/Input";
 import Button from "@components/Authentication/Button";
@@ -13,6 +14,8 @@ export default function Login() {
 
   return (
     <section>
+      <Title primary="Welcome" secondary="Back" />
+
       <Form onSubmit={handleSubmit}>
         <Input
           type="email"

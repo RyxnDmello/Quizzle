@@ -3,6 +3,7 @@ $border: 2px solid #ffffff35;
 .participant {
   grid-template-columns: repeat(5, 1fr);
   justify-content: stretch;
+  text-decoration: none;
   align-items: stretch;
   cursor: pointer;
   display: grid;

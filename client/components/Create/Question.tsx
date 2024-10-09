@@ -1,10 +1,7 @@
 import { useState, ChangeEvent, FocusEvent } from "react";
 import { FormikErrors, FormikTouched } from "formik";
 
-import QuizSchema, {
-  Options,
-  Question as _,
-} from "@schemas/QuizSchema";
+import QuizSchema, { Options, Question as _ } from "@schemas/QuizSchema";
 
 import Input from "./Question/Input";
 import Option from "./Question/Option";
@@ -55,7 +52,6 @@ export default function Question({
                 (errors.questions[index] as FormikErrors<_>).question
               : undefined
           }
-          type="text"
           disabled={disabled}
           value={values?.questions[index]?.question}
           placeholder={"Enter Question"}
@@ -88,6 +84,28 @@ export default function Question({
 
       <div>
         <Option
+          value={
+            values?.questions[index]?.options &&
+            (values?.questions[index]?.options as Options).A
+          }
+          isSelected={
+            !disabled || onSelect
+              ? option === "A"
+              : values && values.questions[index]
+              ? values.questions[index].selected === "A"
+              : undefined
+          }
+          isCorrect={
+            disabled
+              ? values && values.questions
+                ? values.questions[index] && values.questions[index] === null
+                  ? undefined
+                  : values.questions[index] && values.questions[index].selected
+                  ? values.questions[index].correct === "A"
+                  : undefined
+                : undefined
+              : undefined
+          }
           error={
             touched &&
             touched.questions &&
@@ -102,18 +120,35 @@ export default function Question({
               : undefined
           }
           disabled={disabled}
-          value={
-            values?.questions[index]?.options &&
-            (values?.questions[index]?.options as Options).A
-          }
           name={`questions[${index}].options.A`}
           onSelect={() => handleSelect("A")}
-          isSelected={option === "A"}
           onChange={onChange}
           onBlur={onBlur}
         />
 
         <Option
+          value={
+            values?.questions[index]?.options &&
+            (values?.questions[index]?.options as Options).B
+          }
+          isSelected={
+            !disabled || onSelect
+              ? option === "B"
+              : values && values.questions[index]
+              ? values.questions[index].selected === "B"
+              : undefined
+          }
+          isCorrect={
+            disabled
+              ? values && values.questions
+                ? values.questions[index] && values.questions[index] === null
+                  ? undefined
+                  : values.questions[index] && values.questions[index].selected
+                  ? values.questions[index].correct === "B"
+                  : undefined
+                : undefined
+              : undefined
+          }
           error={
             touched &&
             touched.questions &&
@@ -128,18 +163,35 @@ export default function Question({
               : undefined
           }
           disabled={disabled}
-          value={
-            values?.questions[index]?.options &&
-            (values?.questions[index]?.options as Options).B
-          }
           name={`questions[${index}].options.B`}
           onSelect={() => handleSelect("B")}
-          isSelected={option === "B"}
           onChange={onChange}
           onBlur={onBlur}
         />
 
         <Option
+          value={
+            values?.questions[index]?.options &&
+            (values?.questions[index]?.options as Options).C
+          }
+          isSelected={
+            !disabled || onSelect
+              ? option === "C"
+              : values && values.questions[index]
+              ? values.questions[index].selected === "C"
+              : undefined
+          }
+          isCorrect={
+            disabled
+              ? values && values.questions
+                ? values.questions[index] && values.questions[index] === null
+                  ? undefined
+                  : values.questions[index] && values.questions[index].selected
+                  ? values.questions[index].correct === "C"
+                  : undefined
+                : undefined
+              : undefined
+          }
           error={
             touched &&
             touched.questions &&
@@ -154,13 +206,8 @@ export default function Question({
               : undefined
           }
           disabled={disabled}
-          value={
-            values?.questions[index]?.options &&
-            (values?.questions[index]?.options as Options).C
-          }
           name={`questions[${index}].options.C`}
           onSelect={() => handleSelect("C")}
-          isSelected={option === "C"}
           onChange={onChange}
           onBlur={onBlur}
         />

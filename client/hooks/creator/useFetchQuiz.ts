@@ -1,19 +1,14 @@
 import { useEffect, useState } from "react";
-import { useFormik } from "formik";
 
-import QuizSchema, { validationSchema } from "@schemas/QuizSchema";
+import QuizSchema from "@schemas/QuizSchema";
 
-export default function useCompleteQuiz() {
+export default function useFetchQuiz() {
   const [quiz, setQuiz] = useState<QuizSchema>({
     id: undefined,
     title: "",
     difficulty: "NULL",
     questions: [],
   });
-
-  const onSubmit = () => {
-    console.log(values);
-  };
 
   const fetchQuiz = () => {
     setTimeout(() => {
@@ -29,8 +24,8 @@ export default function useCompleteQuiz() {
               B: "Cached in the server.",
               C: "All of the above.",
             },
-            correct: null,
-            selected: null,
+            correct: "A",
+            selected: "A",
             points: 20,
           },
           {
@@ -40,8 +35,19 @@ export default function useCompleteQuiz() {
               B: "Cached in the server.",
               C: "All of the above.",
             },
-            correct: null,
-            selected: null,
+            correct: "B",
+            selected: "C",
+            points: 20,
+          },
+          {
+            question: "What are Server Components",
+            options: {
+              A: "They manage state.",
+              B: "Cached in the server.",
+              C: "All of the above.",
+            },
+            correct: "C",
+            selected: "B",
             points: 20,
           },
         ],
@@ -49,38 +55,22 @@ export default function useCompleteQuiz() {
     }, 1500);
   };
 
-  const {
-    values,
-    errors,
-    touched,
-    resetForm,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-    setFieldValue,
-  } = useFormik({
-    initialValues: quiz,
-    validationSchema: validationSchema,
-    enableReinitialize: true,
-    validate: () => {
-      console.log(errors);
-    },
-    onSubmit: onSubmit,
-  });
+  const questions = quiz.questions.filter(
+    (quiz) => quiz.correct === quiz.selected
+  );
+
+  const points =
+    questions.length === 0
+      ? 0
+      : questions.reduce((prev, current) => {
+          return { ...current, points: prev.points + current.points };
+        });
+
+  const correct = questions.length;
 
   useEffect(() => {
     fetchQuiz();
   }, [quiz]);
 
-  return {
-    quiz,
-    errors,
-    values,
-    touched,
-    resetForm,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-    setFieldValue,
-  };
+  return { quiz, points, correct };
 }

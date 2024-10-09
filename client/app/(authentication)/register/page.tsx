@@ -2,6 +2,7 @@
 
 import useRegisterCreator from "@hooks/authentication/useRegisterCreator";
 
+import Title from "@components/Authentication/Title";
 import Form from "@components/Authentication/Form";
 import Input from "@components/Authentication/Input";
 import Button from "@components/Authentication/Button";
@@ -13,6 +14,8 @@ export default function Register() {
 
   return (
     <section>
+      <Title primary="Create Your" secondary="Account" />
+
       <Form onSubmit={handleSubmit}>
         <Input
           type="text"

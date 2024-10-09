@@ -1,33 +1,44 @@
+import { useParams } from "next/navigation";
 import { Fragment } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 import Trophy from "@public/quiz/trophy.png";
 
 import styles from "./Participant.module.scss";
 
 interface ParticipantProps {
+  attendee?: string;
   name?: string;
   date?: string;
   correct?: number;
-  incorrect?: number;
+  questions?: number;
   points?: number;
   isHeader?: boolean;
 }
 
 export default function Participant({
+  attendee,
   name,
   date,
   correct,
-  incorrect,
   points,
+  questions,
   isHeader = false,
 }: ParticipantProps) {
+  const { id } = useParams<{ id: string }>();
+
+  const url = attendee && `/creator/quiz/${id}/${attendee}`;
+
   return (
-    <div className={`${styles.participant} ${isHeader && styles.header}`}>
+    <Link
+      href={url || "#"}
+      className={`${styles.participant} ${isHeader && styles.header}`}
+    >
       <div>{isHeader ? "Participant" : name}</div>
       <div>{isHeader ? "Date of Completion" : date}</div>
       <div>{isHeader ? "Correct Answers" : correct}</div>
-      <div>{isHeader ? "Incorrect Answers" : incorrect}</div>
+      <div>{isHeader ? "Incorrect Answers" : questions! - correct!}</div>
       <div>
         {isHeader ? (
           "Points Scored"
@@ -38,6 +49,6 @@ export default function Participant({
           </Fragment>
         )}
       </div>
-    </div>
+    </Link>
   );
 }

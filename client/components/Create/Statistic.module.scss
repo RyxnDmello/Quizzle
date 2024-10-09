@@ -1,0 +1,16 @@
+.statistic {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  gap: 0.25rem;
+
+  &:first-of-type {
+    margin-left: auto;
+  }
+
+  > img {
+    aspect-ratio: 1;
+    height: auto;
+    width: 25px;
+  }
+}

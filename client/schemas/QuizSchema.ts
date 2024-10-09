@@ -14,6 +14,7 @@ export interface Question {
   question: string;
   options: Options;
   correct: "A" | "B" | "C" | null;
+  selected: "A" | "B" | "C" | null;
 }
 
 export interface Options {
@@ -74,6 +75,7 @@ export const validationSchema = yup.object().shape({
         .nonNullable()
         .oneOf(["A", "B", "C"], "Please select a correct option.")
         .required("Correct option must be selected."),
+      selected: yup.string().nullable().notRequired(),
     })
   ),
 });
