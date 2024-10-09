@@ -1,10 +1,16 @@
 import { useState, ChangeEvent, FocusEvent } from "react";
 import { FormikErrors, FormikTouched } from "formik";
+import Image from "next/image";
+
+import Trophy from "@public/quiz/trophy.png";
+import Delete from "@public/quiz/remove.svg";
 
 import QuizSchema, { Options, Question as _ } from "@schemas/QuizSchema";
 
 import Input from "./Question/Input";
 import Option from "./Question/Option";
+
+import styles from "./Question.module.scss";
 
 interface QuestionProps {
   index: number;
@@ -12,12 +18,11 @@ interface QuestionProps {
   disabled?: boolean;
   errors?: FormikErrors<QuizSchema>;
   touched?: FormikTouched<QuizSchema>;
+  onDelete?: (index: number) => void;
   onSelect?: (name: string, value: string) => void;
   onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
-
-import styles from "./Question.module.scss";
 
 export default function Question({
   index,
@@ -26,6 +31,7 @@ export default function Question({
   touched,
   disabled = false,
   onBlur,
+  onDelete,
   onChange,
   onSelect,
 }: QuestionProps) {
@@ -40,6 +46,16 @@ export default function Question({
   return (
     <div className={styles.question}>
       <div>
+        {onDelete && (
+          <Image
+            src={Delete}
+            width={512}
+            height={512}
+            alt="delete"
+            onClick={() => onDelete(index)}
+          />
+        )}
+
         <Input
           error={
             touched &&
@@ -73,6 +89,7 @@ export default function Question({
               : undefined
           }
           type="number"
+          icon={Trophy}
           value={values?.questions[index]?.points}
           disabled={disabled}
           placeholder="Enter Score"

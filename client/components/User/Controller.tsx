@@ -8,9 +8,17 @@ interface ControllerProps {
 
 export default function Controller({ onChange }: ControllerProps) {
   return (
-    <form className={styles.controller}>
+    <form className={styles.controller} onSubmit={() => {}}>
       <Search placeholder="Search By Name..." onChange={onChange} />
-      <div></div>
+
+      <select name="sort">
+        <option value="name_asc">Name (Ascending)</option>
+        <option value="name_desc">Name (Descending)</option>
+        <option value="questions_asc">Questions (Ascending)</option>
+        <option value="questions_desc">Questions (Descending)</option>
+        <option value="points_asc">Points (Ascending)</option>
+        <option value="points_desc">Points (Descending)</option>
+      </select>
     </form>
   );
 }

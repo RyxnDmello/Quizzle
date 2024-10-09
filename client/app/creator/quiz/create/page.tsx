@@ -26,6 +26,7 @@ export default function Create() {
     handleSubmit,
     setFieldValue,
     handleAddQuestion,
+    handleDeleteQuestion,
   } = useCreateQuiz();
 
   return (
@@ -48,6 +49,7 @@ export default function Create() {
               index={i}
               errors={errors as FormikErrors<QuizSchema>}
               touched={touched as FormikTouched<QuizSchema>}
+              onDelete={handleDeleteQuestion}
               onBlur={handleBlur}
               onChange={handleChange}
               onSelect={setFieldValue}

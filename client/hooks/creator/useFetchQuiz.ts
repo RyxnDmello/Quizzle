@@ -55,22 +55,9 @@ export default function useFetchQuiz() {
     }, 1500);
   };
 
-  const questions = quiz.questions.filter(
-    (quiz) => quiz.correct === quiz.selected
-  );
-
-  const points =
-    questions.length === 0
-      ? 0
-      : questions.reduce((prev, current) => {
-          return { ...current, points: prev.points + current.points };
-        });
-
-  const correct = questions.length;
-
   useEffect(() => {
     fetchQuiz();
-  }, [quiz]);
+  }, []);
 
-  return { quiz, points, correct };
+  return { quiz };
 }

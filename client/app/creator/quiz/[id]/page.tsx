@@ -8,9 +8,11 @@ import Details from "@components/User/Details";
 import Participants from "@components/User/Participants";
 import Participant from "@components/User/Participant";
 import Empty from "@components/User/Empty";
+import useFilterParticipants from "@hooks/creator/useFilterParticipants";
 
 export default function Quiz() {
   const { participants } = useFetchParticipants();
+  const { filter, handleSetPrompt } = useFilterParticipants(participants);
 
   return (
     <section>
@@ -19,7 +21,7 @@ export default function Quiz() {
 
       <hr />
 
-      <Search placeholder="Search Participant" onChange={() => {}} />
+      <Search placeholder="Search Participant" onChange={handleSetPrompt} />
 
       {participants.length === 0 && (
         <Empty reason="No Participants Have Completed The Quiz." />
@@ -27,7 +29,7 @@ export default function Quiz() {
 
       {participants.length !== 0 && (
         <Participants>
-          {participants.map((participant) => (
+          {(filter.length === 0 ? participants : filter).map((participant) => (
             <Participant
               key={participant.id}
               attendee={participant.id}

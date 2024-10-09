@@ -1,8 +1,10 @@
 import { ChangeEvent, FocusEvent, HTMLInputTypeAttribute } from "react";
+import Image, { StaticImageData } from "next/image";
 
 import styles from "./Input.module.scss";
 
 interface InputProps {
+  icon?: StaticImageData | string;
   type?: HTMLInputTypeAttribute;
   value?: string | number;
   name?: string;
@@ -14,6 +16,7 @@ interface InputProps {
 }
 
 export default function Input({
+  icon,
   type = "text",
   value,
   name,
@@ -24,7 +27,11 @@ export default function Input({
   onChange,
 }: InputProps) {
   return (
-    <div className={styles.input}>
+    <div
+      className={`${styles.input} ${icon && styles.icon} ${
+        error && styles.error
+      }`}
+    >
       <input
         value={value}
         type={type}
@@ -37,6 +44,8 @@ export default function Input({
       />
 
       {error && <p>{error}</p>}
+
+      {icon && <Image src={icon} width={512} height={512} alt="icon" />}
     </div>
   );
 }

@@ -44,22 +44,13 @@ export default function useCreateQuiz() {
     });
   };
 
-  const initialValues: QuizSchema = {
-    title: "",
-    difficulty: "NULL",
-    questions: [
-      {
-        question: "",
-        options: {
-          A: "",
-          B: "",
-          C: "",
-        },
-        correct: null,
-        selected: null,
-        points: 0,
-      },
-    ],
+  const handleDeleteQuestion = (index: number) => {
+    setQuiz((prev) => {
+      return {
+        ...prev,
+        questions: values.questions.filter((_, i) => i !== index),
+      };
+    });
   };
 
   const {
@@ -72,7 +63,7 @@ export default function useCreateQuiz() {
     handleSubmit,
     setFieldValue,
   } = useFormik({
-    initialValues: initialValues,
+    initialValues: quiz,
     validationSchema: validationSchema,
     enableReinitialize: true,
     onSubmit: () => {
@@ -90,5 +81,6 @@ export default function useCreateQuiz() {
     handleSubmit,
     setFieldValue,
     handleAddQuestion,
+    handleDeleteQuestion,
   };
 }

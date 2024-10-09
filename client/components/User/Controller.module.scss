@@ -4,11 +4,25 @@
   display: flex;
   gap: 1rem;
 
-  > div {
+  > select {
     border: 1.65px solid #ffffff35;
+    font-family: "Inter", sans-serif;
     background-color: #ffffff10;
     border-radius: 5px;
+    appearance: none;
+    font-weight: 300;
+    font-size: 1rem;
     padding: 0.5rem;
+    outline: none;
+    color: #fff;
     width: 250px;
+
+    > option {
+      font-family: "Inter", sans-serif;
+      background-color: #000000df;
+      border: 2px solid #fff;
+      padding: 2rem 0;
+      outline: none;
+    }
   }
 }

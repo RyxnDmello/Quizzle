@@ -2,16 +2,17 @@
   grid-template-columns: auto;
   justify-content: stretch;
   align-items: center;
+  position: relative;
   display: grid;
   gap: 0.25rem;
 
   > input {
+    padding: 0.7rem 0.65rem 0.55rem 0.65rem;
     font-family: "Inter", sans-serif;
     border: 1.65px solid #ffffff35;
     background-color: #ffffff10;
     letter-spacing: 0.25px;
     border-radius: 5px;
-    padding: 0.65rem;
     font-weight: 300;
     font-size: 1rem;
     color: #fff;
@@ -35,5 +36,23 @@
     font-size: 0.85rem;
     color: #ff0000;
     font-weight: 300;
+  }
+
+  &.icon {
+    > input {
+      padding-left: 2.5rem;
+    }
+
+    > img {
+      position: absolute;
+      aspect-ratio: 1;
+      left: 0.85rem;
+      height: auto;
+      width: 20px;
+    }
+  }
+
+  &.error.icon > img {
+    top: 0.75rem;
   }
 }
