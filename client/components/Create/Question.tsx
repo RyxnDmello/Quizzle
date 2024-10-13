@@ -7,7 +7,7 @@ import Delete from "@public/quiz/remove.svg";
 
 import QuizSchema, { Options, Question as _ } from "@schemas/QuizSchema";
 
-import Input from "./Question/Input";
+import Input from "../Inputs/Input";
 import Option from "./Question/Option";
 
 import styles from "./Question.module.scss";

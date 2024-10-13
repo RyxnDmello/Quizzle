@@ -5,10 +5,15 @@ import { useRouter } from "next/navigation";
 import useFetchQuizzes from "@hooks/creator/useFetchQuizzes";
 import useFilterQuizzes from "@hooks/common/useFilterQuizzes";
 
-import Controller from "@components/User/Controller";
-import Quizzes from "@components/User/Quizzes";
-import Quiz from "@components/User/Quiz/Quiz";
-import Pagination from "@components/User/Pagination";
+import Controller from "@components/Catalogue/Controller";
+import Search from "@components/Catalogue/Controller/Search";
+import Dropdown from "@components/Catalogue/Controller/Dropdown";
+import Option from "@components/Catalogue/Controller/Option";
+
+import Quizzes from "@components/Catalogue/Quizzes";
+import Quiz from "@components/Catalogue/Quiz/Quiz";
+
+import Pagination from "@components/Catalogue/Pagination";
 import Empty from "@components/User/Empty";
 
 export default function Creator() {
@@ -21,13 +26,24 @@ export default function Creator() {
 
   return (
     <section id="creator">
-      <Controller onChange={handleSetPrompt} />
+      <Controller onSubmit={() => {}}>
+        <Search placeholder="Search By Name" onChange={handleSetPrompt} />
+
+        <Dropdown name="sort" onChange={() => {}}>
+          <Option value="name_asc" label="Name (Ascending)" />
+          <Option value="name_desc" label="Name (Descending)" />
+          <Option value="questions_asc" label="Questions (Ascending)" />
+          <Option value="questions_desc" label="Questions (Descending)" />
+          <Option value="points_asc" label="Points (Ascending)" />
+          <Option value="points_desc" label="Points (Descending)" />
+        </Dropdown>
+      </Controller>
 
       {quizzes.length === 0 && (
         <Empty
-          url="/creator/quiz/create"
-          reason="No Quizzes Available."
           label="Create Quiz"
+          reason="No Quizzes Available."
+          url="/creator/quiz/create"
         />
       )}
 
@@ -43,7 +59,13 @@ export default function Creator() {
         </Quizzes>
       )}
 
-      {quizzes.length !== 0 && <Pagination pages={5} />}
+      {quizzes.length !== 0 && (
+        <Pagination
+          url="/creator/quiz/create"
+          image="/user/add.svg"
+          pages={5}
+        />
+      )}
     </section>
   );
 }

@@ -1,16 +1,20 @@
 "use client";
 
+import useJoinQuiz from "@hooks/attendee/useJoinQuiz";
 import useFetchQuizzes from "@hooks/attendee/useFetchQuizzes";
 import useFilterQuizzes from "@hooks/common/useFilterQuizzes";
-import useJoinQuiz from "@hooks/attendee/useJoinQuiz";
 
 import Title from "@components/Common/Title";
-import Controller from "@components/User/Controller";
-import Quizzes from "@components/User/Quizzes";
-import Quiz from "@components/User/Quiz/Quiz";
+import Join from "@components/Catalogue/Join";
+
+import Controller from "@components/Catalogue/Controller";
+import Search from "@components/Catalogue/Controller/Search";
+
+import Quizzes from "@components/Catalogue/Quizzes";
+import Quiz from "@components/Catalogue/Quiz/Quiz";
+
+import Pagination from "@components/Catalogue/Pagination";
 import Empty from "@components/User/Empty";
-import Input from "@components/Create/Question/Input";
-import Button from "@components/Create/Button";
 
 export default function Creator() {
   const { quizzes } = useFetchQuizzes();
@@ -21,15 +25,18 @@ export default function Creator() {
     <section id="attendee">
       <Title title="Enter A Quiz" difficulty="NULL" />
 
-      <form id="join" onSubmit={handleSubmit}>
-        <Input name="code" onBlur={handleBlur} onChange={handleChange} />
-        <Button type="submit" label="Join Quiz" />
-        {errors.code && <p>{errors.code}</p>}
-      </form>
+      <Join
+        error={errors.code}
+        onBlur={handleBlur}
+        onSubmit={handleSubmit}
+        onChange={handleChange}
+      />
 
       <hr />
 
-      <Controller onChange={handleSetPrompt} />
+      <Controller onSubmit={() => {}}>
+        <Search placeholder="Search By Name" onChange={handleSetPrompt} />
+      </Controller>
 
       {quizzes.length === 0 && <Empty reason="No Quizzes Completed." />}
 
@@ -40,6 +47,8 @@ export default function Creator() {
           ))}
         </Quizzes>
       )}
+
+      {quizzes.length !== 0 && <Pagination pages={5} />}
     </section>
   );
 }

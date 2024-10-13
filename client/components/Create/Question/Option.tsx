@@ -1,6 +1,6 @@
 import { ChangeEvent, FocusEvent } from "react";
 
-import Input from "./Input";
+import Input from "../../Inputs/Input";
 
 import styles from "./Option.module.scss";
 

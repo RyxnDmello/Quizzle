@@ -12,6 +12,7 @@ $border: 2px solid #ffffff35;
     transition: border-color 300ms;
     border: $border;
     border-right: none;
+    overflow: hidden;
     border-top: none;
     padding: 0.5rem;
 
@@ -35,6 +36,11 @@ $border: 2px solid #ffffff35;
         width: 17px;
       }
     }
+  }
+
+  &:not(.header) > div {
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &:first-of-type {
@@ -71,6 +77,38 @@ $border: 2px solid #ffffff35;
 
     > div:last-of-type {
       border-bottom-right-radius: 5px;
+    }
+  }
+
+  @media all and (width < 880px) {
+    grid-template-columns: repeat(4, 1fr);
+
+    > div:nth-of-type(2) {
+      display: none;
+    }
+  }
+
+  @media all and (width < 680px) {
+    grid-template-columns: repeat(4, 1fr);
+
+    > div:nth-of-type(2) {
+      display: none;
+    }
+  }
+
+  @media all and (width < 680px) {
+    grid-template-columns: repeat(3, 1fr);
+
+    > div:nth-of-type(4) {
+      display: none;
+    }
+  }
+  
+  @media all and (width < 500px) {
+    grid-template-columns: repeat(2, 1fr);
+
+    > div:nth-of-type(3) {
+      display: none;
     }
   }
 }

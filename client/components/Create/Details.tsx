@@ -3,7 +3,7 @@ import { FormikErrors, FormikTouched } from "formik";
 
 import QuizSchema from "@schemas/QuizSchema";
 
-import Input from "./Question/Input";
+import Input from "../Inputs/Input";
 import Difficulty from "./Question/Difficulty";
 
 import styles from "./Details.module.scss";

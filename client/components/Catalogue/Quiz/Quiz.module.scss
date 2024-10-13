@@ -14,10 +14,10 @@
 
   &.clickable {
     cursor: pointer;
-  }
 
-  &:hover {
-    border-color: #ffffffaf;
+    &:hover {
+      border-color: #ffffffaf;
+    }
   }
 
   @media all and (width < 375px) {

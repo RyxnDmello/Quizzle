@@ -10,7 +10,7 @@ import useFetchQuiz from "@hooks/creator/useFetchQuiz";
 import Title from "@components/Common/Title";
 import Questions from "@components/Create/Questions";
 import Question from "@components/Create/Question";
-import Button from "@components/Create/Button";
+import Button from "@components/Inputs/Button";
 import Statistic from "@components/Create/Statistic";
 import Empty from "@components/User/Empty";
 

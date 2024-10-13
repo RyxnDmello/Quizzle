@@ -16,4 +16,11 @@
   a {
     color: #0000ff;
   }
+
+  @media all and (width < 500px) {
+    > a,
+    > p {
+      font-size: 1rem;
+    }
+  }
 }

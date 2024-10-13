@@ -10,7 +10,7 @@ import useCreateQuiz from "@hooks/creator/useCreateQuiz";
 import Questions from "@components/Create/Questions";
 import Question from "@components/Create/Question";
 import Details from "@components/Create/Details";
-import Button from "@components/Create/Button";
+import Button from "@components/Inputs/Button";
 import Add from "@components/Create/Add";
 
 export default function Create() {

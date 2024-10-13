@@ -1,21 +1,21 @@
 "use client";
 
 import useFetchParticipants from "@hooks/creator/useFetchParticipants";
+import useFilterParticipants from "@hooks/creator/useFilterParticipants";
 
 import Title from "@components/Common/Title";
-import Search from "@components/Common/Search";
+import Search from "@components/Catalogue/Controller/Search";
 import Details from "@components/User/Details";
 import Participants from "@components/User/Participants";
 import Participant from "@components/User/Participant";
 import Empty from "@components/User/Empty";
-import useFilterParticipants from "@hooks/creator/useFilterParticipants";
 
 export default function Quiz() {
   const { participants } = useFetchParticipants();
   const { filter, handleSetPrompt } = useFilterParticipants(participants);
 
   return (
-    <section>
+    <section id="participants">
       <Title title="Next.js" difficulty="MEDIUM" />
       <Details url="https://www.quizzle.com/quiz/QID24680" />
 

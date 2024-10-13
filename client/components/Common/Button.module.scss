@@ -37,4 +37,22 @@
       color: #fff;
     }
   }
+
+  @media all and (width < 500px) {
+    border-radius: 0;
+    transition: none;
+    cursor: pointer;
+    display: block;
+    border: none;
+    padding: 0;
+
+    > p {
+      display: none;
+    }
+
+    > img {
+      display: block;
+      width: 25px;
+    }
+  }
 }

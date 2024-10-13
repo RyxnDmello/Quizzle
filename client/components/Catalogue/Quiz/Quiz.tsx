@@ -1,7 +1,5 @@
 import Image from "next/image";
 
-import Trophy from "@public/quiz/trophy.png";
-
 import { Quiz as _ } from "@interfaces/Quiz";
 
 import styles from "./Quiz.module.scss";
@@ -15,7 +13,7 @@ export default function Quiz({
   points,
   questions,
   difficulty,
-  onClick = undefined,
+  onClick,
 }: QuizProps) {
   return (
     <div
@@ -31,7 +29,13 @@ export default function Quiz({
         <p>{questions} Questions</p>
 
         <div>
-          <Image src={Trophy} height={512} width={512} alt="points" />
+          <Image
+            src={"/quiz/trophy.png"}
+            alt="points"
+            height={512}
+            width={512}
+          />
+
           <p>{points}</p>
         </div>
       </div>

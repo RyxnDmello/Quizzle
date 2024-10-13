@@ -6,11 +6,16 @@ import Page from "./Pagination/Page";
 
 import styles from "./Pagination.module.scss";
 
-interface PaginationProps {
+interface PaginationProps extends ButtonProps {
   pages: number;
 }
 
-export default function Pagination({ pages }: PaginationProps) {
+interface ButtonProps {
+  url?: string;
+  image?: string;
+}
+
+export default function Pagination({ url, image, pages }: PaginationProps) {
   const [page, setPage] = useState<number>(0);
 
   return (
@@ -26,10 +31,16 @@ export default function Pagination({ pages }: PaginationProps) {
         ))}
       </div>
 
-      <Link href={"/creator/quiz/create"}>
-        <Image src={"/user/add.svg"} width={512} height={512} alt="add" />
-        <p>Create Quiz</p>
-      </Link>
+      {url && <Button url={url} image={image} />}
     </div>
+  );
+}
+
+function Button({ url, image }: ButtonProps) {
+  return (
+    <Link href={url!}>
+      <Image src={image!} width={512} height={512} alt="add" />
+      <p>Create Quiz</p>
+    </Link>
   );
 }

@@ -1,15 +1,19 @@
 section {
   grid-template-columns: auto;
   justify-content: stretch;
+  margin: 0 auto 2rem auto;
   align-items: start;
   max-width: 1350px;
-  margin: 0 auto;
   display: grid;
   gap: 1rem;
 
   &#creator {
-    margin: 0 auto 2rem auto;
+    @media all and (width < 1375px) {
+      margin: 0 1.5rem 2rem 1.5rem;
+    }
+  }
 
+  &#participants {
     @media all and (width < 1375px) {
       margin: 0 1.5rem 2rem 1.5rem;
     }
