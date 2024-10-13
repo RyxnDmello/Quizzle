@@ -11,6 +11,13 @@
   display: grid;
   width: 25px;
 
+  > p {
+    font-family: "Inter", sans-serif;
+    transition: color 250ms;
+    color: #ffffff50;
+    font-size: 0.8rem;
+  }
+
   &.selected {
     border-color: #fff;
 
@@ -19,18 +26,15 @@
     }
   }
 
-  > p {
-    font-family: "Inter", sans-serif;
-    transition: color 250ms;
-    color: #ffffff50;
-    font-size: 0.8rem;
-  }
-
   &:not(.selected):hover {
     border-color: #ffffffa0;
 
     > p {
       color: #ffffffa0;
     }
+  }
+
+  @media all and (width < 375px) {
+    width: 22.5px;
   }
 }

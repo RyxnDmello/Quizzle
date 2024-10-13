@@ -83,4 +83,10 @@
     top: -0.85rem;
     right: 0;
   }
+
+  @media all and (width < 370px) {
+    > p {
+      font-size: 0.8rem;
+    }
+  }
 }

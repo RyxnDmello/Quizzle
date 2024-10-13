@@ -18,7 +18,7 @@ export default function Creator() {
   const { errors, handleBlur, handleChange, handleSubmit } = useJoinQuiz();
 
   return (
-    <section>
+    <section id="attendee">
       <Title title="Enter A Quiz" difficulty="NULL" />
 
       <form id="join" onSubmit={handleSubmit}>

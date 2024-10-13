@@ -7,9 +7,9 @@
   justify-content: stretch;
   align-items: stretch;
   border-radius: 5px;
+  min-width: 325px;
   padding: 1rem;
   display: grid;
-  width: 325px;
   gap: 1.25rem;
 
   &.clickable {
@@ -19,12 +19,17 @@
   &:hover {
     border-color: #ffffffaf;
   }
+
+  @media all and (width < 375px) {
+    min-width: auto;
+  }
 }
 
 .header {
+  grid-auto-flow: column;
   justify-content: start;
   align-items: center;
-  display: flex;
+  display: grid;
   gap: 0.5rem;
 
   > div {
@@ -47,9 +52,22 @@
 
   > h4 {
     font-family: "Inter", sans-serif;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
     font-size: 1.65rem;
+    overflow: hidden;
     font-weight: 300;
     color: #fff;
+  }
+
+  @media all and (width < 500px) {
+    > div {
+      width: 30px;
+    }
+
+    > h4 {
+      font-size: 1.35rem;
+    }
   }
 }
 
@@ -86,6 +104,25 @@
       font-size: 1.5rem;
       font-weight: 600;
       color: #ffd700;
+    }
+  }
+
+  @media all and (width < 500px) {
+    > p {
+      padding: 0.5rem 1.65rem;
+      font-size: 0.85rem;
+    }
+
+    > div {
+      gap: 0.2rem;
+
+      > img {
+        width: 20px;
+      }
+
+      > p {
+        font-size: 1.3rem;
+      }
     }
   }
 }

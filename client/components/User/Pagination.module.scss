@@ -47,4 +47,25 @@
       }
     }
   }
+
+  @media all and (width < 714px) {
+    grid-template-columns: repeat(2, auto);
+    justify-content: space-between;
+
+    > div {
+      grid-column: auto;
+    }
+  }
+
+  @media all and (width < 375px) {
+    a {
+      > img {
+        width: 20px;
+      }
+
+      > p {
+        font-size: 1rem;
+      }
+    }
+  }
 }

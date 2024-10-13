@@ -20,7 +20,7 @@ export default function Creator() {
   const handleNavigate = (id: string) => push(`/creator/quiz/${id}`);
 
   return (
-    <section>
+    <section id="creator">
       <Controller onChange={handleSetPrompt} />
 
       {quizzes.length === 0 && (

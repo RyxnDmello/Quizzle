@@ -5,4 +5,8 @@
   display: grid;
   width: 350px;
   gap: 1.5rem;
+
+  @media all and (width < 370px) {
+    width: 300px;
+  }
 }

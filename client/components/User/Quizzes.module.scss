@@ -1,8 +1,21 @@
 .quizzes {
-  grid-template-columns: repeat(4, auto);
-  justify-content: start;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: stretch;
   align-items: center;
   margin-bottom: 2rem;
   display: grid;
   gap: 1rem;
+
+  @media all and (width < 1375px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media all and (width < 1055px) {
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 1rem;
+  }
+
+  @media all and (width < 714px) {
+    grid-template-columns: 1fr;
+  }
 }
