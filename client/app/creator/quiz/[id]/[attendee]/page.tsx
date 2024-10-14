@@ -7,7 +7,7 @@ import Completed from "@public/quiz/completed.png";
 
 import useFetchQuiz from "@hooks/creator/useFetchQuiz";
 
-import Title from "@components/Common/Title";
+import Title from "@components/Create/Title";
 import Questions from "@components/Create/Questions";
 import Question from "@components/Create/Question";
 import Button from "@components/Inputs/Button";

@@ -1,20 +1,11 @@
-import { DIFFICULTY } from "@interfaces/Quiz";
+import { ReactNode } from "react";
 
 import styles from "./Title.module.scss";
 
 interface TitleProps {
-  title: string;
-  difficulty: DIFFICULTY | "NULL";
+  children: ReactNode;
 }
 
-export default function Title({ title, difficulty }: TitleProps) {
-  return (
-    <div className={styles.title}>
-      {difficulty !== "NULL" && (
-        <div className={styles[difficulty.toLowerCase()]}></div>
-      )}
-     
-      {title && <h4>{title}</h4>}
-    </div>
-  );
+export default function Title({ children }: TitleProps) {
+  return <h1 className={styles.title}>{children}</h1>;
 }

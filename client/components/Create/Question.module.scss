@@ -5,19 +5,19 @@
   position: relative;
   display: grid;
   gap: 0.65rem;
+}
 
-  > div {
-    grid-template-columns: auto;
-    justify-content: stretch;
-    align-items: center;
-    display: grid;
-    gap: 0.5rem;
-  }
+.header {
+  justify-content: center;
+  align-items: start;
+  display: flex;
+  gap: 0.5rem;
 
   > div:first-of-type {
     justify-content: center;
-    align-items: start;
+    align-items: center;
     display: flex;
+    flex-grow: 1;
     gap: 0.5rem;
 
     > img {
@@ -35,12 +35,32 @@
       }
     }
 
-    > div:first-of-type {
+    > div {
       flex-grow: 1;
     }
+  }
+
+  > div:last-of-type {
+    flex-grow: 0;
+  }
+
+  @media all and (width < 800px) {
+    grid-template-columns: auto;
+    justify-content: stretch;
+    align-items: center;
+    display: grid;
+    gap: 0.5rem;
 
     > div:last-of-type {
-      flex-grow: 0;
+      margin-left: 50.5px;
     }
   }
+}
+
+.options {
+  grid-template-columns: auto;
+  justify-content: stretch;
+  align-items: center;
+  display: grid;
+  gap: 0.5rem;
 }

@@ -51,8 +51,30 @@
         }
 
         &.selected {
-          width: 200px;
+          width: 250px;
           opacity: 1;
+        }
+      }
+
+      @media all and (width < 700px) {
+        > span:is(.selected) {
+          width: 150px;
+        }
+      }
+
+      @media all and (width < 600px) {
+        > span:is(.selected) {
+          width: 100px;
+        }
+      }
+
+      @media all and (width < 600px) {
+        > span:is(.selected) {
+          width: 80px;
+        }
+
+        > span:not(.selected) {
+          opacity: 0.5;
         }
       }
     }

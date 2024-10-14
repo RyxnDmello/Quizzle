@@ -4,7 +4,7 @@ import useJoinQuiz from "@hooks/attendee/useJoinQuiz";
 import useFetchQuizzes from "@hooks/attendee/useFetchQuizzes";
 import useFilterQuizzes from "@hooks/common/useFilterQuizzes";
 
-import Title from "@components/Common/Title";
+import Title from "@components/Create/Title";
 import Join from "@components/Catalogue/Join";
 
 import Controller from "@components/Catalogue/Controller";

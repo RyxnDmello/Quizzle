@@ -37,4 +37,14 @@
       color: #ffffffaf;
     }
   }
+
+  @media all and (width < 800px) {
+    > img {
+      display: none;
+    }
+
+    > p {
+      font-size: 1.25rem;
+    }
+  }
 }

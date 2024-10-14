@@ -18,6 +18,21 @@ section {
       margin: 0 1.5rem 2rem 1.5rem;
     }
   }
+
+  &#create {
+    @media all and (width < 1375px) {
+      margin: 0 1.5rem 2rem 1.5rem;
+    }
+
+    > form > .details {
+      grid-template-columns: auto;
+      justify-content: stretch;
+      margin-bottom: 1.5rem;
+      align-items: center;
+      display: grid;
+      gap: 0.5rem;
+    }
+  }
 }
 
 hr {
@@ -30,6 +45,6 @@ hr {
   justify-content: space-between;
   align-items: center;
   margin: 1.5rem 0;
-  display: flex;
+  display: none;
   gap: 1rem;
 }

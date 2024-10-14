@@ -45,36 +45,38 @@ export default function Question({
 
   return (
     <div className={styles.question}>
-      <div>
-        {onDelete && (
-          <Image
-            src={Delete}
-            width={512}
-            height={512}
-            alt="delete"
-            onClick={() => onDelete(index)}
-          />
-        )}
+      <div className={styles.header}>
+        <div>
+          {onDelete && (
+            <Image
+              src={Delete}
+              width={512}
+              height={512}
+              alt="delete"
+              onClick={() => onDelete(index)}
+            />
+          )}
 
-        <Input
-          error={
-            touched &&
-            touched.questions &&
-            touched.questions[index] &&
-            touched.questions[index].question
-              ? errors &&
-                errors.questions &&
-                errors.questions[index] &&
-                (errors.questions[index] as FormikErrors<_>).question
-              : undefined
-          }
-          disabled={disabled}
-          value={values?.questions[index]?.question}
-          placeholder={"Enter Question"}
-          name={`questions[${index}].question`}
-          onBlur={onBlur}
-          onChange={onChange}
-        />
+          <Input
+            error={
+              touched &&
+              touched.questions &&
+              touched.questions[index] &&
+              touched.questions[index].question
+                ? errors &&
+                  errors.questions &&
+                  errors.questions[index] &&
+                  (errors.questions[index] as FormikErrors<_>).question
+                : undefined
+            }
+            disabled={disabled}
+            value={values?.questions[index]?.question}
+            placeholder={"Enter Question"}
+            name={`questions[${index}].question`}
+            onBlur={onBlur}
+            onChange={onChange}
+          />
+        </div>
 
         <Input
           error={
@@ -99,7 +101,7 @@ export default function Question({
         />
       </div>
 
-      <div>
+      <div className={styles.options}>
         <Option
           value={
             values?.questions[index]?.options &&

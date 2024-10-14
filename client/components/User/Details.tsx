@@ -1,33 +1,32 @@
 import Image from "next/image";
 
-import Copy from "@public/quiz/copy.svg";
-
 import Button from "../Common/Button";
 
 import styles from "./Details.module.scss";
 
 interface DetailsProps {
-  url: string;
+  code: string;
 }
 
-export default function Details({ url }: DetailsProps) {
-  const handleCopyToClipboard = () => {
-    navigator.clipboard.writeText(url);
+export default function Details({ code }: DetailsProps) {
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(`https://www.quizzle.com/quiz/${code}`);
   };
 
   return (
     <div className={styles.details}>
       <div>
-        <button type="submit" onClick={handleCopyToClipboard}>
-          {url}
+        <button type="submit" onClick={copyToClipboard}>
+          <span>https://www.quizzle.com/quiz/</span>
+          {code}
         </button>
 
         <Image
-          src={Copy}
-          height={512}
-          width={512}
+          src={"/quiz/copy.svg"}
           alt="link"
-          onClick={handleCopyToClipboard}
+          width={512}
+          height={512}
+          onClick={copyToClipboard}
         />
       </div>
 

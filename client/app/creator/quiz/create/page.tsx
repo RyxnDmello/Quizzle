@@ -7,9 +7,12 @@ import QuizSchema from "@schemas/QuizSchema";
 
 import useCreateQuiz from "@hooks/creator/useCreateQuiz";
 
+import Title from "@components/Common/Title";
 import Questions from "@components/Create/Questions";
 import Question from "@components/Create/Question";
-import Details from "@components/Create/Details";
+
+import Difficulty from "@components/Create/Question/Difficulty";
+import Input from "@components/Inputs/Input";
 import Button from "@components/Inputs/Button";
 import Add from "@components/Create/Add";
 
@@ -30,15 +33,28 @@ export default function Create() {
   } = useCreateQuiz();
 
   return (
-    <section>
+    <section id="create">
       <form autoComplete="off" onSubmit={handleSubmit}>
-        <Details
-          errors={errors}
-          touched={touched}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          onSelect={setFieldValue}
-        />
+        <div className="details">
+          <Title>
+            Create Your Qui<span>zz</span>
+          </Title>
+
+          <Input
+            name="title"
+            placeholder="Enter Title"
+            error={
+              touched && touched.title ? errors && errors.title : undefined
+            }
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+
+          <Difficulty
+            error={errors && errors.difficulty}
+            onSelect={setFieldValue}
+          />
+        </div>
 
         <hr />
 

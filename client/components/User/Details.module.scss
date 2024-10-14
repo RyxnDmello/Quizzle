@@ -34,16 +34,8 @@
   }
 
   @media all and (width < 600px) {
-    > div:first-of-type > button {
-      text-overflow: ellipsis;
-      overflow: hidden;
-      width: 200px;
-    }
-  }
-
-  @media all and (width < 375px) {
-    > div:first-of-type > button {
-      width: 150px;
+    > div:first-of-type > button > span {
+      display: none;
     }
   }
 }
