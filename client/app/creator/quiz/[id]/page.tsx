@@ -5,10 +5,15 @@ import useFilterParticipants from "@hooks/creator/useFilterParticipants";
 
 import Title from "@components/Create/Title";
 import Search from "@components/Catalogue/Controller/Search";
-import Details from "@components/User/Details";
-import Participants from "@components/User/Participants";
-import Participant from "@components/User/Participant";
-import Empty from "@components/User/Empty";
+
+import Participants from "@components/Attendees/Participants";
+import Participant from "@components/Attendees/Participant";
+
+import Code from "@components/Attendees/Code";
+import Button from "@components/Attendees/Button";
+
+import Pagination from "@components/Catalogue/Pagination";
+import Empty from "@components/Common/Empty";
 
 export default function Quiz() {
   const { participants } = useFetchParticipants();
@@ -18,14 +23,21 @@ export default function Quiz() {
     <section id="participants">
       <Title title="Next.js" difficulty="MEDIUM" />
 
-      <Details code="QID24680" />
+      <div className="details">
+        <Code code="QID24680" />
+
+        <div>
+          <Button icon="/quiz/edit.svg" label="Edit" onClick={() => {}} />
+          <Button icon="/quiz/delete.svg" label="Delete" onClick={() => {}} />
+        </div>
+      </div>
 
       <hr />
 
       <Search placeholder="Search Participant" onChange={handleSetPrompt} />
 
       {participants.length === 0 && (
-        <Empty reason="No Participants Have Completed The Quiz." />
+        <Empty reason="No Participants Have Completed The Quiz" />
       )}
 
       {participants.length !== 0 && (
@@ -39,6 +51,8 @@ export default function Quiz() {
           ))}
         </Participants>
       )}
+
+      {participants.length !== 0 && <Pagination pages={5} />}
     </section>
   );
 }

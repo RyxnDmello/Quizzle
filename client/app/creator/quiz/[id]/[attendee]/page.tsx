@@ -12,7 +12,7 @@ import Questions from "@components/Create/Questions";
 import Question from "@components/Create/Question";
 import Button from "@components/Inputs/Button";
 import Statistic from "@components/Create/Statistic";
-import Empty from "@components/User/Empty";
+import Empty from "@components/Common/Empty";
 
 export default function Answers() {
   const { quiz } = useFetchQuiz();
@@ -37,7 +37,7 @@ export default function Answers() {
   };
 
   return (
-    <section>
+    <section id="attendee">
       <form onSubmit={() => {}}>
         <Title {...quiz} />
 
@@ -61,7 +61,7 @@ export default function Answers() {
               icon={Completed}
               value={`${getCorrect()}/${quiz.questions.length}`}
             />
-            
+
             <Statistic icon={Trophy} value={`${getPoints()}`} />
           </div>
         )}

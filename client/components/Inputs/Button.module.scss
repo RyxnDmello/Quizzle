@@ -32,7 +32,7 @@
       background-color: #00008f;
     }
   }
-  
+
   &.reset {
     background-color: #cf0000;
     margin-left: auto;
@@ -44,5 +44,16 @@
     &:focus {
       background-color: #8f0000;
     }
+  }
+
+  @media all and (width < 550px) {
+    &.reset {
+      display: none;
+    }
+  }
+
+  @media all and (width < 375px) {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.85rem;
   }
 }

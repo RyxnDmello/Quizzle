@@ -30,4 +30,14 @@
     font-weight: 300;
     color: #fff;
   }
+
+  @media all and (width < 500px) {
+    > div {
+      width: 42.5px;
+    }
+
+    > h4 {
+      font-size: 2rem;
+    }
+  }
 }

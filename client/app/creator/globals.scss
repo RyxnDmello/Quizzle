@@ -7,7 +7,7 @@ section {
   display: grid;
   gap: 1rem;
 
-  &#creator {
+  &#catalogue {
     @media all and (width < 1375px) {
       margin: 0 1.5rem 2rem 1.5rem;
     }
@@ -16,6 +16,18 @@ section {
   &#participants {
     @media all and (width < 1375px) {
       margin: 0 1.5rem 2rem 1.5rem;
+    }
+
+    > .details {
+      justify-content: space-between;
+      grid-auto-flow: column;
+      align-items: center;
+      display: grid;
+
+      > div:last-of-type {
+        display: flex;
+        gap: 0.5rem;
+      }
     }
   }
 
@@ -33,18 +45,24 @@ section {
       gap: 0.5rem;
     }
   }
+
+  &#attendee {
+    @media all and (width < 1375px) {
+      margin: 0 1.5rem 2rem 1.5rem;
+    }
+  }
+
+  .buttons {
+    justify-content: space-between;
+    align-items: center;
+    margin: 1.5rem 0;
+    display: flex;
+    gap: 1rem;
+  }
 }
 
 hr {
   border: 1.5px solid #ffffff35;
   border-radius: 40px;
   margin: 0.5rem 0;
-}
-
-.buttons {
-  justify-content: space-between;
-  align-items: center;
-  margin: 1.5rem 0;
-  display: none;
-  gap: 1rem;
 }

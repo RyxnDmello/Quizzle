@@ -15,7 +15,14 @@ export default function Difficulty({ error, onSelect }: DifficultyProps) {
   return (
     <div className={styles.difficulty}>
       <div>
-        <p>Difficulty</p>
+        <p>
+          Difficulty{" "}
+          {option && (
+            <span className={option && styles[option.toLowerCase()]}>
+              • {option}
+            </span>
+          )}
+        </p>
 
         <div>
           <span

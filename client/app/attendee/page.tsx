@@ -4,7 +4,7 @@ import useJoinQuiz from "@hooks/attendee/useJoinQuiz";
 import useFetchQuizzes from "@hooks/attendee/useFetchQuizzes";
 import useFilterQuizzes from "@hooks/common/useFilterQuizzes";
 
-import Title from "@components/Create/Title";
+import Title from "@components/Common/Title";
 import Join from "@components/Catalogue/Join";
 
 import Controller from "@components/Catalogue/Controller";
@@ -14,7 +14,7 @@ import Quizzes from "@components/Catalogue/Quizzes";
 import Quiz from "@components/Catalogue/Quiz/Quiz";
 
 import Pagination from "@components/Catalogue/Pagination";
-import Empty from "@components/User/Empty";
+import Empty from "@components/Common/Empty";
 
 export default function Creator() {
   const { quizzes } = useFetchQuizzes();
@@ -22,8 +22,10 @@ export default function Creator() {
   const { errors, handleBlur, handleChange, handleSubmit } = useJoinQuiz();
 
   return (
-    <section id="attendee">
-      <Title title="Enter A Quiz" difficulty="NULL" />
+    <section id="catalogue">
+      <Title>
+        Join A Qui<span>zz</span>
+      </Title>
 
       <Join
         error={errors.code}
@@ -38,7 +40,7 @@ export default function Creator() {
         <Search placeholder="Search By Name" onChange={handleSetPrompt} />
       </Controller>
 
-      {quizzes.length === 0 && <Empty reason="No Quizzes Completed." />}
+      {quizzes.length === 0 && <Empty reason="No Quizzes Completed" />}
 
       {quizzes.length !== 0 && (
         <Quizzes>

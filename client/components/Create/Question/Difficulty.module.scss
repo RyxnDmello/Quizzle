@@ -24,6 +24,10 @@
       color: #ffffff65;
       font-weight: 300;
       font-size: 1rem;
+
+      > span {
+        color: #fff;
+      }
     }
 
     > div {
@@ -72,9 +76,21 @@
         > span:is(.selected) {
           width: 80px;
         }
+      }
+
+      @media all and (width < 500px) {
+        > span:is(.selected) {
+          width: 60px;
+        }
 
         > span:not(.selected) {
-          opacity: 0.5;
+          width: 20px;
+        }
+      }
+
+      @media all and (width < 400px) {
+        > p {
+          font-size: 0.85rem;
         }
       }
     }

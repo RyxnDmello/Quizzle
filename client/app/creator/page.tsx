@@ -14,7 +14,7 @@ import Quizzes from "@components/Catalogue/Quizzes";
 import Quiz from "@components/Catalogue/Quiz/Quiz";
 
 import Pagination from "@components/Catalogue/Pagination";
-import Empty from "@components/User/Empty";
+import Empty from "@components/Common/Empty";
 
 export default function Creator() {
   const { quizzes } = useFetchQuizzes();
@@ -25,7 +25,7 @@ export default function Creator() {
   const handleNavigate = (id: string) => push(`/creator/quiz/${id}`);
 
   return (
-    <section id="creator">
+    <section id="catalogue">
       <Controller onSubmit={() => {}}>
         <Search placeholder="Search By Name" onChange={handleSetPrompt} />
 
@@ -42,7 +42,7 @@ export default function Creator() {
       {quizzes.length === 0 && (
         <Empty
           label="Create Quiz"
-          reason="No Quizzes Available."
+          reason="No Quizzes Available"
           url="/creator/quiz/create"
         />
       )}

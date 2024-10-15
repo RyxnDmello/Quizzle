@@ -13,22 +13,24 @@ body {
 
 #home {
   grid-template-columns: auto;
-  justify-content: center;
+  justify-content: stretch;
+  padding-bottom: 2rem;
   align-items: center;
   height: 100dvh;
   display: grid;
 
   > section {
     grid-template-columns: auto;
-    justify-content: center;
+    justify-content: stretch;
     align-items: center;
     display: grid;
-    gap: 1.5rem;
+    gap: 2rem;
 
     > h1 {
       font-family: "Inter", sans-serif;
+      margin: 2rem 0 -1rem 0;
+      text-align: center;
       font-weight: 200;
-      margin-top: 1rem;
       font-size: 3rem;
       color: #fff;
 
@@ -39,8 +41,38 @@ body {
     }
 
     > div:last-of-type {
+      justify-content: center;
+      align-items: center;
       display: flex;
-      gap: 2rem;
+      gap: 1.5rem;
+    }
+
+    @media all and (width < 800px) {
+      padding: 2rem;
+
+      > h1 {
+        text-align: left;
+      }
+
+      > div:last-of-type {
+        grid-template-columns: auto;
+        justify-content: stretch;
+        align-items: center;
+        display: grid;
+        gap: 1rem;
+      }
+    }
+
+    @media all and (width < 600px) {
+      > h1 {
+        font-size: 2.65rem;
+      }
+    }
+
+    @media all and (width < 550px) {
+      > h1 {
+        text-align: center;
+      }
     }
   }
 }

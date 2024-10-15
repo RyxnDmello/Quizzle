@@ -1,18 +1,30 @@
 section {
   grid-template-columns: auto;
   justify-content: stretch;
+  margin: 0 auto 2rem auto;
   align-items: start;
   max-width: 1350px;
-  margin: 0 auto;
   display: grid;
   gap: 1rem;
 
-  &#attendee {
-    margin: 0 auto 2rem auto;
-
+  &#catalogue {
     @media all and (width < 1375px) {
       margin: 0 1.5rem 2rem 1.5rem;
     }
+  }
+
+  &#quiz {
+    @media all and (width < 1375px) {
+      margin: 0 1.5rem 2rem 1.5rem;
+    }
+  }
+
+  .buttons {
+    justify-content: space-between;
+    align-items: center;
+    margin: 1.5rem 0;
+    display: flex;
+    gap: 1rem;
   }
 }
 
@@ -20,27 +32,4 @@ hr {
   border: 1.5px solid #ffffff35;
   border-radius: 40px;
   margin: 0.5rem 0;
-}
-
-#join {
-  grid-template-columns: auto 150px;
-  justify-content: stretch;
-  align-items: stretch;
-  gap: 0.5rem 0.85rem;
-  display: grid;
-
-  > p {
-    font-family: "Inter", sans-serif;
-    font-size: 0.85rem;
-    font-weight: 300;
-    color: #ff0000;
-  }
-}
-
-.buttons {
-  justify-content: space-between;
-  align-items: center;
-  margin: 1.5rem 0;
-  display: flex;
-  gap: 1rem;
 }

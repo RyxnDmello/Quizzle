@@ -1,0 +1,39 @@
+.code {
+  display: flex;
+  gap: 0.5rem;
+
+  > button {
+    font-family: "Inter", sans-serif;
+    border: 2px dashed #ffffff65;
+    background-color: transparent;
+    padding: 0.25rem 1rem;
+    border-radius: 40px;
+    font-size: 0.86rem;
+    color: #ffffff65;
+    font-weight: 300;
+    cursor: pointer;
+
+    &:hover {
+      border-color: #ffffff85;
+      color: #ffffff85;
+    }
+
+    &:active {
+      border-color: #fff;
+      color: #fff;
+    }
+  }
+
+  > img {
+    cursor: pointer;
+    aspect-ratio: 1;
+    height: auto;
+    width: 20px;
+  }
+
+  @media all and (width < 600px) {
+    > button > span {
+      display: none;
+    }
+  }
+}

@@ -3,7 +3,7 @@ import { Metadata } from "next";
 
 import "./globals.scss";
 
-import Navbar from "@components/User/Navbar";
+import Navbar from "@components/Common/Navbar";
 
 export const metadata: Metadata = {
   title: "Quizzle | Attendee",

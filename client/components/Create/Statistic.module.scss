@@ -22,4 +22,19 @@
     color: #FFD700;
     font-weight: 600;
   }
+
+  @media all and (width < 375px) {
+    &:first-of-type {
+      margin-right: 0.25rem;
+    }
+  
+    > img {
+      height: auto;
+      width: 22px;
+    }
+  
+    > p {
+      font-size: 1.25rem;
+    }
+  }
 }

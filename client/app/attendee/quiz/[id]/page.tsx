@@ -8,7 +8,7 @@ import Title from "@components/Create/Title";
 import Questions from "@components/Create/Questions";
 import Question from "@components/Create/Question";
 import Button from "@components/Inputs/Button";
-import Empty from "@components/User/Empty";
+import Empty from "@components/Common/Empty";
 
 export default function Create() {
   const {
@@ -23,11 +23,13 @@ export default function Create() {
   const { replace } = useRouter();
 
   return (
-    <section>
+    <section id="quiz">
       <form autoComplete="off" onSubmit={handleSubmit}>
         <Title title={quiz.title} difficulty={quiz.difficulty} />
 
-        {quiz.questions.length === 0 && <Empty reason="Loading Quiz..." />}
+        {quiz.questions.length === 0 && (
+          <Empty reason="Creating Your Quiz..." />
+        )}
 
         {quiz.questions.length !== 0 && (
           <Questions>
@@ -46,7 +48,7 @@ export default function Create() {
           </Questions>
         )}
 
-        <hr />
+        {quiz.questions.length !== 0 && <hr />}
 
         {quiz.questions.length !== 0 && (
           <div className="buttons">

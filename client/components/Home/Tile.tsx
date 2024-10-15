@@ -5,7 +5,7 @@ import Link from "next/link";
 import styles from "./Tile.module.scss";
 
 interface TileProps {
-  image: StaticImageData;
+  image: string | StaticImageData;
   title: string;
   description: string;
 }

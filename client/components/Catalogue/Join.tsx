@@ -3,6 +3,8 @@ import { ChangeEvent, FocusEvent } from "react";
 import Input from "@components/Inputs/Input";
 import Button from "@components/Inputs/Button";
 
+import styles from "./Join.module.scss";
+
 interface JoinProps {
   error?: string;
   onSubmit: () => void;
@@ -12,7 +14,7 @@ interface JoinProps {
 
 export default function Join({ error, onBlur, onChange, onSubmit }: JoinProps) {
   return (
-    <form id="join" onSubmit={onSubmit}>
+    <form className={styles.join} onSubmit={onSubmit}>
       <Input
         name="code"
         placeholder="Search By Name"

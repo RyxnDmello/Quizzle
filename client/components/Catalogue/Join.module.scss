@@ -1,0 +1,19 @@
+.join {
+  grid-template-columns: auto 150px;
+  justify-content: stretch;
+  align-items: stretch;
+  gap: 0.5rem 0.85rem;
+  display: grid;
+
+  > p {
+    font-family: "Inter", sans-serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: #ff0000;
+  }
+
+  @media all and (width < 500px) {
+    grid-template-columns: auto;
+    gap: 0.65rem;
+  }
+}
