@@ -4,8 +4,8 @@ import Image, { StaticImageData } from "next/image";
 import styles from "./Input.module.scss";
 
 interface InputProps {
-  icon?: StaticImageData | string;
   type?: HTMLInputTypeAttribute;
+  icon?: StaticImageData | string;
   value?: string | number;
   name?: string;
   error?: string;
@@ -16,8 +16,8 @@ interface InputProps {
 }
 
 export default function Input({
-  icon,
   type = "text",
+  icon,
   value,
   name,
   error,

@@ -8,9 +8,10 @@ interface OptionProps {
   value?: string;
   name?: string;
   error?: string;
-  isSelected?: boolean;
-  disabled?: boolean;
   isCorrect?: boolean;
+  isSelected?: boolean;
+  inputDisabled?: boolean;
+  radioDisabled?: boolean;
   onSelect?: () => void;
   onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -20,9 +21,10 @@ export default function Option({
   name,
   value,
   error,
-  disabled = false,
   isCorrect,
   isSelected,
+  inputDisabled = false,
+  radioDisabled = false,
   onSelect,
   onBlur,
   onChange,
@@ -34,15 +36,19 @@ export default function Option({
       }`}
       onClick={onSelect}
     >
-      <div>
-        <div className={`${isSelected && styles.selected}`}></div>
+      <div
+        className={`${isSelected && styles.selected} ${
+          radioDisabled && styles.disabled
+        }`}
+      >
+        <div></div>
       </div>
 
       <Input
         type="text"
         name={name}
         value={value}
-        disabled={disabled}
+        disabled={inputDisabled}
         placeholder="Enter Option"
         error={error}
         onBlur={onBlur}

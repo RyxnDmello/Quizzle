@@ -3,7 +3,7 @@ import Image, { StaticImageData } from "next/image";
 import styles from "./Statistic.module.scss";
 
 interface StatisticProps {
-  icon: StaticImageData;
+  icon: string | StaticImageData;
   value: string;
 }
 

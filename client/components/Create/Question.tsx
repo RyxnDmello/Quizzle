@@ -2,9 +2,6 @@ import { useState, ChangeEvent, FocusEvent } from "react";
 import { FormikErrors, FormikTouched } from "formik";
 import Image from "next/image";
 
-import Trophy from "@public/quiz/trophy.png";
-import Delete from "@public/quiz/remove.svg";
-
 import QuizSchema, { Options, Question as _ } from "@schemas/QuizSchema";
 
 import Input from "../Inputs/Input";
@@ -49,7 +46,7 @@ export default function Question({
         <div>
           {onDelete && (
             <Image
-              src={Delete}
+              src="/quiz/remove.svg"
               width={512}
               height={512}
               alt="delete"
@@ -58,6 +55,10 @@ export default function Question({
           )}
 
           <Input
+            placeholder="Enter Question"
+            name={`questions[${index}].question`}
+            value={values?.questions[index]?.question}
+            disabled={disabled}
             error={
               touched &&
               touched.questions &&
@@ -69,16 +70,18 @@ export default function Question({
                   (errors.questions[index] as FormikErrors<_>).question
                 : undefined
             }
-            disabled={disabled}
-            value={values?.questions[index]?.question}
-            placeholder={"Enter Question"}
-            name={`questions[${index}].question`}
-            onBlur={onBlur}
             onChange={onChange}
+            onBlur={onBlur}
           />
         </div>
 
         <Input
+          type="number"
+          icon="/quiz/trophy.png"
+          placeholder="Enter Score"
+          name={`questions[${index}].points`}
+          value={values?.questions[index]?.points}
+          disabled={disabled}
           error={
             touched &&
             touched.questions &&
@@ -90,12 +93,6 @@ export default function Question({
                 (errors.questions[index] as FormikErrors<_>).points
               : undefined
           }
-          type="number"
-          icon={Trophy}
-          value={values?.questions[index]?.points}
-          disabled={disabled}
-          placeholder="Enter Score"
-          name={`questions[${index}].points`}
           onChange={onChange}
           onBlur={onBlur}
         />
@@ -103,9 +100,25 @@ export default function Question({
 
       <div className={styles.options}>
         <Option
+          name={`questions[${index}].options.A`}
+          inputDisabled={disabled}
+          radioDisabled={!onSelect}
           value={
             values?.questions[index]?.options &&
             (values?.questions[index]?.options as Options).A
+          }
+          error={
+            touched &&
+            touched.questions &&
+            touched.questions[index] &&
+            touched.questions[index].options &&
+            touched.questions[index].options.A
+              ? errors &&
+                errors.questions &&
+                errors.questions[index] &&
+                (errors.questions[index] as FormikErrors<_>).options &&
+                (errors.questions[index] as FormikErrors<_>).options!.A
+              : undefined
           }
           isSelected={
             !disabled || onSelect
@@ -125,30 +138,31 @@ export default function Question({
                 : undefined
               : undefined
           }
-          error={
-            touched &&
-            touched.questions &&
-            touched.questions[index] &&
-            touched.questions[index].options &&
-            touched.questions[index].options.A
-              ? errors &&
-                errors.questions &&
-                errors.questions[index] &&
-                (errors.questions[index] as FormikErrors<_>).options &&
-                (errors.questions[index] as FormikErrors<_>).options!.A
-              : undefined
-          }
-          disabled={disabled}
-          name={`questions[${index}].options.A`}
           onSelect={() => handleSelect("A")}
           onChange={onChange}
           onBlur={onBlur}
         />
 
         <Option
+          name={`questions[${index}].options.B`}
+          inputDisabled={disabled}
+          radioDisabled={!onSelect}
           value={
             values?.questions[index]?.options &&
             (values?.questions[index]?.options as Options).B
+          }
+          error={
+            touched &&
+            touched.questions &&
+            touched.questions[index] &&
+            touched.questions[index].options &&
+            touched.questions[index].options.B
+              ? errors &&
+                errors.questions &&
+                errors.questions[index] &&
+                (errors.questions[index] as FormikErrors<_>).options &&
+                (errors.questions[index] as FormikErrors<_>).options!.B
+              : undefined
           }
           isSelected={
             !disabled || onSelect
@@ -168,30 +182,31 @@ export default function Question({
                 : undefined
               : undefined
           }
-          error={
-            touched &&
-            touched.questions &&
-            touched.questions[index] &&
-            touched.questions[index].options &&
-            touched.questions[index].options.B
-              ? errors &&
-                errors.questions &&
-                errors.questions[index] &&
-                (errors.questions[index] as FormikErrors<_>).options &&
-                (errors.questions[index] as FormikErrors<_>).options!.B
-              : undefined
-          }
-          disabled={disabled}
-          name={`questions[${index}].options.B`}
           onSelect={() => handleSelect("B")}
           onChange={onChange}
           onBlur={onBlur}
         />
 
         <Option
+          name={`questions[${index}].options.C`}
+          inputDisabled={disabled}
+          radioDisabled={!onSelect}
           value={
             values?.questions[index]?.options &&
             (values?.questions[index]?.options as Options).C
+          }
+          error={
+            touched &&
+            touched.questions &&
+            touched.questions[index] &&
+            touched.questions[index].options &&
+            touched.questions[index].options.C
+              ? errors &&
+                errors.questions &&
+                errors.questions[index] &&
+                (errors.questions[index] as FormikErrors<_>).options &&
+                (errors.questions[index] as FormikErrors<_>).options!.C
+              : undefined
           }
           isSelected={
             !disabled || onSelect
@@ -211,21 +226,6 @@ export default function Question({
                 : undefined
               : undefined
           }
-          error={
-            touched &&
-            touched.questions &&
-            touched.questions[index] &&
-            touched.questions[index].options &&
-            touched.questions[index].options.C
-              ? errors &&
-                errors.questions &&
-                errors.questions[index] &&
-                (errors.questions[index] as FormikErrors<_>).options &&
-                (errors.questions[index] as FormikErrors<_>).options!.C
-              : undefined
-          }
-          disabled={disabled}
-          name={`questions[${index}].options.C`}
           onSelect={() => handleSelect("C")}
           onChange={onChange}
           onBlur={onBlur}

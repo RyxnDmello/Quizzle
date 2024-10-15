@@ -37,7 +37,7 @@ export default function Quiz() {
       <Search placeholder="Search Participant" onChange={handleSetPrompt} />
 
       {participants.length === 0 && (
-        <Empty reason="No Participants Have Completed The Quiz" />
+        <Empty reason="Quiz Has Not Been Attempted" />
       )}
 
       {participants.length !== 0 && (

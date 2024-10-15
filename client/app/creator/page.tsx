@@ -42,7 +42,7 @@ export default function Creator() {
       {quizzes.length === 0 && (
         <Empty
           label="Create Quiz"
-          reason="No Quizzes Available"
+          reason="No Quizzes Available."
           url="/creator/quiz/create"
         />
       )}

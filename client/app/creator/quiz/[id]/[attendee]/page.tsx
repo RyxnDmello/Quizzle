@@ -2,9 +2,6 @@
 
 import { useRouter } from "next/navigation";
 
-import Trophy from "@public/quiz/trophy.png";
-import Completed from "@public/quiz/completed.png";
-
 import useFetchQuiz from "@hooks/creator/useFetchQuiz";
 
 import Title from "@components/Create/Title";
@@ -51,18 +48,18 @@ export default function Answers() {
           </Questions>
         )}
 
-        <hr />
+        {quiz.questions.length !== 0 && <hr />}
 
         {quiz.questions.length !== 0 && (
           <div className="buttons">
             <Button type="button" label="Go Back" onClick={back} />
 
             <Statistic
-              icon={Completed}
+              icon="/quiz/completed.png"
               value={`${getCorrect()}/${quiz.questions.length}`}
             />
 
-            <Statistic icon={Trophy} value={`${getPoints()}`} />
+            <Statistic icon="/quiz/trophy.png" value={`${getPoints()}`} />
           </div>
         )}
       </form>

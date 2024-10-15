@@ -13,6 +13,7 @@ import Question from "@components/Create/Question";
 
 import Difficulty from "@components/Create/Question/Difficulty";
 import Input from "@components/Inputs/Input";
+
 import Button from "@components/Inputs/Button";
 import Add from "@components/Create/Add";
 
@@ -59,6 +60,8 @@ export default function Create() {
         <hr />
 
         <Questions>
+          {quiz.questions.length !== 0 && <Title>Manage Questions</Title>}
+
           {quiz.questions.map((_, i) => (
             <Question
               key={i}

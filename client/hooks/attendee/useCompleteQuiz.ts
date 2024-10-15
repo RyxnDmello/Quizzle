@@ -62,9 +62,6 @@ export default function useCompleteQuiz() {
     initialValues: quiz,
     validationSchema: validationSchema,
     enableReinitialize: true,
-    validate: () => {
-      console.log(errors);
-    },
     onSubmit: onSubmit,
   });
 

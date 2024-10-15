@@ -5,6 +5,10 @@
   position: relative;
   display: grid;
   gap: 0.65rem;
+
+  &:first-of-type {
+    margin-top: -0.65rem;
+  }
 }
 
 .header {
