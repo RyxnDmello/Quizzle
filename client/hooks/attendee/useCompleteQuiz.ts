@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 
-import QuizSchema, { validationSchema } from "@schemas/QuizSchema";
+import QuizSchema from "@schemas/QuizSchema";
+import AnswerSchema, { validationSchema } from "@schemas/AnswerSchema";
 
 export default function useCompleteQuiz() {
   const [quiz, setQuiz] = useState<QuizSchema>({
@@ -12,7 +13,16 @@ export default function useCompleteQuiz() {
   });
 
   const onSubmit = () => {
-    console.log(values);
+    quiz.questions = [
+      ...quiz.questions.map((question, i) => {
+        return {
+          ...question,
+          selected: values.questions[i].selected,
+        };
+      }),
+    ];
+
+    console.log(quiz);
   };
 
   const fetchQuiz = () => {
@@ -49,17 +59,18 @@ export default function useCompleteQuiz() {
     }, 1500);
   };
 
-  const {
-    values,
-    errors,
-    touched,
-    resetForm,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-    setFieldValue,
-  } = useFormik({
-    initialValues: quiz,
+  const initialValues: AnswerSchema = {
+    questions: [
+      ...Array.from({ length: quiz.questions.length }, () => {
+        return {
+          selected: null,
+        };
+      }),
+    ],
+  };
+
+  const { values, errors, handleSubmit, setFieldValue } = useFormik({
+    initialValues: initialValues,
     validationSchema: validationSchema,
     enableReinitialize: true,
     onSubmit: onSubmit,
@@ -69,15 +80,5 @@ export default function useCompleteQuiz() {
     fetchQuiz();
   }, [quiz]);
 
-  return {
-    quiz,
-    errors,
-    values,
-    touched,
-    resetForm,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-    setFieldValue,
-  };
+  return { quiz, errors, handleSubmit, setFieldValue };
 }

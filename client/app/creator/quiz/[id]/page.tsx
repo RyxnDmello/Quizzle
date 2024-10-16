@@ -3,7 +3,7 @@
 import useFetchParticipants from "@hooks/creator/useFetchParticipants";
 import useFilterParticipants from "@hooks/creator/useFilterParticipants";
 
-import Title from "@components/Create/Title";
+import Title from "@components/Creator/Title";
 import Search from "@components/Catalogue/Controller/Search";
 
 import Participants from "@components/Attendees/Participants";

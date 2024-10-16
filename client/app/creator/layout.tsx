@@ -17,7 +17,7 @@ interface CreatorLayoutProps {
 export default function CreatorLayout({ children }: CreatorLayoutProps) {
   return (
     <body>
-      <Navbar />
+      <Navbar name="Ryan Nolasco D Mello" url="/creator" />
       <main>{children}</main>
     </body>
   );

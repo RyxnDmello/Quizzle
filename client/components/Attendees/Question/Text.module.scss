@@ -1,0 +1,24 @@
+.text {
+  padding: 0.7rem 0.65rem 0.5rem 0.65rem;
+  border: 1.65px solid #ffffff35;
+  background-color: #ffffff10;
+  border-radius: 5px;
+  position: relative;
+  display: flex;
+  gap: 0.4rem;
+  
+  > p {
+    font-family: "Inter", sans-serif;
+    letter-spacing: 0.25px;
+    text-align: left;
+    font-weight: 300;
+    font-size: 1rem;
+    color: #fff;
+  }
+
+  > img {
+    aspect-ratio: 1;
+    height: auto;
+    width: 20px;
+  }
+}

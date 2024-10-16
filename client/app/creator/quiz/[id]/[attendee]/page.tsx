@@ -4,11 +4,11 @@ import { useRouter } from "next/navigation";
 
 import useFetchQuiz from "@hooks/creator/useFetchQuiz";
 
-import Title from "@components/Create/Title";
-import Questions from "@components/Create/Questions";
-import Question from "@components/Create/Question";
+import Title from "@components/Creator/Title";
+import Questions from "@components/Creator/Questions";
+import Question from "@components/Creator/Question";
 import Button from "@components/Inputs/Button";
-import Statistic from "@components/Create/Statistic";
+import Statistic from "@components/Creator/Statistic";
 import Empty from "@components/Common/Empty";
 
 export default function Answers() {

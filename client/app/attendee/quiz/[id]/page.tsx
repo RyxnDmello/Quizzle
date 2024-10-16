@@ -4,23 +4,15 @@ import { useRouter } from "next/navigation";
 
 import useCompleteQuiz from "@hooks/attendee/useCompleteQuiz";
 
-import Title from "@components/Create/Title";
-import Questions from "@components/Create/Questions";
-import Question from "@components/Create/Question";
+import Title from "@components/Creator/Title";
+import Questions from "@components/Attendees/Questions";
+import Question from "@components/Attendees/Question";
 
 import Button from "@components/Inputs/Button";
 import Empty from "@components/Common/Empty";
 
 export default function Create() {
-  const {
-    quiz,
-    values,
-    setFieldValue,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-  } = useCompleteQuiz();
-
+  const { quiz, errors, setFieldValue, handleSubmit } = useCompleteQuiz();
   const { replace } = useRouter();
 
   return (
@@ -34,16 +26,13 @@ export default function Create() {
 
         {quiz.questions.length !== 0 && (
           <Questions>
-            {quiz.questions.map((question, i) => (
+            {quiz.questions.map((_, i) => (
               <Question
                 key={i}
                 index={i}
-                disabled
-                {...question}
-                values={values}
+                details={quiz}
+                errors={errors}
                 onSelect={setFieldValue}
-                onBlur={handleBlur}
-                onChange={handleChange}
               />
             ))}
           </Questions>

@@ -8,14 +8,14 @@ import QuizSchema from "@schemas/QuizSchema";
 import useCreateQuiz from "@hooks/creator/useCreateQuiz";
 
 import Title from "@components/Common/Title";
-import Questions from "@components/Create/Questions";
-import Question from "@components/Create/Question";
-
-import Difficulty from "@components/Create/Question/Difficulty";
 import Input from "@components/Inputs/Input";
-
 import Button from "@components/Inputs/Button";
-import Add from "@components/Create/Add";
+
+import Questions from "@components/Creator/Questions";
+import Question from "@components/Creator/Question";
+import Add from "@components/Creator/Add";
+
+import Difficulty from "@components/Creator/Question/Difficulty";
 
 export default function Create() {
   const { replace } = useRouter();

@@ -5,16 +5,21 @@ import Logo from "@public/logo.png";
 
 import styles from "./Navbar.module.scss";
 
-export default function Navbar() {
+interface NavbarProps {
+  url?: string;
+  name: string;
+}
+
+export default function Navbar({ url = "#", name }: NavbarProps) {
   return (
     <nav className={styles.navbar}>
-      <Link href="/creator">
+      <Link href={url}>
         <Image src={Logo} width={512} height={512} alt="logo" />
       </Link>
 
       <div>
         <span>/</span>
-        <p>Ryan Nolasco D Mello</p>
+        <p>{name}</p>
       </div>
     </nav>
   );
