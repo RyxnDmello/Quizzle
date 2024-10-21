@@ -3,6 +3,10 @@ from rest_framework import serializers
 
 import re
 
+#----------------------------------------------------#
+#----------------- USER VALIDATIONS -----------------#
+#----------------------------------------------------#
+
 def validate_name(value):
     value = str(value).strip()
     
@@ -61,5 +65,71 @@ def validate_password(value):
     
     if len(value) > 50:
         raise serializers.ValidationError("Password Must Be A Maximum Of 50 Characters")
+    
+    return value
+
+#----------------------------------------------------#
+#----------------- QUIZ VALIDATIONS -----------------#
+#----------------------------------------------------#
+
+def validate_title(value):
+    value = str(value).strip()
+    
+    if len(value) < 4:
+        raise serializers.ValidationError("Title Must Be A Minimum Of 4 Characters")
+    
+    if len(value) > 150:
+        raise serializers.ValidationError("Title Must Be A Maximum Of 150 Characters")
+    
+    return value
+
+def validate_difficulty(value):
+    if value not in ["HARD", "MEDIUM", "EASY"]:
+        raise serializers.ValidationError("Difficulty Must Be One Of HARD, MEDIUM, EASY")
+        
+    return value
+
+def validate_questions(value):
+    if len(value) == 0:
+        raise serializers.ValidationError("Questions Must Be Provided")
+        
+    return value
+
+def validate_question(value):
+    value = str(value).strip()
+    
+    if len(value) < 4:
+        raise serializers.ValidationError("Question Must Be A Minimum Of 4 Characters")
+    
+    if len(value) > 150:
+        raise serializers.ValidationError("Question Must Be A Maximum Of 150 Characters")
+    
+    return value
+
+def validate_points(value):
+    value = int(value)
+    
+    if value < 1:
+        raise serializers.ValidationError("Points Must Be A Minimum Of 1")
+    
+    if value > 100:
+        raise serializers.ValidationError("Points Must Be A Maximum Of 100")
+    
+    return value
+
+def validate_correct(value):
+    if value not in ["A", "B", "C"]:
+        raise serializers.ValidationError(f"Correct Option Must Be One Of A, B, C")
+        
+    return value
+
+def validate_option(value):
+    value = str(value).strip()
+    
+    if len(value) < 4:
+        raise serializers.ValidationError("Option Must Be A Minimum Of 4 Characters")
+    
+    if len(value) > 25:
+        raise serializers.ValidationError("Option Must Be A Maximum Of 25 Characters")
     
     return value

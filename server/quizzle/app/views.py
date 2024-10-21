@@ -3,8 +3,10 @@ from rest_framework.views import APIView
 from rest_framework import status
 
 from . models import CreatorModel, AttendeeModel
+from . models import QuizModel
 
 from . serializer import RegisterCreatorSerializer, RegisterAttendeeSerializer, LoginSerializer
+from . serializer import CreateQuizSerializer, QuizSerializer
 
 class RegisterView(APIView):
     def post(self, request):
@@ -60,7 +62,7 @@ class LoginView(APIView):
             
             if request.data.get("type") == "ATTENDEE":
                 db_user = AttendeeModel.objects.get(email=email)
-        except CreatorModel.DoesNotExist and AttendeeModel.DoesNotExist:
+        except CreatorModel.DoesNotExist or AttendeeModel.DoesNotExist:
             return Response({ "error": "User With Given Email Address Does Not Exist" }, status=status.HTTP_400_BAD_REQUEST)
 
         if password != db_user.password:
@@ -73,6 +75,21 @@ class LoginView(APIView):
             "mobile": db_user.mobile,
         }, status=status.HTTP_200_OK)
             
-
+class QuizView(APIView):
+    def get(self, request):
+        db_quizzes = QuizModel.objects.all()
+        quizzes = QuizSerializer(db_quizzes, many=True)
+        return Response(quizzes.data, status=status.HTTP_200_OK) 
+    
+    def post(self, request):
+        quiz = CreateQuizSerializer(data=request.data)
+        
+        if quiz.is_valid() == False:
+            return Response({ "error": quiz.errors }, status.HTTP_404_NOT_FOUND)
+        
+        quiz.save()
+        
+        return Response(quiz.data, status=status.HTTP_201_CREATED)
+        
             
         
