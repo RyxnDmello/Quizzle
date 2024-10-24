@@ -3,12 +3,15 @@ from rest_framework import serializers
 
 from django.contrib.auth.hashers import make_password
 
-from . models import CreatorModel, AttendeeModel
-from . models import QuizModel, QuestionModel, OptionsModel
+from .models import CreatorModel, AttendeeModel
+from .models import QuizModel, QuestionModel, OptionsModel
+from .models import AnswerModel, AnswerQuestionsModel
 
-from . validations import validate_name, validate_email, validate_mobile, validate_password
-from . validations import validate_title, validate_difficulty, validate_questions
-from . validations import validate_question, validate_points, validate_correct, validate_option
+from .validations import validate_name, validate_email, validate_mobile, validate_password
+from .validations import validate_title, validate_difficulty
+from .validations import validate_question, validate_points, validate_correct, validate_option
+
+from .utils import getUniqueID
 
 #----------------------------------------------------#
 #----------------- USER SERIALIZERS -----------------#
@@ -21,7 +24,7 @@ class RegisterCreatorSerializer(ModelSerializer):
             "required": "Name Must Be Provided", 
             "blank": "Name Must Be Provided" 
         },
-        validators = [validate_name]
+        validators=[validate_name]
     )
     
     email = serializers.EmailField(
@@ -31,7 +34,7 @@ class RegisterCreatorSerializer(ModelSerializer):
             "blank": "Email Address Must Be Provided",
             "invalid": "Enter A Valid Email Address",
         },
-        validators = [validate_email]
+        validators=[validate_email]
     )
     
     mobile = serializers.CharField(
@@ -41,7 +44,7 @@ class RegisterCreatorSerializer(ModelSerializer):
             "required": "Mobile Number Must Be Provided", 
             "blank": "Mobile Number Cannot Be Blank",
         },
-        validators = [validate_mobile]
+        validators=[validate_mobile]
     )
     
     password = serializers.CharField(
@@ -50,12 +53,12 @@ class RegisterCreatorSerializer(ModelSerializer):
             "required": "Password Must Be Provided", 
             "blank": "Password Must Be Provided",
         },
-        validators = [validate_password]
+        validators=[validate_password]
     )
     
     class Meta:
         model = CreatorModel
-        fields = ("name", "email", "mobile", "password")
+        fields = ("id", "name", "email", "mobile", "password")
     
     def validate_email(self, value):
         if CreatorModel.objects.filter(email=value).exists():
@@ -74,6 +77,7 @@ class RegisterCreatorSerializer(ModelSerializer):
         user.save()
         return user
 
+
 class RegisterAttendeeSerializer(ModelSerializer):
     name = serializers.CharField(
         required=True,
@@ -81,7 +85,7 @@ class RegisterAttendeeSerializer(ModelSerializer):
             "required": "Name Must Be Provided", 
             "blank": "Name Must Be Provided" 
         },
-        validators = [validate_name]
+        validators=[validate_name]
     )
     
     email = serializers.EmailField(
@@ -91,7 +95,7 @@ class RegisterAttendeeSerializer(ModelSerializer):
             "blank": "Email Address Must Be Provided",
             "invalid": "Enter A Valid Email Address",
         },
-        validators = [validate_email]
+        validators=[validate_email]
     )
     
     mobile = serializers.CharField(
@@ -101,7 +105,7 @@ class RegisterAttendeeSerializer(ModelSerializer):
             "required": "Mobile Number Must Be Provided", 
             "blank": "Mobile Number Cannot Be Blank",
         },
-        validators = [validate_mobile]
+        validators=[validate_mobile]
     )
     
     password = serializers.CharField(
@@ -110,12 +114,12 @@ class RegisterAttendeeSerializer(ModelSerializer):
             "required": "Password Must Be Provided", 
             "blank": "Password Must Be Provided",
         },
-        validators = [validate_password]
+        validators=[validate_password]
     )
     
     class Meta:
         model = AttendeeModel
-        fields = ("name", "email", "mobile", "password")
+        fields = ("id", "name", "email", "mobile", "password")
     
     def validate_email(self, value):
         if AttendeeModel.objects.filter(email=value).exists():
@@ -134,6 +138,7 @@ class RegisterAttendeeSerializer(ModelSerializer):
         user.save()
         return user
 
+
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField(
         required=True,
@@ -142,7 +147,7 @@ class LoginSerializer(serializers.Serializer):
             "blank": "Email Address Must Be Provided",
             "invalid": "Enter A Valid Email Address",
         },
-        validators = [validate_email]
+        validators=[validate_email]
     )
 
     password = serializers.CharField(
@@ -151,7 +156,7 @@ class LoginSerializer(serializers.Serializer):
             "required": "Password Must Be Provided", 
             "blank": "Password Must Be Provided",
         },
-        validators = [validate_password]
+        validators=[validate_password]
     )
     
 #----------------------------------------------------#
@@ -166,7 +171,7 @@ class OptionsSerializer(serializers.ModelSerializer):
             "blank": "Option 'A' Must Be Provided", 
             "invalid": "Enter A Valid Option 'A'" 
         },
-        validators = [validate_option]
+        validators=[validate_option]
     )
     
     B = serializers.CharField(
@@ -176,7 +181,7 @@ class OptionsSerializer(serializers.ModelSerializer):
             "blank": "Option 'B' Must Be Provided", 
             "invalid": "Enter A Valid Option 'B'" 
         },
-        validators = [validate_option]
+        validators=[validate_option]
     )
     
     C = serializers.CharField(
@@ -186,7 +191,7 @@ class OptionsSerializer(serializers.ModelSerializer):
             "blank": "Option 'C' Must Be Provided", 
             "invalid": "Enter A Valid Option 'C'" 
         },
-        validators = [validate_option]
+        validators=[validate_option]
     )
     
     class Meta:
@@ -203,7 +208,7 @@ class QuestionSerializer(serializers.ModelSerializer):
             "blank": "Question Must Be Provided", 
             "invalid": "Enter A Valid Question" 
         },
-        validators = [validate_question]
+        validators=[validate_question]
     )
     
     points = serializers.CharField(
@@ -213,7 +218,7 @@ class QuestionSerializer(serializers.ModelSerializer):
             "blank": "Points Must Be Provided", 
             "invalid": "Enter Valid Points" 
         },
-        validators = [validate_points]
+        validators=[validate_points]
     )
     
     correct = serializers.CharField(
@@ -223,12 +228,12 @@ class QuestionSerializer(serializers.ModelSerializer):
             "blank": "Correct Option Must Be Provided", 
             "invalid": "Enter A Valid Correct Option" 
         },
-        validators = [validate_correct]
+        validators=[validate_correct]
     )
 
     class Meta:
         model = QuestionModel
-        fields = ["question", "points", "options", "correct", "selected"]
+        fields = ["question", "points", "options", "correct"]
 
 class CreateQuizSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True)
@@ -240,7 +245,7 @@ class CreateQuizSerializer(serializers.ModelSerializer):
             "blank": "Title Must Be Provided", 
             "invalid": "Enter A Valid Title" 
         },
-        validators = [validate_title]
+        validators=[validate_title]
     )
 
     difficulty = serializers.CharField(
@@ -250,27 +255,73 @@ class CreateQuizSerializer(serializers.ModelSerializer):
             "blank": "Difficulty Must Be Provided", 
             "invalid": "Enter A Valid Difficulty" 
         },
-        validators = [validate_difficulty]
+        validators=[validate_difficulty]
+    )
+
+    creator_id = serializers.CharField(
+        required=True,
+        error_messages={ 
+            "required": "Creator ID Must Be Provided", 
+            "blank": "Creator ID Cannot Be Blank", 
+        }
     )
 
     class Meta:
         model = QuizModel
-        fields = ["id", "title", "difficulty", "questions"]
+        fields = ("id", "creator_id", "title", "difficulty", "questions")
 
     def create(self, validated_data):
         questions_data = validated_data.pop("questions")
-        quiz = QuizModel.objects.create(**validated_data)
+        creator_id = validated_data.pop("creator_id")
+
+        if not CreatorModel.objects.filter(id=creator_id).exists():
+            raise serializers.ValidationError({"creator_id": "Invalid Creator ID"})
+
+        quiz = QuizModel.objects.create(creator_id=creator_id, **validated_data)
 
         for question_data in questions_data:
             options_data = question_data.pop("options")
             question = QuestionModel.objects.create(quiz=quiz, **question_data)
             OptionsModel.objects.create(question=question, **options_data)
-        
+
         return quiz
-    
+
 class QuizSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True)
     
     class Meta:
         model = QuizModel
-        fields = ["id", "title", "difficulty", "questions"]
+        fields = ["id", "title", "difficulty", "questions", "creator_id"]
+
+#----------------------------------------------------#
+#----------------- ANSWER SERIALIZERS ---------------#
+#----------------------------------------------------#
+
+class AnsweredQuestionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AnswerQuestionsModel
+        fields = ["question", "correct", "points"]
+
+class AnsweredQuizSerializer(serializers.ModelSerializer):
+    questions = AnsweredQuestionsSerializer(many=True)
+
+    class Meta:
+        model = AnswerModel
+        fields = ["quiz_id", "attendee_id", "name", "title", "points", "date", "questions"]
+
+    def create(self, validated_data):
+        questions_data = validated_data.pop('questions')
+
+        quiz_answer = AnswerModel.objects.create(**validated_data)
+
+        for question_data in questions_data:
+            AnswerQuestionsModel.objects.create(quiz_answer=quiz_answer, **question_data)
+
+        return quiz_answer
+    
+class GetAnsweredQuizSerializer(serializers.ModelSerializer):
+    questions = AnsweredQuestionsSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = AnswerModel
+        fields = ['quiz_id', 'attendee_id', 'title', 'difficulty', 'name', 'date', 'points', 'questions']

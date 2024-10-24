@@ -2,11 +2,17 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-from . models import CreatorModel, AttendeeModel
-from . models import QuizModel
+from .models import CreatorModel, AttendeeModel
+from .models import QuizModel, QuestionModel
+from .models import AnswerModel
 
-from . serializer import RegisterCreatorSerializer, RegisterAttendeeSerializer, LoginSerializer
-from . serializer import CreateQuizSerializer, QuizSerializer
+from .serializer import RegisterCreatorSerializer, RegisterAttendeeSerializer, LoginSerializer
+from .serializer import CreateQuizSerializer, QuizSerializer
+from .serializer import AnsweredQuizSerializer, GetAnsweredQuizSerializer
+
+#----------------------------------------------------#
+#-------------------- USER VIEWS --------------------#
+#----------------------------------------------------#
 
 class RegisterView(APIView):
     def post(self, request):
@@ -74,6 +80,10 @@ class LoginView(APIView):
             "email": db_user.email,
             "mobile": db_user.mobile,
         }, status=status.HTTP_200_OK)
+
+#----------------------------------------------------#
+#-------------------- QUIZ VIEWS --------------------#
+#----------------------------------------------------#
             
 class QuizView(APIView):
     def get(self, request):
@@ -82,14 +92,102 @@ class QuizView(APIView):
         return Response(quizzes.data, status=status.HTTP_200_OK) 
     
     def post(self, request):
-        quiz = CreateQuizSerializer(data=request.data)
+        creator_id = request.data.get("creatorID")
         
-        if quiz.is_valid() == False:
-            return Response({ "error": quiz.errors }, status.HTTP_404_NOT_FOUND)
+        try:
+            creator = CreatorModel.objects.get(id=creator_id)
+            
+            quiz_data = request.data.copy()
+            quiz_data["creator_id"] = creator.id
+            
+            quiz = CreateQuizSerializer(data=quiz_data)
+
+            if quiz.is_valid() == False:
+                return Response({ "error": quiz.errors }, status.HTTP_400_BAD_REQUEST)
+            
+            quiz.save()
+            
+            return Response(quiz.data, status=status.HTTP_201_CREATED)
         
-        quiz.save()
+        except CreatorModel.DoesNotExist:
+            return Response({ "error": "Creator Does Not Exist" }, status=status.HTTP_404_NOT_FOUND)
+
+#--------------------------------------------------------#
+#-------------------- ANSWERED VIEWS --------------------#
+#--------------------------------------------------------#
+    
+class AnswerQuizView(APIView):
+    def get(self, request, id):
+        answered_quizzes = None
+
+        if str(id).startswith("QID"):
+            answered_quizzes = AnswerModel.objects.filter(quiz_id=id)
+
+        elif str(id).startswith("AID"):
+            answered_quizzes = AnswerModel.objects.filter(attendee_id=id)
+
+        else:
+            return Response({"error": "Invalid ID format"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not answered_quizzes.exists():
+            return Response({"message": "No answered quizzes found."}, status=status.HTTP_404_NOT_FOUND)
+
+        serialized_quizzes = GetAnsweredQuizSerializer(answered_quizzes, many=True)
+
+        return Response(serialized_quizzes.data, status=status.HTTP_200_OK)
+    
+    def post(self, request, id):
+        name = request.data.get('name')
+        questions = request.data.get('questions')
         
-        return Response(quiz.data, status=status.HTTP_201_CREATED)
+        try:
+            db_quiz = QuizModel.objects.get(id=id)
+        except QuizModel.DoesNotExist:
+            return Response({ "error": "Quiz Not Found" }, status=status.HTTP_404_NOT_FOUND)
+        
+        try:
+            db_attendee = AttendeeModel.objects.get(id=request.data.get("attendeeID"))
+        except AttendeeModel.DoesNotExist:
+            return Response({ "error": "Attendee Does Not Exist" }, status=status.HTTP_404_NOT_FOUND)
+        
+        db_questions = QuestionModel.objects.filter(quiz=db_quiz)
+            
+        if len(questions) != len(db_questions):
+            return Response({ "error": "Number Of Questions Mismatch" }, status=status.HTTP_400_BAD_REQUEST)
+        
+        answered_questions = []
+        total_points = 0
+
+        for index, question in enumerate(questions):
+            db_question = db_questions[index]
+            
+            total_points += question['points']
+
+            answered_questions.append({
+                "question": db_question.question,
+                "correct": db_question.correct,
+                "selected": question["selected"],
+                "points": question["points"] if db_question.correct == question["selected"] else 0
+            })
+
+        quiz_answer_data = {
+            "quiz_id": db_quiz.id,
+            "attendee_id": db_attendee.id,
+            "title": db_quiz.title,
+            "name": name,
+            "points": total_points,
+            "questions": answered_questions
+        }
+
+        db_quiz = AnsweredQuizSerializer(data=quiz_answer_data)
+        
+        if not db_quiz.is_valid():
+            return Response(db_quiz.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        db_quiz.save()
+        
+        return Response(db_quiz.data, status=status.HTTP_201_CREATED)
+
         
             
         
