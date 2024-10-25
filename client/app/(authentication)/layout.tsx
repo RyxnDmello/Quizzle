@@ -17,8 +17,10 @@ interface RootLayoutProps {
 export default function AuthenticationLayout({ children }: RootLayoutProps) {
   return (
     <body>
-      <Logo />
-      <main>{children}</main>
+      <main>
+        <Logo />
+        {children}
+      </main>
     </body>
   );
 }

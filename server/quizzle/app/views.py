@@ -1,3 +1,6 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -14,7 +17,10 @@ from .serializer import AnsweredQuizSerializer, GetAnsweredQuizSerializer
 #-------------------- USER VIEWS --------------------#
 #----------------------------------------------------#
 
+@method_decorator(csrf_exempt, name='dispatch')
 class RegisterView(APIView):
+    permission_classes = [AllowAny]
+    
     def post(self, request):
         if request.data.get("type") is None:
             return Response({ "error": "User Type Must Be Provided" }, status=status.HTTP_400_BAD_REQUEST)
@@ -47,6 +53,8 @@ class RegisterView(APIView):
         }, status=status.HTTP_201_CREATED)
     
 class LoginView(APIView):
+    permission_classes = [AllowAny]
+    
     def post(self, request):
         if request.data.get("type") is None:
             return Response({ "error": "User Type Must Be Provided" }, status=status.HTTP_400_BAD_REQUEST)
@@ -123,14 +131,14 @@ class AnswerQuizView(APIView):
         if str(id).startswith("QID"):
             answered_quizzes = AnswerModel.objects.filter(quiz_id=id)
 
-        elif str(id).startswith("AID"):
+        if str(id).startswith("AID"):
             answered_quizzes = AnswerModel.objects.filter(attendee_id=id)
 
-        else:
-            return Response({"error": "Invalid ID format"}, status=status.HTTP_400_BAD_REQUEST)
+        if answered_quizzes is None:
+            return Response({ "error": "Invalid ID Provided" }, status=status.HTTP_400_BAD_REQUEST)
 
         if not answered_quizzes.exists():
-            return Response({"message": "No answered quizzes found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({ "error": "No Quizzes Found" }, status=status.HTTP_404_NOT_FOUND)
 
         serialized_quizzes = GetAnsweredQuizSerializer(answered_quizzes, many=True)
 

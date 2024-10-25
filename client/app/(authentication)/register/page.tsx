@@ -1,6 +1,6 @@
 "use client";
 
-import useRegisterCreator from "@hooks/authentication/useRegisterCreator";
+import useRegister from "@hooks/authentication/useRegister";
 
 import Title from "@components/Authentication/Title";
 import Form from "@components/Authentication/Form";
@@ -10,7 +10,7 @@ import Switch from "@components/Authentication/Switch";
 
 export default function Register() {
   const { touched, errors, handleBlur, handleChange, handleSubmit } =
-    useRegisterCreator();
+    useRegister();
 
   return (
     <section>

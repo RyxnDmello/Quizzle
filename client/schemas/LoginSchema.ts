@@ -1,6 +1,9 @@
 import * as yup from "yup";
 
+import { USER } from "../interfaces/User";
+
 export default interface LoginSchema {
+  type?: USER;
   email: string;
   password: string;
 }

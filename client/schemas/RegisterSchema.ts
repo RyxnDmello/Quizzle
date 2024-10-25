@@ -1,6 +1,9 @@
 import * as yup from "yup";
 
+import { USER } from "../interfaces/User";
+
 export default interface RegisterSchema {
+  type?: USER;
   name: string;
   email: string;
   mobile: number | null;

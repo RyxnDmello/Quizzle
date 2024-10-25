@@ -1,6 +1,6 @@
 "use client";
 
-import useLoginCreator from "@hooks/authentication/useLoginCreator";
+import useLogin from "@hooks/authentication/useLogin";
 
 import Title from "@components/Authentication/Title";
 import Form from "@components/Authentication/Form";
@@ -10,7 +10,7 @@ import Switch from "@components/Authentication/Switch";
 
 export default function Login() {
   const { touched, errors, handleBlur, handleChange, handleSubmit } =
-    useLoginCreator();
+    useLogin();
 
   return (
     <section>
