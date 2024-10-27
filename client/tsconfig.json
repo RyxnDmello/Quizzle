@@ -18,6 +18,7 @@
 
     "paths": {
       "@components/*": ["./components/*"],
+      "@providers/*": ["./providers/*"],
       "@contexts/*": ["./contexts/*"],
       "@hooks/*": ["./hooks/*"],
       "@interfaces/*": ["./interfaces/*"],

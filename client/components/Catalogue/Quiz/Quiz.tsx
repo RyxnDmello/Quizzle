@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { Quiz as _ } from "@interfaces/Quiz";
+import _ from "@interfaces/Quiz";
 
 import styles from "./Quiz.module.scss";
 
@@ -9,7 +9,7 @@ interface QuizProps extends _ {
 }
 
 export default function Quiz({
-  name,
+  title,
   points,
   questions,
   difficulty,
@@ -22,11 +22,11 @@ export default function Quiz({
     >
       <div className={styles.header}>
         <div className={styles[difficulty.toLowerCase()]}></div>
-        <h4>{name}</h4>
+        <h4>{title}</h4>
       </div>
 
       <div className={styles.details}>
-        <p>{questions} Questions</p>
+        <p>{questions.length} Questions</p>
 
         <div>
           <Image

@@ -45,6 +45,7 @@ class QuizModel(models.Model):
     id = models.CharField(max_length=20, primary_key=True, unique=True, editable=False, default=getUniqueQuizID)
     title = models.CharField(max_length=150)
     difficulty = models.CharField(max_length=6, choices=DIFFICULTY_LEVELS)
+    points = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
@@ -77,8 +78,8 @@ class AnswerModel(models.Model):
     title = models.CharField(max_length=150)
     difficulty = models.CharField(max_length=6, choices=DIFFICULTY_LEVELS)
     name = models.CharField(max_length=50)
-    date = models.DateTimeField(auto_now_add=True)
     points = models.IntegerField(default=0)
+    date = models.DateTimeField(auto_now_add=True)
 
 class AnswerQuestionsModel(models.Model):
     quiz_answer = models.ForeignKey(AnswerModel, related_name='questions', on_delete=models.CASCADE)

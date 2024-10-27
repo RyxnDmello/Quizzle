@@ -92,13 +92,18 @@ class LoginView(APIView):
 #----------------------------------------------------#
 #-------------------- QUIZ VIEWS --------------------#
 #----------------------------------------------------#
+
+class QuizFetchView(APIView):
+    def get(self, request, id):
+        quizzes = QuizModel.objects.filter(creator_id=id)
+        
+        if not quizzes.exists():
+            return Response({ "error": "No Quizzes Available" }, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = QuizSerializer(quizzes, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
             
-class QuizView(APIView):
-    def get(self, request):
-        db_quizzes = QuizModel.objects.all()
-        quizzes = QuizSerializer(db_quizzes, many=True)
-        return Response(quizzes.data, status=status.HTTP_200_OK) 
-    
+class QuizCreateView(APIView):
     def post(self, request):
         creator_id = request.data.get("creatorID")
         
@@ -110,7 +115,7 @@ class QuizView(APIView):
             
             quiz = CreateQuizSerializer(data=quiz_data)
 
-            if quiz.is_valid() == False:
+            if not quiz.is_valid():
                 return Response({ "error": quiz.errors }, status.HTTP_400_BAD_REQUEST)
             
             quiz.save()
@@ -123,8 +128,8 @@ class QuizView(APIView):
 #--------------------------------------------------------#
 #-------------------- ANSWERED VIEWS --------------------#
 #--------------------------------------------------------#
-    
-class AnswerQuizView(APIView):
+
+class FetchAnsweredQuizView(APIView):
     def get(self, request, id):
         answered_quizzes = None
 
@@ -144,6 +149,7 @@ class AnswerQuizView(APIView):
 
         return Response(serialized_quizzes.data, status=status.HTTP_200_OK)
     
+class AnsweredQuizView(APIView):
     def post(self, request, id):
         name = request.data.get('name')
         questions = request.data.get('questions')

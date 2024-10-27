@@ -17,12 +17,14 @@ import Pagination from "@components/Catalogue/Pagination";
 import Empty from "@components/Common/Empty";
 
 export default function Creator() {
-  const { quizzes } = useFetchQuizzes();
-  const { filter, handleSetPrompt } = useFilterQuizzes(quizzes);
+  const { quizzes, error, isPending } = useFetchQuizzes();
+  const { filter, handleSetPrompt } = useFilterQuizzes([]);
 
   const { push } = useRouter();
 
   const handleNavigate = (id: string) => push(`/creator/quiz/${id}`);
+
+  console.log(quizzes)
 
   return (
     <section id="catalogue">
@@ -39,33 +41,40 @@ export default function Creator() {
         </Dropdown>
       </Controller>
 
-      {quizzes.length === 0 && (
-        <Empty
-          label="Create Quiz"
-          reason="No Quizzes Available."
-          url="/creator/quiz/create"
-        />
-      )}
+      {isPending && <Empty reason="Fetching Quizzes..." />}
 
-      {quizzes.length !== 0 && (
+      {error && <Empty reason={error.message} />}
+
+      {!quizzes ||
+        (quizzes.length === 0 && (
+          <Empty
+            label="Create Quiz"
+            reason="No Quizzes Available."
+            url="/creator/quiz/create"
+          />
+        ))}
+
+      {quizzes && quizzes.length !== 0 && (
         <Quizzes>
-          {(filter.length === 0 ? quizzes : filter).map((quiz) => (
+          {(quizzes).map((quiz) => (
             <Quiz
               key={quiz.id}
               {...quiz}
+              points={quiz.points}
               onClick={() => handleNavigate(quiz.id!)}
             />
           ))}
         </Quizzes>
       )}
 
-      {quizzes.length !== 0 && (
-        <Pagination
-          url="/creator/quiz/create"
-          image="/user/add.svg"
-          pages={5}
-        />
-      )}
+      {!quizzes ||
+        (quizzes.length !== 0 && (
+          <Pagination
+            url="/creator/quiz/create"
+            image="/user/add.svg"
+            pages={5}
+          />
+        ))}
     </section>
   );
 }

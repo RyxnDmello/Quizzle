@@ -8,7 +8,7 @@ export default function useFilterQuizzes(quizzes: Quiz[]) {
   const handleSetPrompt = (prompt: string) => setPrompt(prompt);
 
   const filter: Quiz[] = quizzes.filter((quiz) =>
-    quiz.name.toLowerCase().includes(prompt.toLowerCase())
+    quiz.title.toLowerCase().includes(prompt.toLowerCase())
   );
 
   return { filter, handleSetPrompt };

@@ -11,8 +11,6 @@ from .validations import validate_name, validate_email, validate_mobile, validat
 from .validations import validate_title, validate_difficulty
 from .validations import validate_question, validate_points, validate_correct, validate_option
 
-from .utils import getUniqueID
-
 #----------------------------------------------------#
 #----------------- USER SERIALIZERS -----------------#
 #----------------------------------------------------#
@@ -268,7 +266,7 @@ class CreateQuizSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = QuizModel
-        fields = ("id", "creator_id", "title", "difficulty", "questions")
+        fields = ("id", "creator_id", "title", "difficulty",  "points", "questions")
 
     def create(self, validated_data):
         questions_data = validated_data.pop("questions")
@@ -279,10 +277,18 @@ class CreateQuizSerializer(serializers.ModelSerializer):
 
         quiz = QuizModel.objects.create(creator_id=creator_id, **validated_data)
 
+        total_points = 0
+        
         for question_data in questions_data:
             options_data = question_data.pop("options")
+            points = question_data["points"]
+            total_points += int(points)
+
             question = QuestionModel.objects.create(quiz=quiz, **question_data)
             OptionsModel.objects.create(question=question, **options_data)
+
+        quiz.points = total_points
+        quiz.save()
 
         return quiz
 
@@ -291,7 +297,7 @@ class QuizSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = QuizModel
-        fields = ["id", "title", "difficulty", "questions", "creator_id"]
+        fields = ["id", "title", "difficulty", "points", "questions", "creator_id"]
 
 #----------------------------------------------------#
 #----------------- ANSWER SERIALIZERS ---------------#

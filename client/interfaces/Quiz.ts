@@ -1,9 +1,23 @@
 export type DIFFICULTY = "HARD" | "MEDIUM" | "EASY";
+export type OPTIONS = "A" | "B" | "C";
 
-export interface Quiz {
+export default interface Quiz {
   id?: string;
-  name: string;
+  title: string;
   points: number;
-  questions: number;
   difficulty: DIFFICULTY;
+  questions: Question[];
+}
+
+interface Question {
+  points: number;
+  question: string;
+  options: Options;
+  correct: OPTIONS;
+}
+
+interface Options {
+  A: string;
+  B: string;
+  C: string;
 }
