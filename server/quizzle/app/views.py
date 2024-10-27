@@ -29,13 +29,13 @@ class RegisterView(APIView):
             return Response({ "error": "User Type Is Invalid" }, status=status.HTTP_400_BAD_REQUEST)
         
         if request.data.get("type") == "CREATOR":
-            user = RegisterCreatorSerializer(data=request.data)
+            user_serializer = RegisterCreatorSerializer(data=request.data)
         
-        if request.data.get("type") == "ATTENDEE":
-            user = RegisterAttendeeSerializer(data=request.data)
+        elif request.data.get("type") == "ATTENDEE":
+            user_serializer = RegisterAttendeeSerializer(data=request.data)
         
-        if user.is_valid() == False:
-            return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
+        if not user_serializer.is_valid():
+            return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         if request.data.get("confirmPassword") is None:
             return Response({ "error": "Confirm Password Must Be Provided" }, status=status.HTTP_400_BAD_REQUEST)
@@ -43,14 +43,9 @@ class RegisterView(APIView):
         if request.data.get("password") != request.data.get("confirmPassword"):
             return Response({ "error": "Passwords Do Not Match" }, status=status.HTTP_400_BAD_REQUEST)
        
-        user.save()
+        user_serializer.save()
         
-        return Response({
-            "type": request.data.get("type"),
-            "name": request.data.get("name"),
-            "email": request.data.get("email"),
-            "mobile": request.data.get("mobile"),    
-        }, status=status.HTTP_201_CREATED)
+        return Response(user_serializer.data, status=status.HTTP_201_CREATED)
     
 class LoginView(APIView):
     permission_classes = [AllowAny]
@@ -73,21 +68,19 @@ class LoginView(APIView):
         try:
             if request.data.get("type") == "CREATOR":
                 db_user = CreatorModel.objects.get(email=email)
-            
-            if request.data.get("type") == "ATTENDEE":
+                serializer = RegisterCreatorSerializer(db_user)
+                
+            elif request.data.get("type") == "ATTENDEE":
                 db_user = AttendeeModel.objects.get(email=email)
-        except CreatorModel.DoesNotExist or AttendeeModel.DoesNotExist:
+                serializer = RegisterAttendeeSerializer(db_user)
+
+        except (CreatorModel.DoesNotExist, AttendeeModel.DoesNotExist):
             return Response({ "error": "User With Given Email Address Does Not Exist" }, status=status.HTTP_400_BAD_REQUEST)
 
         if password != db_user.password:
             return Response({ "error": "Password Is Incorrect" }, status=status.HTTP_400_BAD_REQUEST)
         
-        return Response({
-            "type": request.data.get("type"),
-            "name": db_user.name,
-            "email": db_user.email,
-            "mobile": db_user.mobile,
-        }, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 #----------------------------------------------------#
 #-------------------- QUIZ VIEWS --------------------#
@@ -98,7 +91,7 @@ class QuizFetchView(APIView):
         quizzes = QuizModel.objects.filter(creator_id=id)
         
         if not quizzes.exists():
-            return Response({ "error": "No Quizzes Available" }, status=status.HTTP_404_NOT_FOUND)
+            return Response([], status=status.HTTP_200_OK)
 
         serializer = QuizSerializer(quizzes, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

@@ -4,6 +4,7 @@ import { USER } from "../interfaces/User";
 
 export default interface RegisterSchema {
   type?: USER;
+  id?: string;
   name: string;
   email: string;
   mobile: number | null;

@@ -13,12 +13,14 @@ export default function Home() {
 
         <div>
           <Tile
+            type="CREATOR"
             title="Creator"
             image="/home/creator.png"
             description="I want to create quizzes."
           />
 
           <Tile
+            type="ATTENDEE"
             title="Challenger"
             image="/home/attendee.png"
             description="I want to take part in quizzes."

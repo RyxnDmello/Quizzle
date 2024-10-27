@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Metadata } from "next";
 
 import "./globals.scss";
+import AuthContextProvider from "@contexts/AuthContext";
 
 export const metadata: Metadata = {
   title: "Quizzle",
@@ -15,7 +16,9 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html>
-      <body>{children}</body>
+      <body>
+        <AuthContextProvider>{children}</AuthContextProvider>
+      </body>
     </html>
   );
 }
