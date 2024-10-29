@@ -2,19 +2,19 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import axios from "axios";
 
-import useFetchQuizzes from "./useFetchQuizzes";
+import useFetchCreatedQuizzes from "./useFetchCreatedQuizzes";
 
-import Participant from "@interfaces/Participant";
+import AnsweredQuiz from "@interfaces/Answer";
 
 import useAuth from "@hooks/authentication/useAuth";
 
-export default function useFetchParticipants() {
+export default function useFetchAnsweredQuizzes() {
   const { user } = useAuth();
   const { id } = useParams<{ id: string }>();
-  const { quizzes } = useFetchQuizzes();
+  const { quizzes } = useFetchCreatedQuizzes();
 
-  const fetchParticipants = async () => {
-    const { data } = await axios.get<Participant[]>(
+  const fetchAnsweredQuizzes = async () => {
+    const { data } = await axios.get<AnsweredQuiz[]>(
       `${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz/${id}/answer`,
       {
         headers: {
@@ -23,19 +23,19 @@ export default function useFetchParticipants() {
       }
     );
 
-    console.log(data);
-
     return data || [];
   };
 
   const quiz = quizzes?.filter((quiz) => quiz.id === id)[0];
 
-  const { data: participants, error, isPending } = useQuery({
+  const {
+    data: participants,
+    error,
+    isPending,
+  } = useQuery({
     queryKey: ["quiz", id, "answer"],
-    queryFn: fetchParticipants,
+    queryFn: fetchAnsweredQuizzes,
   });
 
-  console.log(error)
-
-  return { quiz, participants, isPending };
+  return { quiz, participants, error, isPending };
 }

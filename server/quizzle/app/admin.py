@@ -62,7 +62,7 @@ class AnswerQuestionsInline(admin.TabularInline):
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ('quizID', 'attendeeID', 'quizTitle', 'difficulty', 'totalPoints', 'finalPoints', 'participantName', 'completionDate')
+    list_display = ('quizID', 'attendeeID', 'quizTitle', 'quizDifficulty', 'totalPoints', 'finalPoints', 'participantName', 'completionDate')
     search_fields = ('quizTitle', 'participantName')
-    list_filter = ('difficulty', 'completionDate')
+    list_filter = ('quizDifficulty', 'completionDate')
     inlines = [AnswerQuestionsInline]

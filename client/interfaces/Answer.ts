@@ -1,4 +1,4 @@
-export default interface Participant {
+export default interface AnsweredQuiz {
   quizID: string;
   attendeeID: string;
   quizTitle: string;

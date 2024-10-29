@@ -1,7 +1,7 @@
 "use client";
 
-import useFetchParticipants from "@hooks/creator/useFetchParticipants";
-import useFilterParticipants from "@hooks/creator/useFilterParticipants";
+import useFetchAnsweredQuizzes from "@hooks/creator/useFetchAnsweredQuizzes";
+import useFilterAnsweredQuizzes from "@hooks/creator/useFilterAnsweredQuizzes";
 
 import Title from "@components/Creator/Title";
 import Search from "@components/Catalogue/Controller/Search";
@@ -16,10 +16,13 @@ import Pagination from "@components/Catalogue/Pagination";
 import Empty from "@components/Common/Empty";
 
 export default function Quiz() {
-  const { quiz, participants, isPending } = useFetchParticipants();
-  const { filter, handleSetPrompt } = useFilterParticipants(participants || []);
+  const { quiz, participants, isPending } = useFetchAnsweredQuizzes();
 
-  console.log(participants)
+  const { filter, handleSetPrompt } = useFilterAnsweredQuizzes(
+    participants || []
+  );
+
+  console.log(participants);
 
   return (
     <section id="participants">

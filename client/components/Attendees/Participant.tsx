@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { getFormattedDate } from "@utils/dateTime";
 
-import _ from "@interfaces/Participant";
+import _ from "@interfaces/Answer";
 
 import Trophy from "@public/quiz/trophy.png";
 
@@ -27,8 +27,12 @@ export default function Participant({
 
   const url = attendeeID && `/creator/quiz/${id}/${attendeeID}`;
 
-  const correct = questions && questions.filter((q) => q.points !== 0).length;
-  const incorrect = questions && questions.filter((q) => q.points === 0).length;
+  const correct =
+    questions && questions.filter((question) => question.points !== 0).length;
+
+  const incorrect =
+    questions && questions.filter((question) => question.points === 0).length;
+
   const date = questions && getFormattedDate(completionDate);
 
   return (

@@ -2,7 +2,10 @@
 
 import { useRouter } from "next/navigation";
 
-import useFetchQuiz from "@hooks/creator/useFetchQuiz";
+import { DIFFICULTY, OPTIONS } from "@interfaces/Quiz";
+
+import useFetchCreatedQuiz from "@hooks/creator/useFetchCreatedQuiz";
+import useFetchAnsweredQuiz from "@hooks/creator/useFetchAnsweredQuiz";
 
 import Title from "@components/Creator/Title";
 import Questions from "@components/Creator/Questions";
@@ -12,54 +15,76 @@ import Statistic from "@components/Creator/Statistic";
 import Empty from "@components/Common/Empty";
 
 export default function Answers() {
-  const { quiz } = useFetchQuiz();
+  const { quiz: createdQuiz, isPending: createdQuizIsPending } =
+    useFetchCreatedQuiz();
+
+  const { quiz: answeredQuiz, isPending: answeredQuizIsPending } =
+    useFetchAnsweredQuiz();
+
   const { back } = useRouter();
 
-  const getCorrect = () => {
-    if (quiz.questions.length === 0) return 0;
-
-    return quiz.questions.filter(
-      (question) => question.correct === question.selected
-    ).length;
-  };
-
-  const getPoints = () => {
-    const correct = quiz.questions.filter(
-      (question) => question.correct === question.selected
+  if (createdQuizIsPending || answeredQuizIsPending) {
+    return (
+      <section id="attendee">
+        <Empty reason="Fetching Quiz..." />
+      </section>
     );
+  }
 
-    return correct.reduce((prev, current) => {
-      return { ...prev, points: prev.points + current.points };
-    }).points;
-  };
+  if (!createdQuiz || !answeredQuiz) {
+    return (
+      <section id="attendee">
+        <Empty reason="Failed To Fetch Quiz" />
+      </section>
+    );
+  }
 
   return (
     <section id="attendee">
       <form onSubmit={() => {}}>
-        <Title {...quiz} />
+        <Title
+          title={createdQuiz.title}
+          difficulty={createdQuiz.difficulty as DIFFICULTY}
+        />
 
-        {quiz.questions.length === 0 && <Empty reason="Fetching Quiz..." />}
-
-        {quiz.questions.length !== 0 && (
+        {createdQuiz.questions.length !== 0 && (
           <Questions>
-            {quiz.questions.map((_, i) => (
-              <Question key={i} index={i} values={quiz} disabled />
+            {createdQuiz.questions.map((_, i) => (
+              <Question
+                key={i}
+                index={i}
+                values={{
+                  ...createdQuiz,
+                  questions: [
+                    ...createdQuiz.questions.map((q, j) => ({
+                      ...q,
+                      selected: answeredQuiz.questions[j].selected as OPTIONS,
+                    })),
+                  ],
+                }}
+                disabled
+              />
             ))}
           </Questions>
         )}
 
-        {quiz.questions.length !== 0 && <hr />}
+        {createdQuiz.questions.length !== 0 && <hr />}
 
-        {quiz.questions.length !== 0 && (
+        {createdQuiz.questions.length !== 0 && (
           <div className="buttons">
             <Button type="button" label="Go Back" onClick={back} />
 
             <Statistic
               icon="/quiz/completed.png"
-              value={`${getCorrect()}/${quiz.questions.length}`}
+              value={`${
+                answeredQuiz.questions.filter((q) => q.points !== 0).length
+              }/${answeredQuiz.questions.length}`}
             />
 
-            <Statistic icon="/quiz/trophy.png" value={`${getPoints()}`} />
+            <Statistic
+              icon="/quiz/trophy.png"
+              value={`${answeredQuiz.finalPoints}/${answeredQuiz.totalPoints}`}
+            />
           </div>
         )}
       </form>

@@ -313,7 +313,7 @@ class AnsweredQuizSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Answer
-        fields = ["quizID", "attendeeID", "participantName", "quizTitle", "totalPoints", "finalPoints", "completionDate", "questions"]
+        fields = ["quizID", "attendeeID", "quizTitle", "quizDifficulty", "participantName",  "totalPoints", "finalPoints", "completionDate", "questions"]
 
     def create(self, validated_data):
         questions_data = validated_data.pop('questions')
@@ -329,4 +329,4 @@ class GetAnsweredQuizSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Answer
-        fields = ["quizID", "attendeeID", "quizTitle", "difficulty", "participantName", "totalPoints", "finalPoints", "completionDate", "questions"]
+        fields = ["quizID", "attendeeID", "quizTitle", "quizDifficulty", "participantName", "totalPoints", "finalPoints", "completionDate", "questions"]

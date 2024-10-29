@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-import Participant from "@interfaces/Participant";
+import AnsweredQuiz from "@interfaces/Answer";
 
-export default function useFilterParticipants(participants: Participant[]) {
+export default function useFilterAnsweredQuizzes(participants: AnsweredQuiz[]) {
   const [prompt, setPrompt] = useState<string>("");
 
   const handleSetPrompt = (prompt: string) => setPrompt(prompt);
 
-  const filter: Participant[] = participants.filter((participant) =>
+  const filter: AnsweredQuiz[] = participants.filter((participant) =>
     participant.participantName.toLowerCase().includes(prompt.toLowerCase())
   );
 

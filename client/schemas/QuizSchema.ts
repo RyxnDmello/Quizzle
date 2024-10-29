@@ -14,6 +14,7 @@ export interface Question {
   question: string;
   options: Options;
   correct: OPTIONS | null;
+  selected: OPTIONS | null;
 }
 
 export interface Options {

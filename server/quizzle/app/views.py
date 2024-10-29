@@ -88,13 +88,24 @@ class LoginView(APIView):
 
 class QuizFetchView(APIView):
     def get(self, request, id):
-        quizzes = Quiz.objects.filter(creator_id=id)
-        
-        if not quizzes.exists():
-            return Response([], status=status.HTTP_200_OK)
+        if str(id).startswith("CID"):
+            quizzes = Quiz.objects.filter(creator_id=id)
+            
+            if not quizzes.exists():
+                return Response([], status=status.HTTP_200_OK)
+            
+            serializer = QuizSerializer(quizzes, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
-        serializer = QuizSerializer(quizzes, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if str(id).startswith("QID"):
+            try:
+                quiz = Quiz.objects.get(id=id)
+                serializer = QuizSerializer(quiz)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            except Quiz.DoesNotExist:
+                return Response({"error": "Quiz Not Found"}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response({"error": "Invalid ID Provided"}, status=status.HTTP_400_BAD_REQUEST)
             
 class QuizCreateView(APIView):
     def post(self, request):
@@ -124,23 +135,22 @@ class QuizCreateView(APIView):
 
 class AnsweredQuizView(APIView):
     def get(self, request, id):
-        answered_quizzes = None
-
         if str(id).startswith("QID"):
             answered_quizzes = Answer.objects.filter(quizID=id)
+            if not answered_quizzes.exists():
+                return Response([], status=status.HTTP_200_OK)
+            serialized_quizzes = GetAnsweredQuizSerializer(answered_quizzes, many=True)
+            return Response(serialized_quizzes.data, status=status.HTTP_200_OK)
 
-        if str(id).startswith("AID"):
-            answered_quizzes = Answer.objects.filter(attendeeID=id)
+        elif str(id).startswith("AID"):
+            try:
+                answered_quiz = Answer.objects.get(attendeeID=id)
+                serialized_quiz = GetAnsweredQuizSerializer(answered_quiz)
+                return Response(serialized_quiz.data, status=status.HTTP_200_OK)
+            except Answer.DoesNotExist:
+                return Response({"error": "No quiz found for the given attendee ID"}, status=status.HTTP_404_NOT_FOUND)
 
-        if answered_quizzes is None:
-            return Response({ "error": "Invalid ID Provided" }, status=status.HTTP_400_BAD_REQUEST)
-
-        if not answered_quizzes.exists():
-            return Response([], status=status.HTTP_200_OK)
-
-        serialized_quizzes = GetAnsweredQuizSerializer(answered_quizzes, many=True)
-
-        return Response(serialized_quizzes.data, status=status.HTTP_200_OK)
+        return Response({"error": "Invalid ID Provided"}, status=status.HTTP_400_BAD_REQUEST)
     
     def post(self, request, id):
         name = request.data.get('name')
@@ -182,7 +192,7 @@ class AnsweredQuizView(APIView):
             "quizID": dbQuiz.id,
             "attendeeID": dbAttendee.id,
             "quizTitle": dbQuiz.title,
-            "quizDifficult": dbQuiz.difficulty,
+            "quizDifficulty": dbQuiz.difficulty,
             "participantName": name,
             "totalPoints": totalPoints,
             "finalPoints": finalPoints,

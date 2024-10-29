@@ -76,7 +76,7 @@ class Answer(models.Model):
     quizID = models.CharField(max_length=20)
     attendeeID = models.CharField(max_length=20)
     quizTitle = models.CharField(max_length=150)
-    difficulty = models.CharField(max_length=6, choices=DIFFICULTY_LEVELS)
+    quizDifficulty = models.CharField(max_length=6, choices=DIFFICULTY_LEVELS)
     totalPoints = models.IntegerField(default=0)
     finalPoints = models.IntegerField(default=0)
     participantName = models.CharField(max_length=50)

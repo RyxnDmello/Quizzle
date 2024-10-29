@@ -14,6 +14,7 @@ interface Question {
   question: string;
   options: Options;
   correct: OPTIONS;
+  selected: OPTIONS;
 }
 
 interface Options {

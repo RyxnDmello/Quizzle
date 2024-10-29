@@ -5,7 +5,7 @@ import useAuth from "@hooks/authentication/useAuth";
 
 import Quiz from "@interfaces/Quiz";
 
-export default function useFetchQuizzes() {
+export default function useFetchCreatedQuizzes() {
   const { user } = useAuth();
 
   const fetchQuizzes = async () => {

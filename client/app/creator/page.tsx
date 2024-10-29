@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import useFetchQuizzes from "@hooks/creator/useFetchQuizzes";
+import useFetchCreatedQuizzes from "@hooks/creator/useFetchCreatedQuizzes";
 import useFilterQuizzes from "@hooks/common/useFilterQuizzes";
 
 import Controller from "@components/Catalogue/Controller";
@@ -17,7 +17,7 @@ import Pagination from "@components/Catalogue/Pagination";
 import Empty from "@components/Common/Empty";
 
 export default function Creator() {
-  const { quizzes, error, isPending } = useFetchQuizzes();
+  const { quizzes, error, isPending } = useFetchCreatedQuizzes();
   const { filter, handleSetPrompt } = useFilterQuizzes([]);
 
   const { push } = useRouter();
