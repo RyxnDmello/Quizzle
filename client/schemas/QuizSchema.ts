@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-import { DIFFICULTY } from "@interfaces/Quiz";
+import { DIFFICULTY, OPTIONS } from "@interfaces/Quiz";
 
 export default interface QuizSchema {
   id?: string;
@@ -13,8 +13,7 @@ export interface Question {
   points: number;
   question: string;
   options: Options;
-  correct: "A" | "B" | "C" | null;
-  selected: "A" | "B" | "C" | null;
+  correct: OPTIONS | null;
 }
 
 export interface Options {

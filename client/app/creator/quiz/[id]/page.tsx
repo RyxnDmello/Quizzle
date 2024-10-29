@@ -16,15 +16,17 @@ import Pagination from "@components/Catalogue/Pagination";
 import Empty from "@components/Common/Empty";
 
 export default function Quiz() {
-  const { participants } = useFetchParticipants();
-  const { filter, handleSetPrompt } = useFilterParticipants(participants);
+  const { quiz, participants, isPending } = useFetchParticipants();
+  const { filter, handleSetPrompt } = useFilterParticipants(participants || []);
+
+  console.log(participants)
 
   return (
     <section id="participants">
-      <Title title="Next.js" difficulty="MEDIUM" />
+      <Title title={quiz!.title} difficulty={quiz!.difficulty} />
 
       <div className="details">
-        <Code code="QID24680" />
+        <Code code={quiz!.id!} />
 
         <div>
           <Button icon="/quiz/edit.svg" label="Edit" onClick={() => {}} />
@@ -36,23 +38,21 @@ export default function Quiz() {
 
       <Search placeholder="Search Participant" onChange={handleSetPrompt} />
 
-      {participants.length === 0 && (
+      {isPending && <Empty reason="Fetching Participants..." />}
+
+      {!isPending && (!participants || participants.length === 0) && (
         <Empty reason="Quiz Has Not Been Attempted" />
       )}
 
-      {participants.length !== 0 && (
+      {participants && participants.length !== 0 && (
         <Participants>
           {(filter.length === 0 ? participants : filter).map((participant) => (
-            <Participant
-              key={participant.id}
-              attendee={participant.id}
-              {...participant}
-            />
+            <Participant key={participant.quizID} {...participant} />
           ))}
         </Participants>
       )}
 
-      {participants.length !== 0 && <Pagination pages={5} />}
+      {participants && participants.length !== 0 && <Pagination pages={5} />}
     </section>
   );
 }

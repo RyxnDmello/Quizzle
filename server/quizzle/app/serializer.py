@@ -3,9 +3,9 @@ from rest_framework import serializers
 
 from django.contrib.auth.hashers import make_password
 
-from .models import CreatorModel, AttendeeModel
-from .models import QuizModel, QuestionModel, OptionsModel
-from .models import AnswerModel, AnswerQuestionsModel
+from .models import Creator, Attendee
+from .models import Quiz, Question, Option
+from .models import Answer, AnswerQuestions
 
 from .validations import validate_name, validate_email, validate_mobile, validate_password
 from .validations import validate_title, validate_difficulty
@@ -55,17 +55,17 @@ class RegisterCreatorSerializer(ModelSerializer):
     )
     
     class Meta:
-        model = CreatorModel
+        model = Creator
         fields = ("id", "name", "email", "mobile", "password")
     
     def validate_email(self, value):
-        if CreatorModel.objects.filter(email=value).exists():
+        if Creator.objects.filter(email=value).exists():
             raise serializers.ValidationError("User With Given Email Address Already Exists")
         
         return value
         
     def register(self, validated_data):
-        user = CreatorModel(
+        user = Creator(
             name=validated_data["name"],
             email=validated_data["email"],
             mobile=validated_data["mobile"],
@@ -116,17 +116,17 @@ class RegisterAttendeeSerializer(ModelSerializer):
     )
     
     class Meta:
-        model = AttendeeModel
+        model = Attendee
         fields = ("id", "name", "email", "mobile", "password")
     
     def validate_email(self, value):
-        if AttendeeModel.objects.filter(email=value).exists():
+        if Attendee.objects.filter(email=value).exists():
             raise serializers.ValidationError("User With Given Email Address Already Exists")
         
         return value
         
     def register(self, validated_data):
-        user = AttendeeModel(
+        user = Attendee(
             name=validated_data["name"],
             email=validated_data["email"],
             mobile=validated_data["mobile"],
@@ -193,7 +193,7 @@ class OptionsSerializer(serializers.ModelSerializer):
     )
     
     class Meta:
-        model = OptionsModel
+        model = Option
         fields = ["A", "B", "C"]
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -230,7 +230,7 @@ class QuestionSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = QuestionModel
+        model = Question
         fields = ["question", "points", "options", "correct"]
 
 class CreateQuizSerializer(serializers.ModelSerializer):
@@ -265,17 +265,17 @@ class CreateQuizSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = QuizModel
+        model = Quiz
         fields = ("id", "creator_id", "title", "difficulty",  "points", "questions")
 
     def create(self, validated_data):
         questions_data = validated_data.pop("questions")
         creator_id = validated_data.pop("creator_id")
 
-        if not CreatorModel.objects.filter(id=creator_id).exists():
+        if not Creator.objects.filter(id=creator_id).exists():
             raise serializers.ValidationError({"creator_id": "Invalid Creator ID"})
 
-        quiz = QuizModel.objects.create(creator_id=creator_id, **validated_data)
+        quiz = Quiz.objects.create(creator_id=creator_id, **validated_data)
 
         total_points = 0
         
@@ -284,8 +284,8 @@ class CreateQuizSerializer(serializers.ModelSerializer):
             points = question_data["points"]
             total_points += int(points)
 
-            question = QuestionModel.objects.create(quiz=quiz, **question_data)
-            OptionsModel.objects.create(question=question, **options_data)
+            question = Question.objects.create(quiz=quiz, **question_data)
+            Option.objects.create(question=question, **options_data)
 
         quiz.points = total_points
         quiz.save()
@@ -296,7 +296,7 @@ class QuizSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True)
     
     class Meta:
-        model = QuizModel
+        model = Quiz
         fields = ["id", "title", "difficulty", "points", "questions", "creator_id"]
 
 #----------------------------------------------------#
@@ -305,23 +305,22 @@ class QuizSerializer(serializers.ModelSerializer):
 
 class AnsweredQuestionsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = AnswerQuestionsModel
-        fields = ["question", "correct", "points"]
+        model = AnswerQuestions
+        fields = ["question", "points", "selected", "correct"]
 
 class AnsweredQuizSerializer(serializers.ModelSerializer):
     questions = AnsweredQuestionsSerializer(many=True)
 
     class Meta:
-        model = AnswerModel
-        fields = ["quiz_id", "attendee_id", "name", "title", "points", "date", "questions"]
+        model = Answer
+        fields = ["quizID", "attendeeID", "participantName", "quizTitle", "totalPoints", "finalPoints", "completionDate", "questions"]
 
     def create(self, validated_data):
         questions_data = validated_data.pop('questions')
-
-        quiz_answer = AnswerModel.objects.create(**validated_data)
+        quiz_answer = Answer.objects.create(**validated_data)
 
         for question_data in questions_data:
-            AnswerQuestionsModel.objects.create(quiz_answer=quiz_answer, **question_data)
+            AnswerQuestions.objects.create(quizAnswer=quiz_answer, **question_data)
 
         return quiz_answer
     
@@ -329,5 +328,5 @@ class GetAnsweredQuizSerializer(serializers.ModelSerializer):
     questions = AnsweredQuestionsSerializer(many=True, read_only=True)
 
     class Meta:
-        model = AnswerModel
-        fields = ['quiz_id', 'attendee_id', 'title', 'difficulty', 'name', 'date', 'points', 'questions']
+        model = Answer
+        fields = ["quizID", "attendeeID", "quizTitle", "difficulty", "participantName", "totalPoints", "finalPoints", "completionDate", "questions"]

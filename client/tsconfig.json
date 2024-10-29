@@ -26,6 +26,7 @@
       "@schemas/*": ["./schemas/*"],
       "@styles/*": ["./styles/*"],
       "@public/*": ["./public/*"],
+      "@utils/*": ["./utils/*"],
       "@/*": ["./*"]
     }
   },

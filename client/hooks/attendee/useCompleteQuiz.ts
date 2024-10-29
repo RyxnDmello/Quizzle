@@ -21,8 +21,6 @@ export default function useCompleteQuiz() {
         };
       }),
     ];
-
-    console.log(quiz);
   };
 
   const fetchQuiz = () => {
@@ -40,7 +38,6 @@ export default function useCompleteQuiz() {
               C: "All of the above.",
             },
             correct: null,
-            selected: null,
             points: 20,
           },
           {
@@ -51,7 +48,6 @@ export default function useCompleteQuiz() {
               C: "All of the above.",
             },
             correct: null,
-            selected: null,
             points: 20,
           },
         ],

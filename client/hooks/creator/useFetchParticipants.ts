@@ -1,75 +1,41 @@
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
+import axios from "axios";
 
-interface Participant {
-  id: string;
-  name: string;
-  points: number;
-  correct: number;
-  questions: number;
-  date: string;
-}
+import useFetchQuizzes from "./useFetchQuizzes";
+
+import Participant from "@interfaces/Participant";
+
+import useAuth from "@hooks/authentication/useAuth";
 
 export default function useFetchParticipants() {
-  const [participants, setParticipants] = useState<Participant[]>([]);
+  const { user } = useAuth();
+  const { id } = useParams<{ id: string }>();
+  const { quizzes } = useFetchQuizzes();
 
-  const fetchParticipants = () => {
-    setTimeout(() => {
-      setParticipants([
-        {
-          id: "AID24680",
-          name: "Ryan Nolasco D Mello",
-          points: 50,
-          correct: 5,
-          questions: 10,
-          date: "10/10/2024",
+  const fetchParticipants = async () => {
+    const { data } = await axios.get<Participant[]>(
+      `${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz/${id}/answer`,
+      {
+        headers: {
+          Authorization: `Bearer ${user!.accessToken}`,
         },
-        {
-          id: "AID13579",
-          name: "Rhea Saldanha",
-          points: 10,
-          correct: 5,
-          questions: 10,
-          date: "10/10/2024",
-        },
-        {
-          id: "AID52706",
-          name: "Harsh Jain",
-          points: 60,
-          correct: 6,
-          questions: 10,
-          date: "10/10/2024",
-        },
-        {
-          id: "AID123123",
-          name: "Jerson Braganza",
-          points: 50,
-          correct: 5,
-          questions: 10,
-          date: "10/10/2024",
-        },
-        {
-          id: "AID312312",
-          name: "Nathan Sequeria",
-          points: 10,
-          correct: 5,
-          questions: 10,
-          date: "10/10/2024",
-        },
-        {
-          id: "AID67478",
-          name: "Ethan Hunt",
-          points: 60,
-          correct: 6,
-          questions: 10,
-          date: "10/10/2024",
-        },
-      ]);
-    }, 1500);
+      }
+    );
+
+    console.log(data);
+
+    return data || [];
   };
 
-  useEffect(() => {
-    fetchParticipants();
-  }, [participants]);
+  const quiz = quizzes?.filter((quiz) => quiz.id === id)[0];
 
-  return { participants };
+  const { data: participants, error, isPending } = useQuery({
+    queryKey: ["quiz", id, "answer"],
+    queryFn: fetchParticipants,
+  });
+
+  console.log(error)
+
+  return { quiz, participants, isPending };
 }

@@ -1,9 +1,16 @@
 import { useState } from "react";
 import { useFormik } from "formik";
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+
+import useAuth from "@hooks/authentication/useAuth";
 
 import QuizSchema, { validationSchema } from "@schemas/QuizSchema";
 
 export default function useCreateQuiz() {
+  const { user } = useAuth();
+  const { replace } = useRouter();
+
   const [quiz, setQuiz] = useState<QuizSchema>({
     title: "",
     difficulty: "NULL",
@@ -16,11 +23,31 @@ export default function useCreateQuiz() {
           C: "",
         },
         correct: null,
-        selected: null,
         points: 0,
       },
     ],
   });
+
+  const onSubmit = async (values: QuizSchema) => {
+    try {
+      await axios.post<QuizSchema>(
+        `${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz`,
+        {
+          ...values,
+          creatorID: user!.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user!.accessToken}`,
+          },
+        }
+      );
+
+      replace(`/${user!.type!.toLowerCase()}`, { scroll: true });
+    } catch (error) {
+      console.log(error instanceof AxiosError && error.response?.data);
+    }
+  };
 
   const handleAddQuestion = () => {
     setQuiz((prev) => {
@@ -29,6 +56,7 @@ export default function useCreateQuiz() {
         questions: [
           ...prev.questions,
           {
+            points: 0,
             question: "",
             options: {
               A: "",
@@ -36,8 +64,6 @@ export default function useCreateQuiz() {
               C: "",
             },
             correct: null,
-            selected: null,
-            points: 0,
           },
         ],
       };
@@ -66,9 +92,7 @@ export default function useCreateQuiz() {
     initialValues: quiz,
     validationSchema: validationSchema,
     enableReinitialize: true,
-    onSubmit: () => {
-      console.log(values);
-    },
+    onSubmit: onSubmit,
   });
 
   return {

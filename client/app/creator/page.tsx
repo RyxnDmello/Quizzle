@@ -24,8 +24,6 @@ export default function Creator() {
 
   const handleNavigate = (id: string) => push(`/creator/quiz/${id}`);
 
-  console.log(quizzes)
-
   return (
     <section id="catalogue">
       <Controller onSubmit={() => {}}>
@@ -56,7 +54,7 @@ export default function Creator() {
 
       {quizzes && quizzes.length !== 0 && (
         <Quizzes>
-          {(quizzes).map((quiz) => (
+          {quizzes.map((quiz) => (
             <Quiz
               key={quiz.id}
               {...quiz}
