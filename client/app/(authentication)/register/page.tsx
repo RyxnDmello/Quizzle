@@ -7,10 +7,18 @@ import Form from "@components/Authentication/Form";
 import Input from "@components/Authentication/Input";
 import Button from "@components/Authentication/Button";
 import Switch from "@components/Authentication/Switch";
+import Error from "@components/Common/Error";
 
 export default function Register() {
-  const { touched, errors, handleBlur, handleChange, handleSubmit } =
-    useRegister();
+  const {
+    touched,
+    error,
+    isPending,
+    errors,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+  } = useRegister();
 
   return (
     <section>
@@ -68,9 +76,11 @@ export default function Register() {
           onBlur={handleBlur}
         />
 
+        <Error error={error} fontSize="0.95rem" />
+
         <Button
           label="Create An Account"
-          disabled={Object.keys(errors).length !== 0}
+          disabled={Object.keys(errors).length !== 0 || isPending}
         />
       </Form>
 

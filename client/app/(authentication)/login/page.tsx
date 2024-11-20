@@ -7,10 +7,18 @@ import Form from "@components/Authentication/Form";
 import Input from "@components/Authentication/Input";
 import Button from "@components/Authentication/Button";
 import Switch from "@components/Authentication/Switch";
+import Error from "@components/Common/Error";
 
 export default function Login() {
-  const { touched, errors, handleBlur, handleChange, handleSubmit } =
-    useLogin();
+  const {
+    touched,
+    error,
+    errors,
+    isPending,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+  } = useLogin();
 
   return (
     <section>
@@ -37,7 +45,12 @@ export default function Login() {
           onBlur={handleBlur}
         />
 
-        <Button label="Login" disabled={Object.keys(errors).length !== 0} />
+        <Error error={error} fontSize="0.95rem" />
+
+        <Button
+          label="Login"
+          disabled={Object.keys(errors).length !== 0 || isPending}
+        />
       </Form>
 
       <Switch url="/register" reason="Do Not Have An Account?" label="Create" />

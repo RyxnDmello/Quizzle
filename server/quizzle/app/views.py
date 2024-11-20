@@ -13,6 +13,8 @@ from .serializer import RegisterCreatorSerializer, RegisterAttendeeSerializer, L
 from .serializer import CreateQuizSerializer, QuizSerializer
 from .serializer import AnsweredQuizSerializer, GetAnsweredQuizSerializer
 
+from .utils import getError
+
 #----------------------------------------------------#
 #-------------------- USER VIEWS --------------------#
 #----------------------------------------------------#
@@ -35,7 +37,8 @@ class RegisterView(APIView):
             user_serializer = RegisterAttendeeSerializer(data=request.data)
         
         if not user_serializer.is_valid():
-            return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            error = getError(user_serializer.errors)
+            return Response({ "error": error }, status=status.HTTP_400_BAD_REQUEST)
         
         if request.data.get("confirmPassword") is None:
             return Response({ "error": "Confirm Password Must Be Provided" }, status=status.HTTP_400_BAD_REQUEST)
@@ -60,7 +63,8 @@ class LoginView(APIView):
         user = LoginSerializer(data=request.data)
 
         if not user.is_valid():
-            return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
+            error = getError(user.errors)
+            return Response({ "error": error }, status=status.HTTP_400_BAD_REQUEST)
         
         email = request.data.get("email")
         password = request.data.get("password")

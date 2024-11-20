@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
 
@@ -21,49 +22,62 @@ export default function useRegister() {
     confirmPassword: "",
   };
 
-  const onSubmit = async (values: RegisterSchema) => {
+  const onRegister = async (values: RegisterSchema) => {
     values.type = localStorage.getItem("USER") as USER;
 
-    try {
-      const {
-        data: { access, refresh },
-      } = await axios.post<{ refresh: string; access: string }>(
-        `${process.env.NEXT_PUBLIC_SERVER_API}/api/token`,
-        {
-          username: "RyanDmello",
-          password: "RyxnDmello@Django10!",
-        }
-      );
+    const {
+      data: { access, refresh },
+    } = await axios.post<{ refresh: string; access: string }>(
+      `${process.env.NEXT_PUBLIC_SERVER_API}/api/token`,
+      {
+        username: "RyanDmello",
+        password: "RyxnDmello@Django10!",
+      }
+    );
 
-      const { data } = await axios.post<RegisterSchema>(
-        `${process.env.NEXT_PUBLIC_SERVER_API}/api/register`,
-        values
-      );
+    const { data } = await axios.post<RegisterSchema>(
+      `${process.env.NEXT_PUBLIC_SERVER_API}/api/register`,
+      values
+    );
 
-      data.type = values.type;
+    data.type = values.type;
 
-      dispatch({
-        type: "AUTHENTICATE",
-        payload: {
-          ...data,
-          refreshToken: refresh,
-          accessToken: access,
-        },
-      });
+    dispatch({
+      type: "AUTHENTICATE",
+      payload: {
+        ...data,
+        refreshToken: refresh,
+        accessToken: access,
+      },
+    });
 
-      replace(`/${data.type!.toLowerCase()}`, { scroll: true });
-    } catch (error) {
-      console.log(error instanceof AxiosError && error.response?.data);
-    }
+    replace(`/${data.type!.toLowerCase()}`, { scroll: true });
   };
+
+  const { error, isPending, mutate } = useMutation<
+    void,
+    AxiosError<{ error: string }>,
+    RegisterSchema
+  >({
+    mutationKey: ["register"],
+    mutationFn: onRegister,
+  });
 
   const { touched, errors, handleBlur, handleChange, handleSubmit } = useFormik(
     {
       initialValues,
       validationSchema,
-      onSubmit,
+      onSubmit: (values) => mutate(values),
     }
   );
 
-  return { touched, errors, handleBlur, handleChange, handleSubmit };
+  return {
+    touched,
+    error,
+    errors,
+    isPending,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+  };
 }
