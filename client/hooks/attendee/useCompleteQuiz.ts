@@ -15,14 +15,11 @@ export default function useCompleteQuiz() {
   const { replace } = useRouter();
 
   const fetchAnsweredQuiz = async () => {
-    const { data } = await axios.get<QuizSchema>(
-      `${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${user!.accessToken}`,
-        },
-      }
-    );
+    const { data } = await axios.get<QuizSchema>(`/api/quiz/${id}`, {
+      headers: {
+        Authorization: `Bearer ${user!.accessToken}`,
+      },
+    });
 
     return data;
   };
@@ -39,7 +36,7 @@ export default function useCompleteQuiz() {
   const onSubmit = () => {
     try {
       axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz/${id}/answer`,
+        `/api/quiz/${id}/answer`,
         {
           attendeeID: user!.id,
           name: user!.name,

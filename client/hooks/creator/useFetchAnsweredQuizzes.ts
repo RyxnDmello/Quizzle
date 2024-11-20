@@ -14,14 +14,11 @@ export default function useFetchAnsweredQuizzes() {
   const { quizzes } = useFetchCreatedQuizzes();
 
   const fetchAnsweredQuizzes = async () => {
-    const { data } = await axios.get<AnsweredQuiz[]>(
-      `${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz/${id}/answer`,
-      {
-        headers: {
-          Authorization: `Bearer ${user!.accessToken}`,
-        },
-      }
-    );
+    const { data } = await axios.get<AnsweredQuiz[]>(`/api/quiz/${id}/answer`, {
+      headers: {
+        Authorization: `Bearer ${user!.accessToken}`,
+      },
+    });
 
     return data || [];
   };

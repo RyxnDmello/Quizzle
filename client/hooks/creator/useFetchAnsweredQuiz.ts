@@ -12,15 +12,13 @@ export default function useFetchAnsweredQuiz() {
 
   const fetchAnsweredQuiz = async () => {
     const { data } = await axios.get<AnsweredQuiz>(
-      `${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz/${attendee}/answer`,
+      `/api/quiz/${attendee}/answer`,
       {
         headers: {
           Authorization: `Bearer ${user!.accessToken}`,
         },
       }
     );
-
-    console.log("Answered Quiz:", data);
 
     return data;
   };

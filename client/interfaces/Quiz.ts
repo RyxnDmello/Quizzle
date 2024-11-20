@@ -9,7 +9,7 @@ export default interface Quiz {
   questions: Question[];
 }
 
-interface Question {
+export interface Question {
   points: number;
   question: string;
   options: Options;
@@ -17,7 +17,7 @@ interface Question {
   selected: OPTIONS;
 }
 
-interface Options {
+export interface Options {
   A: string;
   B: string;
   C: string;

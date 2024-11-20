@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import useFetchCreatedQuizzes from "@hooks/creator/useFetchCreatedQuizzes";
-import useFilterQuizzes from "@hooks/common/useFilterQuizzes";
+import useFilterQuizzes from "@hooks/creator/useFilterQuizzes";
 
 import Controller from "@components/Catalogue/Controller";
 import Search from "@components/Catalogue/Controller/Search";
@@ -59,6 +59,7 @@ export default function Creator() {
               key={quiz.id}
               {...quiz}
               points={quiz.points}
+              length={quiz.questions.length}
               onClick={() => handleNavigate(quiz.id!)}
             />
           ))}

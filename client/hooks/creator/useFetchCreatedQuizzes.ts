@@ -9,14 +9,11 @@ export default function useFetchCreatedQuizzes() {
   const { user } = useAuth();
 
   const fetchQuizzes = async () => {
-    const { data } = await axios.get<Quiz[]>(
-      `${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz/${user!.id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${user!.accessToken}`,
-        },
-      }
-    );
+    const { data } = await axios.get<Quiz[]>(`/api/quiz/${user!.id}`, {
+      headers: {
+        Authorization: `Bearer ${user!.accessToken}`,
+      },
+    });
 
     return data || [];
   };

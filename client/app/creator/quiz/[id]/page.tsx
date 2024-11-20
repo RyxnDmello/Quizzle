@@ -22,8 +22,6 @@ export default function Quiz() {
     participants || []
   );
 
-  console.log(participants);
-
   return (
     <section id="participants">
       <Title title={quiz!.title} difficulty={quiz!.difficulty} />

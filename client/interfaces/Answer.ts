@@ -1,8 +1,10 @@
+import { DIFFICULTY } from "./Quiz";
+
 export default interface AnsweredQuiz {
   quizID: string;
   attendeeID: string;
   quizTitle: string;
-  quizDifficulty: string;
+  quizDifficulty: DIFFICULTY;
   participantName: string;
   totalPoints: number;
   finalPoints: number;

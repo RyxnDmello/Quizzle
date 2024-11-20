@@ -32,7 +32,7 @@ export default function useCreateQuiz() {
   const onSubmit = async (values: QuizSchema) => {
     try {
       await axios.post<QuizSchema>(
-        `${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz`,
+        `/api/quiz`,
         {
           ...values,
           creatorID: user!.id,

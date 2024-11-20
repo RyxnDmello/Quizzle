@@ -1,17 +1,21 @@
 import Image from "next/image";
 
-import _ from "@interfaces/Quiz";
+import { DIFFICULTY } from "@interfaces/Quiz";
 
 import styles from "./Quiz.module.scss";
 
-interface QuizProps extends _ {
+interface QuizProps {
+  title: string;
+  points: number;
+  length: number;
+  difficulty: DIFFICULTY;
   onClick?: () => void;
 }
 
 export default function Quiz({
   title,
   points,
-  questions,
+  length,
   difficulty,
   onClick,
 }: QuizProps) {
@@ -26,7 +30,7 @@ export default function Quiz({
       </div>
 
       <div className={styles.details}>
-        <p>{questions.length} Questions</p>
+        <p>{length} Questions</p>
 
         <div>
           <Image

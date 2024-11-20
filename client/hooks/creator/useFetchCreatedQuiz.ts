@@ -11,21 +11,20 @@ export default function useFetchCreatedQuiz() {
   const { user } = useAuth();
 
   const fetchQuiz = async () => {
-    const { data } = await axios.get<Quiz>(
-      `${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${user!.accessToken}`,
-        },
-      }
-    );
-
-    console.log("quiz:", data);
+    const { data } = await axios.get<Quiz>(`/api/quiz/${id}`, {
+      headers: {
+        Authorization: `Bearer ${user!.accessToken}`,
+      },
+    });
 
     return data;
   };
 
-  const { data: quiz, error, isPending } = useQuery<Quiz>({
+  const {
+    data: quiz,
+    error,
+    isPending,
+  } = useQuery<Quiz>({
     queryKey: ["quiz", id],
     queryFn: fetchQuiz,
   });

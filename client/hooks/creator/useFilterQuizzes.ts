@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Quiz } from "@interfaces/Quiz";
+import Quiz from "@interfaces/Quiz";
 
 export default function useFilterQuizzes(quizzes: Quiz[]) {
   const [prompt, setPrompt] = useState<string>("");
