@@ -12,8 +12,26 @@ import Button from "@components/Inputs/Button";
 import Empty from "@components/Common/Empty";
 
 export default function Create() {
-  const { quiz, errors, setFieldValue, handleSubmit } = useCompleteQuiz();
+  const { quiz, error, errors, isPending, setFieldValue, handleSubmit } =
+    useCompleteQuiz();
+
   const { replace } = useRouter();
+
+  if (isPending) {
+    return (
+      <section id="attendee">
+        <Empty reason={isPending && "Creating Your Quiz..."} />
+      </section>
+    );
+  }
+
+  if (!quiz || error) {
+    return (
+      <section id="attendee">
+        <Empty reason="Failed To Fetch Quiz" />
+      </section>
+    );
+  }
 
   return (
     <section id="quiz">

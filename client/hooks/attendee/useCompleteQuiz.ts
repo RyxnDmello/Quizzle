@@ -1,68 +1,79 @@
-import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
 import { useFormik } from "formik";
+
+import useAuth from "@hooks/authentication/useAuth";
 
 import QuizSchema from "@schemas/QuizSchema";
 import AnswerSchema, { validationSchema } from "@schemas/AnswerSchema";
 
 export default function useCompleteQuiz() {
-  const [quiz, setQuiz] = useState<QuizSchema>({
-    id: undefined,
-    title: "",
-    difficulty: "NULL",
-    questions: [],
+  const { id } = useParams<{ id: string }>();
+  const { user } = useAuth();
+
+  const { replace } = useRouter();
+
+  const fetchAnsweredQuiz = async () => {
+    const { data } = await axios.get<QuizSchema>(
+      `${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${user!.accessToken}`,
+        },
+      }
+    );
+
+    return data;
+  };
+
+  const {
+    data: quiz,
+    error,
+    isPending,
+  } = useQuery({
+    queryKey: ["attendee", id],
+    queryFn: fetchAnsweredQuiz,
   });
 
   const onSubmit = () => {
-    quiz.questions = [
-      ...quiz.questions.map((question, i) => {
-        return {
-          ...question,
-          selected: values.questions[i].selected,
-        };
-      }),
-    ];
-  };
+    try {
+      axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz/${id}/answer`,
+        {
+          attendeeID: user!.id,
+          name: user!.name,
+          questions: values.questions.map((q) => {
+            return {
+              selected: q.selected,
+            };
+          }),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user!.accessToken}`,
+          },
+        }
+      );
 
-  const fetchQuiz = () => {
-    setTimeout(() => {
-      setQuiz({
-        id: "QID24680",
-        title: "Next.js",
-        difficulty: "MEDIUM",
-        questions: [
-          {
-            question: "What is Next.js",
-            options: {
-              A: "They manage state.",
-              B: "Cached in the server.",
-              C: "All of the above.",
-            },
-            correct: null,
-            points: 20,
-          },
-          {
-            question: "What are Server Components",
-            options: {
-              A: "They manage state.",
-              B: "Cached in the server.",
-              C: "All of the above.",
-            },
-            correct: null,
-            points: 20,
-          },
-        ],
+      replace("/attendee", {
+        scroll: true,
       });
-    }, 1500);
+    } catch (error) {
+      console.log(error instanceof AxiosError && error.response?.data.error);
+    }
   };
 
   const initialValues: AnswerSchema = {
-    questions: [
-      ...Array.from({ length: quiz.questions.length }, () => {
-        return {
-          selected: null,
-        };
-      }),
-    ],
+    questions: quiz
+      ? [
+          ...Array.from({ length: quiz.questions.length }, () => {
+            return {
+              selected: null,
+            };
+          }),
+        ]
+      : [],
   };
 
   const { values, errors, handleSubmit, setFieldValue } = useFormik({
@@ -72,9 +83,5 @@ export default function useCompleteQuiz() {
     onSubmit: onSubmit,
   });
 
-  useEffect(() => {
-    fetchQuiz();
-  }, [quiz]);
-
-  return { quiz, errors, handleSubmit, setFieldValue };
+  return { quiz, error, errors, isPending, handleSubmit, setFieldValue };
 }

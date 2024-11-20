@@ -23,6 +23,7 @@ export default function useCreateQuiz() {
           C: "",
         },
         correct: null,
+        selected: null,
         points: 0,
       },
     ],
@@ -64,6 +65,7 @@ export default function useCreateQuiz() {
               C: "",
             },
             correct: null,
+            selected: null,
           },
         ],
       };
