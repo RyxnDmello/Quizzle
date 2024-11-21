@@ -90,7 +90,7 @@ class LoginView(APIView):
 #-------------------- QUIZ VIEWS --------------------#
 #----------------------------------------------------#
 
-class QuizFetchView(APIView):
+class QuizView(APIView):
     def get(self, request, id):
         if str(id).startswith("CID"):
             quizzes = Quiz.objects.filter(creator_id=id)
@@ -119,6 +119,16 @@ class QuizFetchView(APIView):
                 return Response({"error": "Quiz Not Found"}, status=status.HTTP_404_NOT_FOUND)
 
         return Response({"error": "Invalid ID Provided"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, id):
+        if str(id).startswith("QID"):
+            try:
+                quiz = Quiz.objects.get(id=id).delete()
+                return Response(status=status.HTTP_200_OK)
+            except Quiz.DoesNotExist:
+                return Response({"error": "Failed To Delete Quiz"}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response({"error": "Invalid ID Provided"}, status=status.HTTP_400_BAD_REQUEST)
             
 class QuizCreateView(APIView):
     def post(self, request):
@@ -133,7 +143,8 @@ class QuizCreateView(APIView):
             quiz = CreateQuizSerializer(data=quiz_data)
 
             if not quiz.is_valid():
-                return Response({ "error": quiz.errors }, status.HTTP_400_BAD_REQUEST)
+                error = getError(quiz.errors)
+                return Response({ "error": error }, status.HTTP_400_BAD_REQUEST)
             
             quiz.save()
             
@@ -165,7 +176,7 @@ class AnsweredQuizView(APIView):
             except Answer.DoesNotExist:
                 return Response({"error": "No Quiz Found With Given Attendee ID"}, status=status.HTTP_404_NOT_FOUND)
             
-        return Response({"error": "Invalid ID Provided"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "Invalid Quiz ID Provided"}, status=status.HTTP_400_BAD_REQUEST)
     
     def post(self, request, id):
         name = request.data.get('name')
@@ -217,7 +228,8 @@ class AnsweredQuizView(APIView):
         dbQuiz = AnsweredQuizSerializer(data=quiz_answer_data)
         
         if not dbQuiz.is_valid():
-            return Response(dbQuiz.errors, status=status.HTTP_400_BAD_REQUEST)
+            error = getError(dbQuiz.errors)
+            return Response({ "error": error }, status=status.HTTP_400_BAD_REQUEST)
         
         dbQuiz.save()
         

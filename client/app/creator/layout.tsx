@@ -19,7 +19,7 @@ interface CreatorLayoutProps {
 export default function CreatorLayout({ children }: CreatorLayoutProps) {
   return (
     <body>
-      <Navbar name="Ryan Nolasco D Mello" url="/creator" />
+      <Navbar url="/creator" />
       <main>
         <ReactQueryProvider>{children}</ReactQueryProvider>
       </main>

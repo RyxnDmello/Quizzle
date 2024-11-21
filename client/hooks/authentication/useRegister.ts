@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
@@ -11,7 +12,7 @@ import RegisterSchema, { validationSchema } from "@schemas/RegisterSchema";
 import { useFormik } from "formik";
 
 export default function useRegister() {
-  const { dispatch } = useAuth();
+  const { user, dispatch } = useAuth();
   const { replace } = useRouter();
 
   const initialValues: RegisterSchema = {
@@ -70,6 +71,12 @@ export default function useRegister() {
       onSubmit: (values) => mutate(values),
     }
   );
+
+  useEffect(() => {
+    if (!user || !user.accessToken) return;
+    if (user.type !== localStorage.getItem("USER")) return;
+    replace(`/${user.type?.toLowerCase()}`, { scroll: true });
+  }, []);
 
   return {
     touched,

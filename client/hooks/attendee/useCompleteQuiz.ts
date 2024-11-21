@@ -1,5 +1,5 @@
 import { useParams, useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useFormik } from "formik";
 
@@ -14,7 +14,7 @@ export default function useCompleteQuiz() {
 
   const { replace } = useRouter();
 
-  const fetchAnsweredQuiz = async () => {
+  const onFetchQuiz = async () => {
     const { data } = await axios.get<QuizSchema>(`/api/quiz/${id}`, {
       headers: {
         Authorization: `Bearer ${user!.accessToken}`,
@@ -24,42 +24,45 @@ export default function useCompleteQuiz() {
     return data;
   };
 
+  const onCompleteQuiz = async () => {
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz/${id}/answer`,
+      {
+        attendeeID: user!.id,
+        name: user!.name,
+        questions: values.questions.map((q) => {
+          return {
+            selected: q.selected,
+          };
+        }),
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${user!.accessToken}`,
+        },
+      }
+    );
+
+    replace("/attendee", { scroll: true });
+  };
+
   const {
     data: quiz,
-    error,
-    isPending,
-  } = useQuery({
+    error: fetchError,
+    isPending: isFetchPending,
+  } = useQuery<QuizSchema, AxiosError<{ error: string }>, QuizSchema>({
     queryKey: ["attendee", id],
-    queryFn: fetchAnsweredQuiz,
+    queryFn: onFetchQuiz,
   });
 
-  const onSubmit = () => {
-    try {
-      axios.post(
-        `/api/quiz/${id}/answer`,
-        {
-          attendeeID: user!.id,
-          name: user!.name,
-          questions: values.questions.map((q) => {
-            return {
-              selected: q.selected,
-            };
-          }),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user!.accessToken}`,
-          },
-        }
-      );
-
-      replace("/attendee", {
-        scroll: true,
-      });
-    } catch (error) {
-      console.log(error instanceof AxiosError && error.response?.data.error);
-    }
-  };
+  const {
+    error: completeError,
+    isPending: isCompletePending,
+    mutate: onSubmit,
+  } = useMutation<void, AxiosError<{ error: string }>, void>({
+    mutationKey: ["quiz", id, "answer"],
+    mutationFn: onCompleteQuiz,
+  });
 
   const initialValues: AnswerSchema = {
     questions: quiz
@@ -73,12 +76,26 @@ export default function useCompleteQuiz() {
       : [],
   };
 
-  const { values, errors, handleSubmit, setFieldValue } = useFormik({
+  const {
+    values,
+    errors: formErrors,
+    handleSubmit,
+    setFieldValue,
+  } = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
     enableReinitialize: true,
-    onSubmit: onSubmit,
+    onSubmit: () => onSubmit(),
   });
 
-  return { quiz, error, errors, isPending, handleSubmit, setFieldValue };
+  return {
+    quiz,
+    fetchError,
+    completeError,
+    formErrors,
+    isFetchPending,
+    isCompletePending,
+    handleSubmit,
+    setFieldValue,
+  };
 }

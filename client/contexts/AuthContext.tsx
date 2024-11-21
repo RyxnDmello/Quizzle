@@ -1,17 +1,23 @@
 "use client";
 
-import { useReducer, Dispatch, createContext, PropsWithChildren } from "react";
+import {
+  useEffect,
+  useReducer,
+  Dispatch,
+  createContext,
+  PropsWithChildren,
+} from "react";
 
-import { USER } from "@interfaces/User";
+import {
+  getCookie,
+  setCookie,
+  removeCookie,
+  isAuthenticated,
+} from "@utils/getCookies";
 
-interface User {
-  type?: USER;
-  id?: string;
-  name?: string;
-  email?: string;
-  accessToken?: string;
-  refreshToken?: string;
-}
+import { useRouter } from "next/navigation";
+
+import User from "@interfaces/User";
 
 interface AuthContext {
   user: AuthState;
@@ -29,9 +35,11 @@ type AuthType = "AUTHENTICATE" | "LOGOUT";
 const authReducer = (state: AuthState, action: AuthAction) => {
   switch (action.type) {
     case "AUTHENTICATE":
+      if (action.payload) setCookie(action.payload);
       return action.payload;
 
     case "LOGOUT":
+      removeCookie();
       return null;
 
     default:
@@ -46,8 +54,21 @@ export const AuthContext = createContext<AuthContext>({
 
 export default function AuthContextProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(authReducer, null);
+  const { replace } = useRouter();
 
-  console.log(state);
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      replace("/");
+      return;
+    }
+
+    const userCookie = getCookie()!;
+
+    dispatch({
+      type: "AUTHENTICATE",
+      payload: userCookie,
+    });
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user: state, dispatch }}>

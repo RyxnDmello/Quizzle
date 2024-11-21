@@ -10,25 +10,48 @@ import Question from "@components/Attendees/Question";
 
 import Button from "@components/Inputs/Button";
 import Empty from "@components/Common/Empty";
+import Error from "@components/Common/Error";
 
 export default function Create() {
-  const { quiz, error, errors, isPending, setFieldValue, handleSubmit } =
-    useCompleteQuiz();
+  const {
+    quiz,
+    fetchError,
+    completeError,
+    formErrors,
+    isFetchPending,
+    isCompletePending,
+    setFieldValue,
+    handleSubmit,
+  } = useCompleteQuiz();
 
   const { replace } = useRouter();
 
-  if (isPending) {
+  if (isFetchPending) {
     return (
       <section id="attendee">
-        <Empty reason={isPending && "Creating Your Quiz..."} />
+        <Empty reason="Getting Your Quiz Ready..." />
       </section>
     );
   }
 
-  if (!quiz || error) {
+  if (!quiz || fetchError) {
     return (
       <section id="attendee">
-        <Empty reason="Failed To Fetch Quiz" />
+        {!fetchError && (
+          <Empty
+            url="/attendee"
+            reason="Failed To Fetch Quiz."
+            label="Go To Dashboard."
+          />
+        )}
+
+        {fetchError && (
+          <Empty
+            url="/attendee"
+            reason={`${fetchError.response!.data.error}.`}
+            label="Back To Dashboard."
+          />
+        )}
       </section>
     );
   }
@@ -49,7 +72,7 @@ export default function Create() {
                 key={i}
                 index={i}
                 details={quiz}
-                errors={errors}
+                errors={formErrors}
                 onSelect={setFieldValue}
               />
             ))}
@@ -61,15 +84,19 @@ export default function Create() {
         {quiz.questions.length !== 0 && (
           <div className="buttons">
             <Button
-              type="button"
+              onClick={() => replace("/attendee", { scroll: true })}
               label="Cancel"
-              onClick={() => replace("/attendee")}
+              type="button"
             />
 
-            <Button label="Submit Quiz" />
+            <Button
+              label={isCompletePending ? "Submitting Quiz..." : "Submit Quiz"}
+            />
           </div>
         )}
       </form>
+
+      <Error error={completeError} />
     </section>
   );
 }

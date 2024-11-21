@@ -2,6 +2,7 @@
 
 import useFetchAnsweredQuizzes from "@hooks/creator/useFetchAnsweredQuizzes";
 import useFilterAnsweredQuizzes from "@hooks/creator/useFilterAnsweredQuizzes";
+import useDeleteQuiz from "@hooks/creator/useDeleteQuiz";
 
 import Title from "@components/Creator/Title";
 import Search from "@components/Catalogue/Controller/Search";
@@ -14,13 +15,28 @@ import Button from "@components/Attendees/Button";
 
 import Pagination from "@components/Catalogue/Pagination";
 import Empty from "@components/Common/Empty";
+import Error from "@components/Common/Error";
 
 export default function Quiz() {
-  const { quiz, participants, isPending } = useFetchAnsweredQuizzes();
+  const { quiz, error, participants, isPending } = useFetchAnsweredQuizzes();
 
   const { filter, handleSetPrompt } = useFilterAnsweredQuizzes(
     participants || []
   );
+
+  const {
+    error: deleteError,
+    isPending: isDeletePending,
+    handleDeleteQuiz,
+  } = useDeleteQuiz();
+
+  if (error) {
+    return (
+      <section id="participants">
+        <Error error={error} fontSize="1.25rem" />
+      </section>
+    );
+  }
 
   return (
     <section id="participants">
@@ -31,8 +47,15 @@ export default function Quiz() {
 
         <div>
           <Button icon="/quiz/edit.svg" label="Edit" onClick={() => {}} />
-          <Button icon="/quiz/delete.svg" label="Delete" onClick={() => {}} />
+
+          <Button
+            onClick={handleDeleteQuiz}
+            icon="/quiz/delete.svg"
+            label="Delete"
+          />
         </div>
+
+        <Error error={deleteError} />
       </div>
 
       <hr />

@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { getFormattedDate } from "@utils/dateTime";
+import { getFormattedDate } from "@utils/getDateTime";
 
 import _ from "@interfaces/Answer";
 

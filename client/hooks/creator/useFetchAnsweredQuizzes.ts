@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 import useFetchCreatedQuizzes from "./useFetchCreatedQuizzes";
 
@@ -29,7 +29,11 @@ export default function useFetchAnsweredQuizzes() {
     data: participants,
     error,
     isPending,
-  } = useQuery({
+  } = useQuery<
+    unknown,
+    AxiosError<{ error: string }>,
+    AnsweredQuiz[] | undefined
+  >({
     queryKey: ["quiz", id, "answer"],
     queryFn: fetchAnsweredQuizzes,
   });
