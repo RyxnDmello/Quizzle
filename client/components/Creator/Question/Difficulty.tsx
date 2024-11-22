@@ -6,11 +6,16 @@ import styles from "./Difficulty.module.scss";
 
 interface DifficultyProps {
   error?: string;
+  difficulty?: DIFFICULTY;
   onSelect: (name: string, value: string) => void;
 }
 
-export default function Difficulty({ error, onSelect }: DifficultyProps) {
-  const [option, setOption] = useState<DIFFICULTY | undefined>(undefined);
+export default function Difficulty({
+  difficulty = undefined,
+  error,
+  onSelect,
+}: DifficultyProps) {
+  const [option, setOption] = useState<DIFFICULTY | undefined>(difficulty);
 
   return (
     <div className={styles.difficulty}>

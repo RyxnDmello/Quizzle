@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 
 from .models import Creator, Attendee
-from .models import Quiz, Question
+from .models import Quiz, Question, Option
 from .models import Answer
 
 from .serializer import RegisterCreatorSerializer, RegisterAttendeeSerializer, LoginSerializer
@@ -120,10 +120,54 @@ class QuizView(APIView):
 
         return Response({"error": "Invalid ID Provided"}, status=status.HTTP_400_BAD_REQUEST)
     
+    def patch(self, request, id):
+        try:
+            quiz = Quiz.objects.get(id=id)
+        except Quiz.DoesNotExist:
+            return Response({ "error": "Failed To Update Quiz Due To Invalid ID" }, status=status.HTTP_404_NOT_FOUND)
+
+        if not request.data.get("title"):
+            return Response({ "error": "Title Must Be Provided" }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not request.data.get("difficulty"):
+            return Response({ "error": "Difficulty Must Be Provided" }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not request.data.get("questions"):
+            return Response({ "error": "Questions Must Be Provided" }, status=status.HTTP_400_BAD_REQUEST)
+
+        quiz.title = request.data["title"]
+        quiz.difficulty = request.data["difficulty"]
+        
+        total_points = 0
+
+        quiz.__getattribute__("questions").all().delete()
+
+        for question_data in request.data["questions"]:
+            question = Question.objects.create(
+                quiz=quiz,
+                points=int(question_data["points"]),
+                question=question_data["question"],
+                correct=question_data["correct"]
+            )
+
+            total_points += int(question_data["points"])
+
+            Option.objects.create(
+                question=question,
+                A=question_data["options"]["A"],
+                B=question_data["options"]["B"],
+                C=question_data["options"]["C"]
+            )
+
+        quiz.points = total_points
+        quiz.save()
+
+        return Response({ "message": "Quiz Updated Successfully" }, status=status.HTTP_200_OK)
+    
     def delete(self, request, id):
         if str(id).startswith("QID"):
             try:
-                quiz = Quiz.objects.get(id=id).delete()
+                Quiz.objects.get(id=id).delete()
                 return Response(status=status.HTTP_200_OK)
             except Quiz.DoesNotExist:
                 return Response({"error": "Failed To Delete Quiz"}, status=status.HTTP_404_NOT_FOUND)

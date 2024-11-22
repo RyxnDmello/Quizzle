@@ -1,5 +1,7 @@
 "use client";
 
+import { useParams, useRouter } from "next/navigation";
+
 import useFetchAnsweredQuizzes from "@hooks/creator/useFetchAnsweredQuizzes";
 import useFilterAnsweredQuizzes from "@hooks/creator/useFilterAnsweredQuizzes";
 import useDeleteQuiz from "@hooks/creator/useDeleteQuiz";
@@ -30,6 +32,13 @@ export default function Quiz() {
     handleDeleteQuiz,
   } = useDeleteQuiz();
 
+  const { id } = useParams<{ id: string }>();
+  const { replace } = useRouter();
+
+  const handleNavigateToEdit = () => {
+    replace(`/creator/quiz/${id}/edit`, { scroll: true });
+  };
+
   if (error) {
     return (
       <section id="participants">
@@ -46,7 +55,11 @@ export default function Quiz() {
         <Code code={quiz!.id!} />
 
         <div>
-          <Button icon="/quiz/edit.svg" label="Edit" onClick={() => {}} />
+          <Button
+            onClick={handleNavigateToEdit}
+            icon="/quiz/edit.svg"
+            label="Edit"
+          />
 
           <Button
             onClick={handleDeleteQuiz}

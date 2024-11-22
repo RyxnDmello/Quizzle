@@ -32,7 +32,9 @@ export default function Question({
   onChange,
   onSelect,
 }: QuestionProps) {
-  const [option, setOption] = useState<"A" | "B" | "C" | null>(null);
+  const [option, setOption] = useState<"A" | "B" | "C" | null>(
+    values?.questions[index].correct ?? null
+  );
 
   const handleSelect = (value: "A" | "B" | "C") => {
     if (!onSelect) return;

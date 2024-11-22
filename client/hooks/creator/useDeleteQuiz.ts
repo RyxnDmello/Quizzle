@@ -10,7 +10,7 @@ export default function useDeleteQuiz() {
   const { user } = useAuth();
 
   const onDelete = async () => {
-    await axios.delete(`/api/quiz/${id}`, {
+    await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz/${id}`, {
       headers: {
         Authorization: `Bearer ${user!.accessToken}`,
       },
