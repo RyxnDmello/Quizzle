@@ -236,6 +236,14 @@ class QuestionSerializer(serializers.ModelSerializer):
 class CreateQuizSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True)
 
+    creator_id = serializers.CharField(
+        required=True,
+        error_messages={ 
+            "required": "Creator ID Must Be Provided", 
+            "blank": "Creator ID Cannot Be Blank", 
+        }
+    )
+
     title = serializers.CharField(
         required=True,
         error_messages={ 
@@ -256,32 +264,36 @@ class CreateQuizSerializer(serializers.ModelSerializer):
         validators=[validate_difficulty]
     )
 
-    creator_id = serializers.CharField(
-        required=True,
-        error_messages={ 
-            "required": "Creator ID Must Be Provided", 
-            "blank": "Creator ID Cannot Be Blank", 
-        }
-    )
-
     class Meta:
         model = Quiz
-        fields = ("id", "creator_id", "title", "difficulty",  "points", "questions")
+        fields = ("creator_id", "title", "difficulty", "points", "questions")
+
+    def validate_creator_id(self, value):
+        if not Creator.objects.filter(id=value).exists():
+            raise serializers.ValidationError("Invalid Creator ID Provided")
+        
+        return value
+    
+    def validate_questions(self, value):
+        if len(value) < 1:
+            raise serializers.ValidationError("Provide At Least One Question")
+
+        return value
 
     def create(self, validated_data):
-        questions_data = validated_data.pop("questions")
         creator_id = validated_data.pop("creator_id")
+        questions_data = validated_data.pop("questions")
 
-        if not Creator.objects.filter(id=creator_id).exists():
-            raise serializers.ValidationError({"creator_id": "Invalid Creator ID"})
+        if not questions_data:
+            raise serializers.ValidationError("Provide At Least One Question")
 
         quiz = Quiz.objects.create(creator_id=creator_id, **validated_data)
 
         total_points = 0
-        
+
         for question_data in questions_data:
             options_data = question_data.pop("options")
-            points = question_data["points"]
+            points = question_data.get("points", 0)
             total_points += int(points)
 
             question = Question.objects.create(quiz=quiz, **question_data)
@@ -297,7 +309,7 @@ class QuizSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Quiz
-        fields = ["id", "title", "difficulty", "points", "questions", "creator_id"]
+        fields = ["id", "creator_id", "title", "difficulty", "points", "questions"]
 
 #----------------------------------------------------#
 #----------------- ANSWER SERIALIZERS ---------------#

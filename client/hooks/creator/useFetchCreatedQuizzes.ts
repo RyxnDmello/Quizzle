@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 import useAuth from "@hooks/authentication/useAuth";
 
@@ -18,10 +18,14 @@ export default function useFetchCreatedQuizzes() {
     return data || [];
   };
 
-  const { data, error, isPending } = useQuery<Quiz[]>({
+  const {
+    data: quizzes,
+    error,
+    isPending,
+  } = useQuery<Quiz[], AxiosError<{ error: string }>, Quiz[]>({
     queryKey: ["quiz"],
     queryFn: fetchQuizzes,
   });
 
-  return { quizzes: data, error, isPending };
+  return { quizzes, error, isPending };
 }

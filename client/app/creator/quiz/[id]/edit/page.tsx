@@ -48,15 +48,23 @@ export default function Edit() {
     );
   }
 
-  if (!updatedQuiz || fetchError) {
+  if (fetchError) {
+    <section id="create">
+      <Empty
+        reason={`${fetchError?.response?.data.error!}.`}
+        label="Go To Dashboard."
+        url="/creator"
+      />
+    </section>;
+  }
+
+  if (!updatedQuiz) {
     return (
       <section id="create">
         <Empty
-          url="/creator"
-          reason={
-            `${fetchError?.response?.data.error!}.` || "Failed To Fetch Quiz."
-          }
+          reason={"Failed To Fetch Quiz."}
           label="Go To Dashboard."
+          url="/creator"
         />
       </section>
     );

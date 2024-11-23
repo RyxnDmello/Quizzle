@@ -177,26 +177,23 @@ class QuizView(APIView):
 class QuizCreateView(APIView):
     def post(self, request):
         creator_id = request.data.get("creatorID")
-        
-        try:
-            creator = Creator.objects.get(id=creator_id)
-            
-            quiz_data = request.data.copy()
-            quiz_data["creator_id"] = creator.id
-            
-            quiz = CreateQuizSerializer(data=quiz_data)
 
-            if not quiz.is_valid():
-                error = getError(quiz.errors)
-                return Response({ "error": error }, status.HTTP_400_BAD_REQUEST)
-            
-            quiz.save()
-            
-            return Response(quiz.data, status=status.HTTP_201_CREATED)
+        if not creator_id:
+            return Response({ "error": "Creator ID Must Be Provided" }, status.HTTP_400_BAD_REQUEST)
         
-        except Creator.DoesNotExist:
-            return Response({ "error": "Creator Does Not Exist" }, status=status.HTTP_404_NOT_FOUND)
+        quiz_data = request.data.copy()
+        quiz_data["creator_id"] = creator_id
+        
+        quiz = CreateQuizSerializer(data=quiz_data)
 
+        if not quiz.is_valid():
+            error = getError(quiz.errors)
+            return Response({ "error": error }, status.HTTP_400_BAD_REQUEST)
+        
+        quiz.save()
+        
+        return Response(quiz.data, status=status.HTTP_201_CREATED)
+        
 #--------------------------------------------------------#
 #-------------------- ANSWERED VIEWS --------------------#
 #--------------------------------------------------------#

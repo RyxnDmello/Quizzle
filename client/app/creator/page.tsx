@@ -18,7 +18,7 @@ import Empty from "@components/Common/Empty";
 
 export default function Creator() {
   const { quizzes, error, isPending } = useFetchCreatedQuizzes();
-  const { filter, handleSetPrompt } = useFilterQuizzes([]);
+  const { filter, handleSetPrompt } = useFilterQuizzes(quizzes || []);
 
   const { push } = useRouter();
 
@@ -39,7 +39,7 @@ export default function Creator() {
         </Dropdown>
       </Controller>
 
-      {isPending && <Empty reason="Fetching Quizzes..." />}
+      {isPending && <Empty reason="Fetching Your Quizzes..." />}
 
       {error && <Empty reason={error.message} />}
 
@@ -54,7 +54,7 @@ export default function Creator() {
 
       {quizzes && quizzes.length !== 0 && (
         <Quizzes>
-          {quizzes.map((quiz) => (
+          {(filter.length === 0 ? quizzes : filter).map((quiz) => (
             <Quiz
               key={quiz.id}
               {...quiz}

@@ -1,15 +1,13 @@
-import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
+import { useFormik } from "formik";
 
 import { USER } from "@interfaces/User";
 
 import useAuth from "./useAuth";
 
 import RegisterSchema, { validationSchema } from "@schemas/RegisterSchema";
-
-import { useFormik } from "formik";
 
 export default function useRegister() {
   const { user, dispatch } = useAuth();
@@ -23,7 +21,7 @@ export default function useRegister() {
     confirmPassword: "",
   };
 
-  const onRegister = async (values: RegisterSchema) => {
+  const handleRegister = async (values: RegisterSchema) => {
     values.type = localStorage.getItem("USER") as USER;
 
     const {
@@ -55,28 +53,26 @@ export default function useRegister() {
     replace(`/${data.type!.toLowerCase()}`, { scroll: true });
   };
 
-  const { error, isPending, mutate } = useMutation<
-    void,
-    AxiosError<{ error: string }>,
-    RegisterSchema
-  >({
+  const {
+    error,
+    isPending,
+    mutate: onSubmit,
+  } = useMutation<void, AxiosError<{ error: string }>, RegisterSchema>({
     mutationKey: ["register"],
-    mutationFn: onRegister,
+    mutationFn: handleRegister,
   });
 
   const { touched, errors, handleBlur, handleChange, handleSubmit } = useFormik(
     {
       initialValues,
       validationSchema,
-      onSubmit: (values) => mutate(values),
+      onSubmit: (values) => onSubmit(values),
     }
   );
 
-  useEffect(() => {
-    if (!user || !user.accessToken) return;
-    if (user.type !== localStorage.getItem("USER")) return;
+  if (user && user.accessToken && user.type === localStorage.getItem("USER")) {
     replace(`/${user.type?.toLowerCase()}`, { scroll: true });
-  }, []);
+  }
 
   return {
     touched,

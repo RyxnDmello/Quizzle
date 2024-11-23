@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 import Quiz from "@interfaces/Quiz";
 
@@ -24,7 +24,7 @@ export default function useFetchCreatedQuiz() {
     data: quiz,
     error,
     isPending,
-  } = useQuery<Quiz>({
+  } = useQuery<unknown, AxiosError<{ error: string }>, Quiz>({
     queryKey: ["quiz", id],
     queryFn: fetchQuiz,
   });

@@ -9,7 +9,7 @@ import "./globals.scss";
 
 export const metadata: Metadata = {
   title: "Quizzle | Attendee",
-  description: "Your Completed Quizzes",
+  description: "Quizzes For Everyone",
 };
 
 interface CreatorLayoutProps {
@@ -19,7 +19,7 @@ interface CreatorLayoutProps {
 export default function CreatorLayout({ children }: CreatorLayoutProps) {
   return (
     <body>
-      <Navbar name="Ryan Nolasco D Mello" url="/attendee" />
+      <Navbar url="/attendee" />
       <main>
         <ReactQueryProvider>{children}</ReactQueryProvider>
       </main>

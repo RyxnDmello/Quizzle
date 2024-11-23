@@ -20,17 +20,24 @@ import Empty from "@components/Common/Empty";
 import Error from "@components/Common/Error";
 
 export default function Quiz() {
-  const { quiz, error, participants, isPending } = useFetchAnsweredQuizzes();
-
-  const { filter, handleSetPrompt } = useFilterAnsweredQuizzes(
-    participants || []
-  );
+  const {
+    quiz,
+    participants,
+    fetchError,
+    isFetchPending,
+    fetchParticipantsError,
+    isFetchParticipantsPending,
+  } = useFetchAnsweredQuizzes();
 
   const {
     error: deleteError,
     isPending: isDeletePending,
     handleDeleteQuiz,
   } = useDeleteQuiz();
+
+  const { filter, handleSetPrompt } = useFilterAnsweredQuizzes(
+    participants || []
+  );
 
   const { id } = useParams<{ id: string }>();
   const { replace } = useRouter();
@@ -39,20 +46,44 @@ export default function Quiz() {
     replace(`/creator/quiz/${id}/edit`, { scroll: true });
   };
 
-  if (error) {
+  if (fetchError) {
     return (
       <section id="participants">
-        <Error error={error} fontSize="1.25rem" />
+        <Empty
+          reason={`${fetchError.response?.data.error}.`}
+          label="Go To Dashboard."
+          url="/creator"
+        />
+      </section>
+    );
+  }
+
+  if (fetchParticipantsError) {
+    return (
+      <section id="participants">
+        <Empty
+          reason={`${fetchParticipantsError.response?.data.error}.`}
+          label="Go To Dashboard."
+          url="/creator"
+        />
+      </section>
+    );
+  }
+
+  if (!quiz || isFetchPending) {
+    return (
+      <section id="participants">
+        <Empty reason="Loading Participants..." />
       </section>
     );
   }
 
   return (
     <section id="participants">
-      <Title title={quiz!.title} difficulty={quiz!.difficulty} />
+      <Title title={quiz.title} difficulty={quiz.difficulty} />
 
       <div className="details">
-        <Code code={quiz!.id!} />
+        <Code code={quiz.id!} />
 
         <div>
           <Button
@@ -64,7 +95,7 @@ export default function Quiz() {
           <Button
             onClick={handleDeleteQuiz}
             icon="/quiz/delete.svg"
-            label="Delete"
+            label={isDeletePending ? "Deleting Quiz..." : "Delete"}
           />
         </div>
 
@@ -75,11 +106,14 @@ export default function Quiz() {
 
       <Search placeholder="Search Participant" onChange={handleSetPrompt} />
 
-      {isPending && <Empty reason="Fetching Participants..." />}
-
-      {!isPending && (!participants || participants.length === 0) && (
-        <Empty reason="Quiz Has Not Been Attempted" />
+      {isFetchParticipantsPending && (
+        <Empty reason="Fetching Participants..." />
       )}
+
+      {!isFetchParticipantsPending &&
+        (!participants || participants.length === 0) && (
+          <Empty reason="Quiz Has Not Been Attempted" />
+        )}
 
       {participants && participants.length !== 0 && (
         <Participants>

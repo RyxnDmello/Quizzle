@@ -28,7 +28,7 @@ export const validationSchema = yup.object<RegisterSchema>().shape({
   mobile: yup
     .number()
     .nullable()
-    .test("digit", "Mobile number must start with 6, 7, 8, or 9", (value) => {
+    .test("digit", "Mobile number must start with 6, 7, 8, or 9.", (value) => {
       if (!value) return true;
       return ["6,", "7", "8", "9"].includes(value.toString().charAt(0));
     })
@@ -45,7 +45,7 @@ export const validationSchema = yup.object<RegisterSchema>().shape({
     .matches(/(?=.*\d)/, "Password must contain one number.")
     .matches(/(?=.*[!@#$%])/, "Password must contain a special character.")
     .min(8, "Password must be a minimum of 8 characters.")
-    .max(50, "Password must be a maximum of 50 Characters")
+    .max(50, "Password must be a maximum of 50 Characters.")
     .required("Password is required."),
   confirmPassword: yup
     .string()
@@ -56,6 +56,10 @@ export const validationSchema = yup.object<RegisterSchema>().shape({
     .matches(/(?=.*\d)/, "Password must contain one number.")
     .matches(/(?=.*[!@#$%])/, "Password must contain a special character.")
     .min(8, "Password must be a minimum of 8 characters.")
-    .max(50, "Password must be a maximum of 50 Characters")
+    .max(50, "Password must be a maximum of 50 Characters.")
+    .test("mismatch", "Passwords do not match.", (value, context) => {
+      if (!value || !context.parent.password) return true;
+      return value === context.parent.password;
+    })
     .required("Password is required."),
 });

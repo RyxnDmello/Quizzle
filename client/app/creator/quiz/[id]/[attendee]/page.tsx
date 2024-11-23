@@ -15,18 +15,48 @@ import Statistic from "@components/Creator/Statistic";
 import Empty from "@components/Common/Empty";
 
 export default function Answers() {
-  const { quiz: createdQuiz, isPending: createdQuizIsPending } =
-    useFetchCreatedQuiz();
+  const {
+    quiz: createdQuiz,
+    error: fetchCreatedQuizError,
+    isPending: isFetchCreatedQuizPending,
+  } = useFetchCreatedQuiz();
 
-  const { quiz: answeredQuiz, isPending: answeredQuizIsPending } =
-    useFetchAnsweredQuiz();
+  const {
+    quiz: answeredQuiz,
+    fetchError: fetchAnsweredQuizError,
+    isFetchPending: isFetchAnsweredQuizPending,
+  } = useFetchAnsweredQuiz();
 
   const { back } = useRouter();
 
-  if (createdQuizIsPending || answeredQuizIsPending) {
+  if (isFetchCreatedQuizPending || isFetchAnsweredQuizPending) {
     return (
       <section id="attendee">
         <Empty reason="Fetching Quiz..." />
+      </section>
+    );
+  }
+
+  if (fetchCreatedQuizError) {
+    return (
+      <section id="attendee">
+        <Empty
+          reason={`${fetchCreatedQuizError.response?.data.error}.`}
+          label="Go To Dashboard."
+          url="/attendee"
+        />
+      </section>
+    );
+  }
+
+  if (fetchAnsweredQuizError) {
+    return (
+      <section id="attendee">
+        <Empty
+          reason={`${fetchAnsweredQuizError.response?.data.error}.`}
+          label="Go To Dashboard."
+          url="/attendee"
+        />
       </section>
     );
   }

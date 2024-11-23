@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 
 import useAuth from "@hooks/authentication/useAuth";
 
@@ -23,32 +24,10 @@ export default function useCreateQuiz() {
           C: "",
         },
         correct: null,
-        selected: null,
         points: 0,
       },
     ],
   });
-
-  const onSubmit = async (values: QuizSchema) => {
-    try {
-      await axios.post<QuizSchema>(
-        `/api/quiz`,
-        {
-          ...values,
-          creatorID: user!.id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user!.accessToken}`,
-          },
-        }
-      );
-
-      replace(`/${user!.type!.toLowerCase()}`, { scroll: true });
-    } catch (error) {
-      console.log(error instanceof AxiosError && error.response?.data);
-    }
-  };
 
   const handleAddQuestion = () => {
     setQuiz((prev) => {
@@ -65,7 +44,6 @@ export default function useCreateQuiz() {
               C: "",
             },
             correct: null,
-            selected: null,
           },
         ],
       };
@@ -81,10 +59,36 @@ export default function useCreateQuiz() {
     });
   };
 
+  const handleCreateQuiz = async () => {
+    await axios.post<QuizSchema>(
+      `${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz`,
+      {
+        ...values,
+        creatorID: user!.id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${user!.accessToken}`,
+        },
+      }
+    );
+
+    replace(`/creator`, { scroll: true });
+  };
+
+  const {
+    error: createError,
+    isPending: isCreatePending,
+    mutate: onSubmit,
+  } = useMutation<unknown, AxiosError<{ error: string }>, void>({
+    mutationKey: ["quiz", "create"],
+    mutationFn: handleCreateQuiz,
+  });
+
   const {
     values,
-    errors,
-    touched,
+    errors: formErrors,
+    touched: formTouched,
     resetForm,
     handleBlur,
     handleChange,
@@ -94,13 +98,15 @@ export default function useCreateQuiz() {
     initialValues: quiz,
     validationSchema: validationSchema,
     enableReinitialize: true,
-    onSubmit: onSubmit,
+    onSubmit: () => onSubmit(),
   });
 
   return {
     quiz,
-    errors,
-    touched,
+    formErrors,
+    createError,
+    formTouched,
+    isCreatePending,
     resetForm,
     handleBlur,
     handleChange,

@@ -16,14 +16,17 @@ import Question from "@components/Creator/Question";
 import Add from "@components/Creator/Add";
 
 import Difficulty from "@components/Creator/Question/Difficulty";
+import Error from "@components/Common/Error";
 
 export default function Create() {
   const { replace } = useRouter();
 
   const {
     quiz,
-    errors,
-    touched,
+    createError,
+    formErrors,
+    formTouched,
+    isCreatePending,
     resetForm,
     handleBlur,
     handleChange,
@@ -45,14 +48,16 @@ export default function Create() {
             name="title"
             placeholder="Enter Title"
             error={
-              touched && touched.title ? errors && errors.title : undefined
+              formTouched && formTouched.title
+                ? formErrors && formErrors.title
+                : undefined
             }
             onBlur={handleBlur}
             onChange={handleChange}
           />
 
           <Difficulty
-            error={errors && errors.difficulty}
+            error={formErrors && formErrors.difficulty}
             onSelect={setFieldValue}
           />
         </div>
@@ -66,8 +71,8 @@ export default function Create() {
             <Question
               key={i}
               index={i}
-              errors={errors as FormikErrors<QuizSchema>}
-              touched={touched as FormikTouched<QuizSchema>}
+              errors={formErrors as FormikErrors<QuizSchema>}
+              touched={formTouched as FormikTouched<QuizSchema>}
               onDelete={handleDeleteQuestion}
               onBlur={handleBlur}
               onChange={handleChange}
@@ -82,14 +87,27 @@ export default function Create() {
 
         <div className="buttons">
           <Button
-            type="button"
-            label="Cancel"
             onClick={() => replace("/creator")}
+            disabled={isCreatePending}
+            label="Cancel"
+            type="button"
           />
 
-          <Button type="reset" label="Reset Quiz" onClick={resetForm} />
-          <Button type="submit" label="Create Quiz" />
+          <Button
+            onClick={resetForm}
+            disabled={isCreatePending}
+            label="Reset Quiz"
+            type="reset"
+          />
+
+          <Button
+            label={isCreatePending ? "Creating Quiz..." : "Create Quiz"}
+            disabled={isCreatePending}
+            type="submit"
+          />
         </div>
+
+        <Error error={createError} />
       </form>
     </section>
   );
