@@ -43,7 +43,6 @@
     }
 
     @media all and (width < 500px) {
-      margin-bottom: 2rem;
       gap: 1rem;
 
       > a > img {
@@ -52,6 +51,12 @@
 
       > div {
         font-size: 1.1rem;
+      }
+    }
+    
+    @media all and (width < 380px) {
+      > div {
+        font-size: 1rem;
       }
     }
   }
@@ -90,6 +95,12 @@
 
     &:hover::before {
       width: 100%;
+    }
+
+    @media all and (width < 500px) {
+      > p {
+        font-size: 0.8rem;
+      }
     }
   }
 }

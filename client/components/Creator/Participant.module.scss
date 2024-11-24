@@ -1,0 +1,45 @@
+.participant {
+  justify-content: space-between;
+  grid-auto-flow: column;
+  align-items: center;
+  margin: 1rem 0;
+  display: grid;
+  gap: 2rem;
+
+  > h4 {
+    font-family: "Inter", sans-serif;
+    border: 1.65px solid #ffffffa0;
+    background-color: #ffffff10;
+    transform: skewX(-15deg);
+    padding: 0.25rem 1rem;
+    letter-spacing: 0.5px;
+    color: #ffffffa0;
+    font-weight: 300;
+    font-size: 1rem;
+  }
+
+  > p {
+    border: 1.65px dashed #ffffff65;
+    font-family: "Inter", sans-serif;
+    background-color: #ffffff10;
+    padding: 0.25rem 1.25rem;
+    letter-spacing: 0.5px;
+    border-radius: 40px;
+    color: #ffffff65;
+    font-size: 0.95rem;
+    font-weight: 300;
+  }
+
+  @media all and (width < 500px) {
+    > h4 {
+      padding: 0.35rem 1rem;
+      font-size: 0.85rem;
+    }
+
+    > p {
+      padding: 0.25rem 1.25rem;
+      font-size: 0.85rem;
+      font-weight: 300;
+    }
+  }
+}

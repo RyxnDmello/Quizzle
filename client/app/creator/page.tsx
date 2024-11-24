@@ -41,7 +41,7 @@ export default function Creator() {
 
       {isPending && <Empty reason="Fetching Your Quizzes..." />}
 
-      {error && <Empty reason={error.message} />}
+      {error && <Empty reason={error.response!.data.error} />}
 
       {!quizzes ||
         (quizzes.length === 0 && (

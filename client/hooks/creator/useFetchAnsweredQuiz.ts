@@ -11,11 +11,14 @@ export default function useFetchAnsweredQuiz() {
   const { id, attendee } = useParams<{ id: string; attendee: string }>();
 
   const fetchAnsweredQuiz = async () => {
-    const { data } = await axios.get<AnsweredQuiz>(`/api/quiz/${id}/answer`, {
-      headers: {
-        Authorization: `Bearer ${user!.accessToken}`,
-      },
-    });
+    const { data } = await axios.get<AnsweredQuiz>(
+      `/api/quiz/answer/${attendee}/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${user!.accessToken}`,
+        },
+      }
+    );
 
     return data;
   };

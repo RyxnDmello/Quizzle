@@ -8,10 +8,11 @@ import useFetchCreatedQuiz from "@hooks/creator/useFetchCreatedQuiz";
 import useFetchAnsweredQuiz from "@hooks/creator/useFetchAnsweredQuiz";
 
 import Title from "@components/Creator/Title";
+import Participant from "@components/Creator/Participant";
 import Questions from "@components/Creator/Questions";
 import Question from "@components/Creator/Question";
-import Button from "@components/Inputs/Button";
 import Statistic from "@components/Creator/Statistic";
+import Button from "@components/Inputs/Button";
 import Empty from "@components/Common/Empty";
 
 export default function Answers() {
@@ -70,54 +71,59 @@ export default function Answers() {
   }
 
   return (
-    <section id="attendee">
-      <form onSubmit={() => {}}>
-        <Title
-          title={createdQuiz.title}
-          difficulty={createdQuiz.difficulty as DIFFICULTY}
-        />
+    <section id="attendee" className="answer">
+      <Title
+        title={createdQuiz.title}
+        difficulty={createdQuiz.difficulty as DIFFICULTY}
+      />
 
-        {createdQuiz.questions.length !== 0 && (
-          <Questions>
-            {createdQuiz.questions.map((_, i) => (
-              <Question
-                key={i}
-                index={i}
-                values={{
-                  ...createdQuiz,
-                  questions: [
-                    ...createdQuiz.questions.map((q, j) => ({
-                      ...q,
-                      selected: answeredQuiz.questions[j].selected as OPTIONS,
-                    })),
-                  ],
-                }}
-                disabled
-              />
-            ))}
-          </Questions>
-        )}
+      <Participant
+        name={answeredQuiz.participantName}
+        date={answeredQuiz.completionDate}
+      />
 
-        {createdQuiz.questions.length !== 0 && <hr />}
+      <hr />
 
-        {createdQuiz.questions.length !== 0 && (
-          <div className="buttons">
-            <Button type="button" label="Go Back" onClick={back} />
-
-            <Statistic
-              icon="/quiz/completed.png"
-              value={`${
-                answeredQuiz.questions.filter((q) => q.points !== 0).length
-              }/${answeredQuiz.questions.length}`}
+      {createdQuiz.questions.length !== 0 && (
+        <Questions>
+          {createdQuiz.questions.map((_, i) => (
+            <Question
+              key={i}
+              index={i}
+              values={{
+                ...createdQuiz,
+                questions: [
+                  ...createdQuiz.questions.map((q, j) => ({
+                    ...q,
+                    selected: answeredQuiz.questions[j].selected as OPTIONS,
+                  })),
+                ],
+              }}
+              disabled
             />
+          ))}
+        </Questions>
+      )}
 
-            <Statistic
-              icon="/quiz/trophy.png"
-              value={`${answeredQuiz.finalPoints}/${answeredQuiz.totalPoints}`}
-            />
-          </div>
-        )}
-      </form>
+      {createdQuiz.questions.length !== 0 && <hr />}
+
+      {createdQuiz.questions.length !== 0 && (
+        <div className="buttons">
+          <Button type="button" label="Go Back" onClick={back} />
+
+          <Statistic
+            icon="/quiz/completed.png"
+            value={`${
+              answeredQuiz.questions.filter((q) => q.points !== 0).length
+            }/${answeredQuiz.questions.length}`}
+          />
+
+          <Statistic
+            icon="/quiz/trophy.png"
+            value={`${answeredQuiz.finalPoints}/${answeredQuiz.totalPoints}`}
+          />
+        </div>
+      )}
     </section>
   );
 }

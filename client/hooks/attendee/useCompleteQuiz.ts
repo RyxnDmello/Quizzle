@@ -26,7 +26,7 @@ export default function useCompleteQuiz() {
 
   const onCompleteQuiz = async () => {
     await axios.post(
-      `${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz/${id}/answer`,
+      `${process.env.NEXT_PUBLIC_SERVER_API}/api/quiz/answer/${id}`,
       {
         attendeeID: user!.id,
         name: user!.name,

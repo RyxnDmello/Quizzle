@@ -19,7 +19,7 @@ export default function useFetchAnsweredQuizzes() {
   } = useFetchCreatedQuiz();
 
   const handleFetchAnsweredQuizzes = async () => {
-    const { data } = await axios.get<AnsweredQuiz[]>(`/api/quiz/${id}/answer`, {
+    const { data } = await axios.get<AnsweredQuiz[]>(`/api/quiz/answer/${id}`, {
       headers: {
         Authorization: `Bearer ${user!.accessToken}`,
       },

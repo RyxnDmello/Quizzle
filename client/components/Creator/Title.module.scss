@@ -40,4 +40,14 @@
       font-size: 2rem;
     }
   }
+  
+  @media all and (width < 400px) {
+    > div {
+      width: 40px;
+    }
+
+    > h4 {
+      font-size: 1.5rem;
+    }
+  }
 }

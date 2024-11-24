@@ -53,7 +53,7 @@ export default function Login() {
         />
       </Form>
 
-      <Switch url="/register" reason="Do Not Have An Account?" label="Create" />
+      <Switch url="/register" reason="Don't Have An Account?" label="Create" />
     </section>
   );
 }

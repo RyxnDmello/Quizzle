@@ -31,7 +31,7 @@
     width: 20px;
   }
 
-  @media all and (width < 600px) {
+  @media all and (width < 650px) {
     > button > span {
       display: none;
     }

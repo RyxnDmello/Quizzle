@@ -16,25 +16,36 @@
   }
 
   > p {
-    font-family: "Inter",sans-serif;
+    font-family: "Inter", sans-serif;
     font-style: italic;
     font-size: 1.65rem;
-    color: #FFD700;
+    color: #ffd700;
     font-weight: 600;
   }
 
-  @media all and (width < 375px) {
+  @media all and (width < 450px) {
     &:first-of-type {
       margin-right: 0.25rem;
     }
-  
+
     > img {
       height: auto;
       width: 22px;
     }
-  
+
     > p {
       font-size: 1.25rem;
+    }
+  }
+
+  @media all and (width < 400px) {
+    > img {
+      height: auto;
+      width: 18px;
+    }
+
+    > p {
+      font-size: 1.2rem;
     }
   }
 }

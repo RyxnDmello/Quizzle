@@ -2,7 +2,7 @@ import { useState, ChangeEvent, FocusEvent } from "react";
 import { FormikErrors, FormikTouched } from "formik";
 import Image from "next/image";
 
-import QuizSchema, { Options, Question as _ } from "@schemas/QuizSchema";
+import Quiz, { Options, Question as _ } from "@interfaces/Quiz";
 
 import Input from "../Inputs/Input";
 import Option from "./Question/Option";
@@ -11,10 +11,10 @@ import styles from "./Question.module.scss";
 
 interface QuestionProps {
   index: number;
-  values?: QuizSchema;
+  values?: Quiz;
   disabled?: boolean;
-  errors?: FormikErrors<QuizSchema>;
-  touched?: FormikTouched<QuizSchema>;
+  errors?: FormikErrors<Quiz>;
+  touched?: FormikTouched<Quiz>;
   onDelete?: (index: number) => void;
   onSelect?: (name: string, value: string) => void;
   onBlur?: (e: FocusEvent<HTMLInputElement>) => void;

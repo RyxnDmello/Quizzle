@@ -55,6 +55,10 @@ section {
   }
 
   &#attendee {
+    &.answer {
+      gap: 0.5rem;
+    }
+
     @media all and (width < 1375px) {
       margin: 0 1.5rem 2rem 1.5rem;
     }

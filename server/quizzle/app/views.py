@@ -100,15 +100,6 @@ class QuizView(APIView):
             
             serializer = QuizSerializer(quizzes, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        
-        elif str(id).startswith("AID"):
-            answered_quizzes = Answer.objects.filter(attendeeID=id)
-            
-            if not answered_quizzes.exists():
-                return Response([], status=status.HTTP_200_OK)
-            
-            serialized_quizzes = GetAnsweredQuizSerializer(answered_quizzes, many=True)
-            return Response(serialized_quizzes.data, status=status.HTTP_200_OK)
 
         elif str(id).startswith("QID"):
             try:
@@ -210,12 +201,13 @@ class AnsweredQuizView(APIView):
             return Response(serialized_quizzes.data, status=status.HTTP_200_OK)
 
         elif str(id).startswith("AID"):
-            try:
-                answered_quiz = Answer.objects.get(attendeeID=id)
-                serialized_quiz = GetAnsweredQuizSerializer(answered_quiz)
-                return Response(serialized_quiz.data, status=status.HTTP_200_OK)
-            except Answer.DoesNotExist:
-                return Response({"error": "No Quiz Found With Given Attendee ID"}, status=status.HTTP_404_NOT_FOUND)
+            answered_quizzes = Answer.objects.filter(attendeeID=id)
+            
+            if not answered_quizzes.exists():
+                return Response([], status=status.HTTP_200_OK)
+            
+            serialized_quizzes = GetAnsweredQuizSerializer(answered_quizzes, many=True)
+            return Response(serialized_quizzes.data, status=status.HTTP_200_OK)
             
         return Response({"error": "Invalid Quiz ID Provided"}, status=status.HTTP_400_BAD_REQUEST)
     
@@ -276,6 +268,13 @@ class AnsweredQuizView(APIView):
         
         return Response(dbQuiz.data, status=status.HTTP_201_CREATED)
 
+class AttendeeAnsweredQuizView(APIView):
+    def get(self, request, attendee_id, id):
+        try:
+            answered_quiz = Answer.objects.get(attendeeID=attendee_id, quizID=id)
+            serialized_quiz = GetAnsweredQuizSerializer(answered_quiz)
+            return Response(serialized_quiz.data, status=status.HTTP_200_OK)
+        except Answer.DoesNotExist:
+            return Response({"error": "Invalid ID Provided"}, status=status.HTTP_404_NOT_FOUND)
         
-            
         
