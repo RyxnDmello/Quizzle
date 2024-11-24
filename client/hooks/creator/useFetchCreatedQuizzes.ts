@@ -6,7 +6,7 @@ import useAuth from "@hooks/authentication/useAuth";
 
 import Quiz from "@interfaces/Quiz";
 
-interface PaginatedResponse {
+interface PaginationResponse {
   quizzes: Quiz[];
   pages: number;
 }
@@ -19,7 +19,7 @@ export default function useFetchCreatedQuizzes() {
   const { user } = useAuth();
 
   const fetchQuizzes = async () => {
-    const { data } = await axios.get<PaginatedResponse>(
+    const { data } = await axios.get<PaginationResponse>(
       `/api/quiz/${user!.id}/?filter=${filter}&sort=${sort}&page=${page}`,
       {
         headers: {
@@ -54,8 +54,8 @@ export default function useFetchCreatedQuizzes() {
     error,
     isPending,
     refetch,
-  } = useQuery<unknown, AxiosError<{ error: string }>, PaginatedResponse>({
-    queryKey: ["quiz"],
+  } = useQuery<unknown, AxiosError<{ error: string }>, PaginationResponse>({
+    queryKey: ["creator", "quiz", filter, sort, page],
     queryFn: fetchQuizzes,
   });
 

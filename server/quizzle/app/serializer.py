@@ -320,7 +320,7 @@ class AnsweredQuestionsSerializer(serializers.ModelSerializer):
         model = AnswerQuestions
         fields = ["question", "points", "selected", "correct"]
 
-class AnsweredQuizSerializer(serializers.ModelSerializer):
+class CreateAnsweredQuizSerializer(serializers.ModelSerializer):
     questions = AnsweredQuestionsSerializer(many=True)
 
     class Meta:
@@ -336,7 +336,7 @@ class AnsweredQuizSerializer(serializers.ModelSerializer):
 
         return quiz_answer
     
-class GetAnsweredQuizSerializer(serializers.ModelSerializer):
+class AnsweredQuizSerializer(serializers.ModelSerializer):
     questions = AnsweredQuestionsSerializer(many=True, read_only=True)
 
     class Meta:

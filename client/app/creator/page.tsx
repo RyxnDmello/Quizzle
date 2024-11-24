@@ -33,7 +33,7 @@ export default function Creator() {
   return (
     <section id="catalogue">
       <Controller onSubmit={() => {}}>
-        <Search placeholder="Search By Name" onChange={handleFilter} />
+        <Search placeholder="Search By Title" onChange={handleFilter} />
 
         <Dropdown onChange={(e) => handleSort(e.target.value)} name="sort">
           <Option label="Sort Quizzes" />

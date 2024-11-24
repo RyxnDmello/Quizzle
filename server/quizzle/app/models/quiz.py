@@ -18,16 +18,22 @@ CHOICES = [
     ("B", "B"),
     ("C", "C"),
 ]
-    
+
+SORT = [
+    "title_asc",
+    "title_desc",
+    "points_asc",
+    "points_desc",
+    "count_asc",
+    "count_desc"
+]
+
 class Quiz(models.Model):
     creator = models.ForeignKey(Creator, related_name="quizzes", on_delete=models.CASCADE)
     id = models.CharField(max_length=20, primary_key=True, unique=True, editable=False, default=getUniqueQuizID)
     title = models.CharField(max_length=150)
     difficulty = models.CharField(max_length=6, choices=DIFFICULTY_LEVELS)
     points = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.title
     
     @classmethod
     def get_quiz(cls, id):
@@ -38,8 +44,6 @@ class Quiz(models.Model):
         
     @classmethod
     def get_quizzes_by_creator(cls, id, request):
-        SORT = ["title_asc", "title_desc", "points_asc", "points_desc", "count_asc", "count_desc"]
-
         sort = request.query_params.get("sort", None)
         title = request.query_params.get("filter", None)
 
@@ -107,7 +111,7 @@ class Quiz(models.Model):
         try:
             cls.objects.get(id=id).delete()
         except Quiz.DoesNotExist:
-            raise NotFound("Invalid Quiz ID Provided")
+            raise NotFound("Quiz With Given ID Does Not Exist")
 
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, related_name="questions", on_delete=models.CASCADE)
@@ -115,14 +119,8 @@ class Question(models.Model):
     question = models.CharField(max_length=150)
     correct = models.CharField(max_length=1, choices=CHOICES, null=False)
 
-    def __str__(self):
-        return self.question
-
 class Option(models.Model):
     question = models.OneToOneField(Question, related_name="options", on_delete=models.CASCADE)
     A = models.CharField(max_length=25)
     B = models.CharField(max_length=25)
     C = models.CharField(max_length=25)
-
-    def __str__(self):
-        return f"Options for {self.question.question}"

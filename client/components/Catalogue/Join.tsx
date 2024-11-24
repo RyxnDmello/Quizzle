@@ -17,7 +17,7 @@ export default function Join({ error, onBlur, onChange, onSubmit }: JoinProps) {
     <form className={styles.join} onSubmit={onSubmit}>
       <Input
         name="code"
-        placeholder="Search By Name"
+        placeholder="Enter Quiz Code"
         onBlur={onBlur}
         onChange={onChange}
       />
