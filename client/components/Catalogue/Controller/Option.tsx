@@ -1,7 +1,7 @@
 import styles from "./Option.module.scss";
 
 interface OptionProps {
-  value: string;
+  value?: string;
   label: string;
 }
 

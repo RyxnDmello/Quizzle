@@ -1,17 +1,20 @@
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import AllowAny
+from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
 from .models import Creator, Attendee
-from .models import Quiz, Question, Option
+from .models import Quiz, Question
 from .models import Answer
 
 from .serializer import RegisterCreatorSerializer, RegisterAttendeeSerializer, LoginSerializer
-from .serializer import CreateQuizSerializer, QuizSerializer
+from .serializer import QuizSerializer, CreateQuizSerializer
 from .serializer import AnsweredQuizSerializer, GetAnsweredQuizSerializer
+
+from .pagination import QuizPagination
 
 from .utils import getError
 
@@ -93,77 +96,43 @@ class LoginView(APIView):
 class QuizView(APIView):
     def get(self, request, id):
         if str(id).startswith("CID"):
-            quizzes = Quiz.objects.filter(creator_id=id)
+            quizzes = Quiz.get_quizzes_by_creator(id, request)
             
-            if not quizzes.exists():
-                return Response([], status=status.HTTP_200_OK)
+            paginator = QuizPagination()
+            paginated_quizzes = paginator.paginate_queryset(quizzes, request)
             
-            serializer = QuizSerializer(quizzes, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            serializer = QuizSerializer(paginated_quizzes, many=True)
+            return paginator.get_paginated_response(serializer.data)
 
         elif str(id).startswith("QID"):
             try:
-                quiz = Quiz.objects.get(id=id)
-                serializer = QuizSerializer(quiz)
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            except Quiz.DoesNotExist:
-                return Response({"error": "Quiz Not Found"}, status=status.HTTP_404_NOT_FOUND)
+                quiz = Quiz.get_quiz(id)
+                serialized_quiz = QuizSerializer(quiz)
+                return Response(serialized_quiz.data, status=status.HTTP_200_OK)
+            except NotFound as error:
+                return Response({ "error": str(error) }, status=status.HTTP_404_NOT_FOUND)
 
-        return Response({"error": "Invalid ID Provided"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({ "error": "Invalid ID Provided" }, status=status.HTTP_400_BAD_REQUEST)
     
     def patch(self, request, id):
         try:
-            quiz = Quiz.objects.get(id=id)
-        except Quiz.DoesNotExist:
-            return Response({ "error": "Failed To Update Quiz Due To Invalid ID" }, status=status.HTTP_404_NOT_FOUND)
+            Quiz.update_quiz(id, request)
+        except NotFound as error:
+            return Response({ "error": str(error) }, status=status.HTTP_404_NOT_FOUND)
+        except Exception as error:
+            return Response({ "error": str(error) }, status=status.HTTP_400_BAD_REQUEST)
 
-        if not request.data.get("title"):
-            return Response({ "error": "Title Must Be Provided" }, status=status.HTTP_400_BAD_REQUEST)
-        
-        if not request.data.get("difficulty"):
-            return Response({ "error": "Difficulty Must Be Provided" }, status=status.HTTP_400_BAD_REQUEST)
-        
-        if not request.data.get("questions"):
-            return Response({ "error": "Questions Must Be Provided" }, status=status.HTTP_400_BAD_REQUEST)
-
-        quiz.title = request.data["title"]
-        quiz.difficulty = request.data["difficulty"]
-        
-        total_points = 0
-
-        quiz.__getattribute__("questions").all().delete()
-
-        for question_data in request.data["questions"]:
-            question = Question.objects.create(
-                quiz=quiz,
-                points=int(question_data["points"]),
-                question=question_data["question"],
-                correct=question_data["correct"]
-            )
-
-            total_points += int(question_data["points"])
-
-            Option.objects.create(
-                question=question,
-                A=question_data["options"]["A"],
-                B=question_data["options"]["B"],
-                C=question_data["options"]["C"]
-            )
-
-        quiz.points = total_points
-        quiz.save()
-
-        return Response({ "message": "Quiz Updated Successfully" }, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
     
-    def delete(self, request, id):
+    def delete(self, _, id):
         if str(id).startswith("QID"):
             try:
-                Quiz.objects.get(id=id).delete()
+                Quiz.delete_quiz(id)
                 return Response(status=status.HTTP_200_OK)
-            except Quiz.DoesNotExist:
-                return Response({"error": "Failed To Delete Quiz"}, status=status.HTTP_404_NOT_FOUND)
+            except NotFound as error:
+                return Response({ "error": str(error) }, status=status.HTTP_404_NOT_FOUND)
 
-        return Response({"error": "Invalid ID Provided"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({ "error": "Invalid ID Provided" }, status=status.HTTP_400_BAD_REQUEST)
             
 class QuizCreateView(APIView):
     def post(self, request):

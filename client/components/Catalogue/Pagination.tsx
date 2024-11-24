@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,7 +6,9 @@ import Page from "./Pagination/Page";
 import styles from "./Pagination.module.scss";
 
 interface PaginationProps extends ButtonProps {
-  pages: number;
+  total: number;
+  page: number;
+  onSwitch: (page: number) => void;
 }
 
 interface ButtonProps {
@@ -15,20 +16,25 @@ interface ButtonProps {
   image?: string;
 }
 
-export default function Pagination({ url, image, pages }: PaginationProps) {
-  const [page, setPage] = useState<number>(0);
-
+export default function Pagination({
+  url,
+  image,
+  page,
+  total,
+  onSwitch,
+}: PaginationProps) {
   return (
     <div className={styles.pagination}>
       <div>
-        {Array.from({ length: pages }, (_, i) => (
-          <Page
-            key={i}
-            page={i + 1}
-            isSelected={page === i}
-            onClick={() => setPage(i)}
-          />
-        ))}
+        {total > 1 &&
+          Array.from({ length: total }, (_, i) => (
+            <Page
+              onClick={() => onSwitch(i + 1)}
+              isSelected={page === i + 1}
+              page={i + 1}
+              key={i}
+            />
+          ))}
       </div>
 
       {url && <Button url={url} image={image} />}

@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 
 import useFetchCreatedQuizzes from "@hooks/creator/useFetchCreatedQuizzes";
-import useFilterQuizzes from "@hooks/creator/useFilterQuizzes";
 
 import Controller from "@components/Catalogue/Controller";
 import Search from "@components/Catalogue/Controller/Search";
@@ -17,8 +16,15 @@ import Pagination from "@components/Catalogue/Pagination";
 import Empty from "@components/Common/Empty";
 
 export default function Creator() {
-  const { quizzes, error, isPending } = useFetchCreatedQuizzes();
-  const { filter, handleSetPrompt } = useFilterQuizzes(quizzes || []);
+  const {
+    page,
+    pagination,
+    error,
+    isPending,
+    handleFilter,
+    handleSort,
+    handleSwitch,
+  } = useFetchCreatedQuizzes();
 
   const { push } = useRouter();
 
@@ -27,15 +33,16 @@ export default function Creator() {
   return (
     <section id="catalogue">
       <Controller onSubmit={() => {}}>
-        <Search placeholder="Search By Name" onChange={handleSetPrompt} />
+        <Search placeholder="Search By Name" onChange={handleFilter} />
 
-        <Dropdown name="sort" onChange={() => {}}>
-          <Option value="name_asc" label="Name (Ascending)" />
-          <Option value="name_desc" label="Name (Descending)" />
-          <Option value="questions_asc" label="Questions (Ascending)" />
-          <Option value="questions_desc" label="Questions (Descending)" />
+        <Dropdown onChange={(e) => handleSort(e.target.value)} name="sort">
+          <Option label="Sort Quizzes" />
+          <Option value="title_asc" label="Title (Ascending)" />
+          <Option value="title_desc" label="Title (Descending)" />
           <Option value="points_asc" label="Points (Ascending)" />
           <Option value="points_desc" label="Points (Descending)" />
+          <Option value="count_asc" label="Questions (Ascending)" />
+          <Option value="count_desc" label="Questions (Descending)" />
         </Dropdown>
       </Controller>
 
@@ -43,8 +50,8 @@ export default function Creator() {
 
       {error && <Empty reason={error.response!.data.error} />}
 
-      {!quizzes ||
-        (quizzes.length === 0 && (
+      {!pagination ||
+        (pagination.quizzes.length === 0 && (
           <Empty
             label="Create Quiz"
             reason="No Quizzes Available."
@@ -52,9 +59,9 @@ export default function Creator() {
           />
         ))}
 
-      {quizzes && quizzes.length !== 0 && (
+      {pagination && pagination.quizzes.length !== 0 && (
         <Quizzes>
-          {(filter.length === 0 ? quizzes : filter).map((quiz) => (
+          {pagination.quizzes.map((quiz) => (
             <Quiz
               key={quiz.id}
               {...quiz}
@@ -66,12 +73,14 @@ export default function Creator() {
         </Quizzes>
       )}
 
-      {!quizzes ||
-        (quizzes.length !== 0 && (
+      {!pagination ||
+        (pagination.quizzes.length !== 0 && (
           <Pagination
+            onSwitch={handleSwitch}
             url="/creator/quiz/create"
             image="/user/add.svg"
-            pages={5}
+            total={pagination.pages}
+            page={page}
           />
         ))}
     </section>

@@ -3,6 +3,8 @@
 import { FormikErrors, FormikTouched } from "formik";
 import { useRouter } from "next/navigation";
 
+import Quiz from "@interfaces/Quiz";
+
 import QuizSchema from "@schemas/QuizSchema";
 
 import useEditQuiz from "@hooks/creator/useEditQuiz";
@@ -49,13 +51,15 @@ export default function Edit() {
   }
 
   if (fetchError) {
-    <section id="create">
-      <Empty
-        reason={`${fetchError?.response?.data.error!}.`}
-        label="Go To Dashboard."
-        url="/creator"
-      />
-    </section>;
+    return (
+      <section id="create">
+        <Empty
+          reason={`${fetchError.response?.data.error}.`}
+          label="Go To Dashboard."
+          url="/creator"
+        />
+      </section>
+    );
   }
 
   if (!updatedQuiz) {
@@ -113,7 +117,7 @@ export default function Edit() {
             <Question
               key={i}
               index={i}
-              values={formValues as QuizSchema}
+              values={formValues as Quiz}
               errors={formErrors as FormikErrors<QuizSchema>}
               touched={formTouched as FormikTouched<QuizSchema>}
               disabled={false}
