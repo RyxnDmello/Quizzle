@@ -14,7 +14,7 @@ from .serializer import RegisterCreatorSerializer, RegisterAttendeeSerializer, L
 from .serializer import QuizSerializer, CreateQuizSerializer
 from .serializer import AnsweredQuizSerializer, CreateAnsweredQuizSerializer
 
-from .pagination import QuizPagination
+from .pagination import QuizPagination, ParticipantPagination
 
 from .utils import getError
 
@@ -162,9 +162,13 @@ class QuizCreateView(APIView):
 class AnsweredQuizView(APIView):
     def get(self, request, id):
         if str(id).startswith("QID"):
-            answers = Answer.get_answers_by_quiz(id)
-            serialized_answers = AnsweredQuizSerializer(answers, many=True)
-            return Response(serialized_answers.data, status=status.HTTP_200_OK)
+            answers = Answer.get_answers_by_quiz(id, request)
+                
+            paginator = ParticipantPagination()
+            paginated_answers = paginator.paginate_queryset(answers, request)
+                
+            serialized_answers = AnsweredQuizSerializer(paginated_answers, many=True)
+            return paginator.get_paginated_response(serialized_answers.data)
 
         elif str(id).startswith("AID"):
             try:
@@ -173,8 +177,8 @@ class AnsweredQuizView(APIView):
                 paginator = QuizPagination()
                 paginated_answers = paginator.paginate_queryset(answers, request)
                 
-                serializer = AnsweredQuizSerializer(paginated_answers, many=True)
-                return paginator.get_paginated_response(serializer.data)
+                serialized_answers = AnsweredQuizSerializer(paginated_answers, many=True)
+                return paginator.get_paginated_response(serialized_answers.data)
             except NotFound as error:
                 return Response({ "error": str(error) }, status=status.HTTP_404_NOT_FOUND)
 

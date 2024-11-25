@@ -3,7 +3,6 @@
 import { useParams, useRouter } from "next/navigation";
 
 import useFetchAnsweredQuizzes from "@hooks/creator/useFetchAnsweredQuizzes";
-import useFilterAnsweredQuizzes from "@hooks/creator/useFilterAnsweredQuizzes";
 import useDeleteQuiz from "@hooks/creator/useDeleteQuiz";
 
 import Title from "@components/Creator/Title";
@@ -22,11 +21,14 @@ import Error from "@components/Common/Error";
 export default function Quiz() {
   const {
     quiz,
-    participants,
+    page,
+    pagination,
     fetchError,
     isFetchPending,
     fetchParticipantsError,
     isFetchParticipantsPending,
+    handleFilter,
+    handleSwitch,
   } = useFetchAnsweredQuizzes();
 
   const {
@@ -34,10 +36,6 @@ export default function Quiz() {
     isPending: isDeletePending,
     handleDeleteQuiz,
   } = useDeleteQuiz();
-
-  const { filter, handleSetPrompt } = useFilterAnsweredQuizzes(
-    participants || []
-  );
 
   const { id } = useParams<{ id: string }>();
   const { replace } = useRouter();
@@ -104,26 +102,31 @@ export default function Quiz() {
 
       <hr />
 
-      <Search placeholder="Search Participant" onChange={handleSetPrompt} />
+      <Search placeholder="Search Participant" onChange={handleFilter} />
 
       {isFetchParticipantsPending && (
         <Empty reason="Fetching Participants..." />
       )}
 
-      {!isFetchParticipantsPending &&
-        (!participants || participants.length === 0) && (
-          <Empty reason="Quiz Has Not Been Attempted" />
-        )}
+      {pagination && pagination.participants.length === 0 && (
+        <Empty reason="Quiz Has Not Been Attempted" />
+      )}
 
-      {participants && participants.length !== 0 && (
+      {pagination && pagination.participants.length !== 0 && (
         <Participants>
-          {(filter.length === 0 ? participants : filter).map((participant) => (
-            <Participant key={participant.quizID} {...participant} />
+          {pagination.participants.map((participant) => (
+            <Participant key={participant.attendeeID} {...participant} />
           ))}
         </Participants>
       )}
 
-      {participants && participants.length !== 0 && <Pagination pages={5} />}
+      {pagination && pagination.participants.length !== 0 && (
+        <Pagination
+          onSwitch={handleSwitch}
+          total={pagination.pages}
+          page={page}
+        />
+      )}
     </section>
   );
 }

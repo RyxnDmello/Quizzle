@@ -9,3 +9,10 @@ class QuizPagination(PageNumberPagination):
     def get_paginated_response(self, data):
         total_pages = ceil(self.page.paginator.count / self.page_size)
         return Response({ "quizzes": data, "pages": total_pages })
+
+class ParticipantPagination(PageNumberPagination):
+    page_size = 12
+
+    def get_paginated_response(self, data):
+        total_pages = ceil(self.page.paginator.count / self.page_size)
+        return Response({ "participants": data, "pages": total_pages })

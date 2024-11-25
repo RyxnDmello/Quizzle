@@ -26,6 +26,17 @@ section {
       margin: 0 1.5rem 2rem 1.5rem;
     }
 
+    @media all and (width < 720px) {
+      > .pagination {
+        grid-template-columns: repeat(3, auto);
+        margin-top: 0.5rem;
+      }
+
+      > .pagination > div {
+        grid-column: 2;
+      }
+    }
+
     > .details {
       justify-content: space-between;
       grid-auto-flow: column;

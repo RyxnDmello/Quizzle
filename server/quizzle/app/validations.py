@@ -31,7 +31,7 @@ def validate_email(value):
     
 def validate_mobile(value):
     if value is None:
-        return "NULL"
+        return ""
     
     if not str(value).isdigit():
         raise ValidationError("Mobile Number Must Contain Only Digits")

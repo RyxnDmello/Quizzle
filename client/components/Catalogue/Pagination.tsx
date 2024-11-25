@@ -1,5 +1,8 @@
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+
+import getGroups from "@utils/getGroups";
 
 import Page from "./Pagination/Page";
 
@@ -14,6 +17,7 @@ interface PaginationProps extends ButtonProps {
 interface ButtonProps {
   url?: string;
   image?: string;
+  elementsPerGroup?: number;
 }
 
 export default function Pagination({
@@ -21,20 +25,51 @@ export default function Pagination({
   image,
   page,
   total,
+  elementsPerGroup,
   onSwitch,
 }: PaginationProps) {
+  const [group, setGroup] = useState<number>(0);
+
+  const groups = getGroups(
+    Array.from({ length: total }, (_, index) => index + 1),
+    elementsPerGroup
+  );
+
+  const handleNext = () => setGroup((prev) => ++prev);
+  const handlePrev = () => setGroup((prev) => --prev);
+
   return (
-    <div className={styles.pagination}>
+    <div className={`${styles.pagination} pagination`}>
       <div>
+        {total > 1 && group > 0 && (
+          <Image
+            onClick={handlePrev}
+            src={"/quiz/left.svg"}
+            height={256}
+            width={256}
+            alt="prev"
+          />
+        )}
+
         {total > 1 &&
-          Array.from({ length: total }, (_, i) => (
+          groups[group].map((_) => (
             <Page
-              onClick={() => onSwitch(i + 1)}
-              isSelected={page === i + 1}
-              page={i + 1}
-              key={i}
+              onClick={() => onSwitch(_)}
+              isSelected={_ === page}
+              page={_}
+              key={_}
             />
           ))}
+
+        {total > 1 && group < groups.length - 1 && (
+          <Image
+            onClick={handleNext}
+            src={"/quiz/right.svg"}
+            height={256}
+            width={256}
+            alt="next"
+          />
+        )}
       </div>
 
       {url && <Button url={url} image={image} />}

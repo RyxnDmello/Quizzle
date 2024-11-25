@@ -38,13 +38,16 @@ class Answer(models.Model):
     completionDate = models.DateTimeField(auto_now_add=True)
 
     @classmethod
-    def get_answers_by_quiz(cls, id):
-        answer = cls.objects.filter(quizID=id)
+    def get_answers_by_quiz(cls, id, request):
+        name = request.query_params.get("filter")
 
-        if not answer.exists():
-            return NotFound("Answers With Quiz ID Do Not Exist")
-        
-        return answer
+        answers = cls.objects.filter(quizID=id)
+
+        if name:
+            filtered = answers.filter(participantName__icontains=name)
+            answers = answers if len(filtered) == 0 else filtered.order_by("participantName")
+
+        return answers.order_by("participantName")
     
     @classmethod
     def get_answers_by_attendee(cls, id, request):

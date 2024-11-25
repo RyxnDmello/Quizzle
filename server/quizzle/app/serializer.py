@@ -63,6 +63,9 @@ class RegisterCreatorSerializer(ModelSerializer):
             raise serializers.ValidationError("User With Given Email Address Already Exists")
         
         return value
+    
+    def validate_mobile(self, value):
+        return None if value == "" else value
         
     def register(self, validated_data):
         user = Creator(
@@ -74,7 +77,6 @@ class RegisterCreatorSerializer(ModelSerializer):
         user.password = make_password(validated_data["password"])
         user.save()
         return user
-
 
 class RegisterAttendeeSerializer(ModelSerializer):
     name = serializers.CharField(
@@ -124,6 +126,9 @@ class RegisterAttendeeSerializer(ModelSerializer):
             raise serializers.ValidationError("User With Given Email Address Already Exists")
         
         return value
+    
+    def validate_mobile(self, value):
+        return None if value == "" else value
         
     def register(self, validated_data):
         user = Attendee(
