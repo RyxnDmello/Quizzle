@@ -29,8 +29,8 @@ export default function useRegister() {
     } = await axios.post<{ refresh: string; access: string }>(
       `${process.env.NEXT_PUBLIC_SERVER_API}/api/token`,
       {
-        username: "RyanDmello",
-        password: "RyxnDmello@Django10!",
+        username: process.env.NEXT_PUBLIC_AUTH_USERNAME!,
+        password: process.env.NEXT_PUBLIC_AUTH_PASSWORD!,
       }
     );
 

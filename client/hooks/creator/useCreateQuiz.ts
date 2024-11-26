@@ -97,7 +97,6 @@ export default function useCreateQuiz() {
   } = useFormik({
     initialValues: quiz,
     validationSchema: validationSchema,
-    enableReinitialize: true,
     onSubmit: () => onSubmit(),
   });
 

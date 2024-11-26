@@ -28,7 +28,7 @@ export default function useFetchAnsweredQuiz() {
     error: fetchError,
     isPending: isFetchPending,
   } = useQuery<unknown, AxiosError<{ error: string }>, AnsweredQuiz>({
-    queryKey: ["quiz", attendee, "attendee", "answer"],
+    queryKey: ["quiz", "answer", attendee, id],
     queryFn: fetchAnsweredQuiz,
   });
 

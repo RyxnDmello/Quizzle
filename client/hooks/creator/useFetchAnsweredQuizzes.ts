@@ -37,8 +37,6 @@ export default function useFetchAnsweredQuizzes() {
       }
     );
 
-    console.log(data)
-
     return data;
   };
 
@@ -64,7 +62,7 @@ export default function useFetchAnsweredQuizzes() {
     queryFn: handleFetchAnsweredQuizzes,
   });
 
-  console.log(pagination)
+  console.log(pagination);
 
   return {
     quiz,

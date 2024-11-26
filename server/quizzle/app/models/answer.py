@@ -73,9 +73,20 @@ class Answer(models.Model):
     @classmethod
     def get_answer_by_attendee_and_quiz(cls, attendeeID, id):
         try:
-            return Answer.objects.get(attendeeID=attendeeID, quizID=id)
-        except Quiz.DoesNotExist:
+            return cls.objects.get(attendeeID=attendeeID, quizID=id)
+        except cls.DoesNotExist:
             raise NotFound("Invalid Quiz/Attendee ID Provided")
+    
+    @classmethod
+    def check_answer_by_attendee_and_quiz(cls, attendeeID, id):
+        try:
+            Quiz.objects.get(id=id)
+            cls.objects.get(attendeeID=attendeeID, quizID=id)
+            return f"Quiz With  ID '{id}' Already Attempted"
+        except Quiz.DoesNotExist:
+            raise NotFound("Quiz Does Not Exist")
+        except cls.DoesNotExist:
+            return None
             
     @classmethod
     def add_answer(cls, id, request):

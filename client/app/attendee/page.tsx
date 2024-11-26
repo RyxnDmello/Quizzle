@@ -16,6 +16,7 @@ import Quiz from "@components/Catalogue/Quiz/Quiz";
 
 import Pagination from "@components/Catalogue/Pagination";
 import Empty from "@components/Common/Empty";
+import Error from "@components/Common/Error";
 
 export default function Creator() {
   const {
@@ -28,7 +29,14 @@ export default function Creator() {
     handleSwitch,
   } = useFetchQuizzes();
 
-  const { errors, handleBlur, handleChange, handleSubmit } = useJoinQuiz();
+  const {
+    formErrors,
+    fetchError,
+    isFetchPending,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+  } = useJoinQuiz();
 
   return (
     <section id="catalogue">
@@ -37,11 +45,15 @@ export default function Creator() {
       </Title>
 
       <Join
-        error={errors.code}
+        label={isFetchPending ? "Joining..." : "Join Quiz"}
+        disabled={isFetchPending}
+        error={formErrors.code}
         onBlur={handleBlur}
         onSubmit={handleSubmit}
         onChange={handleChange}
       />
+
+      <Error error={fetchError} />
 
       <hr />
 

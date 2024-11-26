@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import styles from "./Error.module.scss";
 
 interface ErrorProps {
-  error?: AxiosError<{ error: string }> | null;
+  error?: AxiosError<{ error: string }> | Error | null;
   fontSize?: string;
 }
 
@@ -12,7 +12,7 @@ export default function Error({ error, fontSize = "1rem" }: ErrorProps) {
 
   return (
     <p className={styles.error} style={{ fontSize }}>
-      {error.response?.data.error}
+      {error instanceof AxiosError ? error.response?.data.error : error.message}
     </p>
   );
 }

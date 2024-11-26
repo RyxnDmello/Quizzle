@@ -213,5 +213,18 @@ class AttendeeAnsweredQuizView(APIView):
             return Response({ "error": str(error) }, status=status.HTTP_404_NOT_FOUND)
         except Exception as error:
             return Response({ "error": str(error) }, status=status.HTTP_400_BAD_REQUEST)
+    
+    def post(self, _, attendee_id, id):
+        try:
+            error = Answer.check_answer_by_attendee_and_quiz(attendee_id, id)
+            
+            if error == None: 
+                return Response({}, status=status.HTTP_200_OK)
+            
+            return Response({ "error": error }, status=status.HTTP_400_BAD_REQUEST)
+        except NotFound as error:
+            return Response({ "error": str(error) }, status=status.HTTP_404_NOT_FOUND)
+        except Exception as error:
+            return Response({ "error": str(error) }, status=status.HTTP_400_BAD_REQUEST)
         
         
