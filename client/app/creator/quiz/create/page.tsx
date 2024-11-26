@@ -85,6 +85,8 @@ export default function Create() {
 
         <hr />
 
+        <Error error={createError} />
+
         <div className="buttons">
           <Button
             onClick={() => replace("/creator")}
@@ -106,8 +108,6 @@ export default function Create() {
             type="submit"
           />
         </div>
-
-        <Error error={createError} />
       </form>
     </section>
   );

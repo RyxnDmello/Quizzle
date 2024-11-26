@@ -11,7 +11,7 @@ export default function Error({ error, fontSize = "1rem" }: ErrorProps) {
   if (!error) return;
 
   return (
-    <p className={styles.error} style={{ fontSize }}>
+    <p className={`${styles.error} error`} style={{ fontSize }}>
       {error instanceof AxiosError ? error.response?.data.error : error.message}
     </p>
   );
